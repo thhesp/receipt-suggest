@@ -3,13 +3,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Receipt suggest</title>
+    <title>recipe suggest</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/receipt-suggestor.css" rel="stylesheet" media="">
+    <link href="../css/recipe-suggestor.css" rel="stylesheet" media="">
   </head>
 
   <body>
@@ -22,13 +22,13 @@
     <script src="../js/suggestor.js" ></script>
 
 
-  <div class="receipts">
-        <h1>Receipts</h1>
+  <div class="recipes">
+        <h1>Recipes</h1>
 
         <button type="button" class="btn btn-sm btn-outline-primary" onclick="onGenerateSuggestions()">Generate suggestions</button>	
 
 		  <div class="container">
-		    <div class="row" id="receipts-container">
+		    <div class="row" id="recipes-container">
 		     
 		     
 		    </div>
@@ -38,13 +38,13 @@
 	</body>
 
 
-	   <script type="text/template" id="receipt-template">
+	   <script type="text/template" id="recipe-template">
         <div class="card mb-4 box-shadow">
           <div class="card-body">
             <div class="card-text">
-              <%= Name %>
+              <%= name %>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('<%= Link %>','_blank')">Receipt</button>	
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('<%= link %>','_blank')">recipe</button>	
             </div>
         </div>
       </script>

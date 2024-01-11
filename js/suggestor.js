@@ -10,7 +10,7 @@ function onGenerateSuggestions(){
 
 			for(var i = 0; i < suggestions.length; i++){
 				var template = _.template($("#receipt-template").html());
-				jQuery("#receipts-container").append(template(suggestions[i]));
+				jQuery("#receipts-container").append(template(transformData(suggestions[i])));
 			}
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -30,4 +30,11 @@ function getSuggestions(csv){
 
 	// Get sub-array of first n elements after shuffled
 	return shuffled.slice(0, 5);
+}
+
+function transformData(data){
+	return {
+		name:data['Name'], 
+		link: "receipt.html?"+data['Link']
+	};
 }
