@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Receipt suggest</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/receipt-suggestor.css" rel="stylesheet" media="">
+  </head>
+
+  <body>
+
+    <script src="../js/jquery.js" ></script>
+    <script src="../js/popper.min.js" ></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <script src="../js/underscore.js" ></script>
+    <script src="../js/jquery.csv.min.js" ></script>
+    <script src="../js/suggestor.js" ></script>
+
+
+  <div class="receipts">
+        <h1>Receipts</h1>
+
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick="onGenerateSuggestions()">Generate suggestions</button>	
+
+		  <div class="container">
+		    <div class="row" id="receipts-container">
+		     
+		     
+		    </div>
+		  </div>
+     </div>
+
+	</body>
+
+
+	   <script type="text/template" id="receipt-template">
+        <div class="card mb-4 box-shadow">
+          <div class="card-body">
+            <div class="card-text">
+              <%= Name %>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('<%= Link %>','_blank')">Receipt</button>	
+            </div>
+        </div>
+      </script>
+
+</html>
