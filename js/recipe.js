@@ -20,17 +20,32 @@ function loadIngredients(recipeFolder){
         url: recipeFolder+"ingredients.csv",
         dataType: "text",
         success: function(data) {
-        	var ingredients = jQuery.csv.toObjects(data);
-			for(var i = 0; i < ingredients.length; i++){
-				var template = _.template($("#ingredients-template").html());
-				jQuery("#ingredients-table tbody").append(template(ingredients[i]));
-			}
+        	if(data !== undefined && data !== ""){
+	        	var ingredients = jQuery.csv.toObjects(data);
+
+	        	if(ingredients.length != 0){
+					for(var i = 0; i < ingredients.length; i++){
+						var template = _.template($("#ingredients-template").html());
+						jQuery("#ingredients-table tbody").append(template(ingredients[i]));
+					}
+	        	}else {
+	        		showError("Problem during CSV parsing");
+	        	}
+	        } else {
+	        		showError("No ingredients information found");
+        	}
         },
         error: function(xhr, ajaxOptions, thrownError) {
 	  	  	console.log(xhr.status);
         	console.log(thrownError);
+        	showError("Problems during loading of ingredients CSV");
 	  }
      });
+}
+
+
+function showError(error){
+	alert(error);
 }
 
 function findImages(recipeFolder){
