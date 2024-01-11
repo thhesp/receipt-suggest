@@ -1,16 +1,16 @@
 function onGenerateSuggestions(){
-	jQuery("#receipts-container").empty();
+	jQuery("#recipes-container").empty();
 	jQuery.get({
         type: "GET",
-        url: "data/receipes.csv",
+        url: "data/recipes.csv",
         dataType: "text",
         success: function(data) {
         	console.log(data);
         	var suggestions = getSuggestions(data);
 
 			for(var i = 0; i < suggestions.length; i++){
-				var template = _.template($("#receipt-template").html());
-				jQuery("#receipts-container").append(template(transformData(suggestions[i])));
+				var template = _.template($("#recipe-template").html());
+				jQuery("#recipes-container").append(template(transformData(suggestions[i])));
 			}
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -35,6 +35,6 @@ function getSuggestions(csv){
 function transformData(data){
 	return {
 		name:data['Name'], 
-		link: "receipt.html?"+data['Link']
+		link: "recipe.html?recipe="+data['Link']+"&name="+data['Name']
 	};
 }

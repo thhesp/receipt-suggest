@@ -3,22 +3,63 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Receipt</title>
+    <title>Recipe</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/receipt-suggestor.css" rel="stylesheet" media="">
+    <link href="../css/recipe-suggestor.css" rel="stylesheet" media="">
   </head>
 
   <body>
 
     <script src="../js/jquery.js" ></script>
     <script src="../js/popper.min.js" ></script>
-    <script src="../js/receipt.js"></script>
+    <script src="../js/underscore.js" ></script>
+    <script src="../js/jquery.csv.min.js" ></script>
+    <script src="../js/recipe.js"></script>
+
+
+    <h1 id="recipe-name"></h1>
+
+    <div id="images-container">
+    </div>
+
+    <div id="ingredients-container">
+    <table id="ingredients-table">
+      <thead>
+        <tr>
+          <td>
+            Name
+          </td>
+          <td>
+            Amount
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+  </div>
+
+    <div id="description-container">
+    </div>
 
 
 	</body>
+
+
+<script type="text/template" id="ingredients-template">
+        <tr>
+          <td>
+            <%= Name %>
+          </td>
+          <td>
+            <%= Amount %>
+          </td>
+        </tr>
+      </script>
 
 </html>
