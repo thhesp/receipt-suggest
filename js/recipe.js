@@ -52,9 +52,12 @@ function findImages(recipeFolder){
 		}
 	}
 
-	for(var i=0; i < images.length; i++){
-		$("#images-container").append( "<img src='"+images[i]+"'>" );
+	if(images.length > 0 ){
+		for(var i=0; i < images.length; i++){
+			$("#images-container").append( "<img src='"+images[i]+"'>" );
+		}
 	}
+
 }
 
 
