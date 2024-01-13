@@ -11,9 +11,12 @@ You can just add (or replace) your own data in data and build the Dockerimage.
 It is pretty simple how to add you own recipes. You can add them to recipes.csv, the first part of the CSV is the name of the recipe, while the second part ist the folder where more data for this recipe can be found.
 
 It looks like this:
-|Name|Link|
-|Pasta|chefkoch-nudeln-mal-anders|
-|Roastbeef|chefkoch-rinderbraten|
+|Name|Link|Include|External|
+|Pasta|chefkoch-nudeln-mal-anders|Y|N|
+|Roastbeef|chefkoch-rinderbraten|Y|N|
+
+The include flag decides if it should be included on random generated suggestions. And with the external flag you can point the URL to an external page with the recipe, instead of linking to infos in your data folder.
+Valid values are "Y" for "yes" and "N" for "no", for both of these flags.
 
 ### Subfolders for each recipe
 More information can be found in the recipe subfolder. You have to create an folder for which recipe. If you are using linux, there is also an helper.sh script which will create the folders & files based on the recipes.csv (shouldn't overwrite existing data).
