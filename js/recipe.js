@@ -69,8 +69,31 @@ function findImages(recipeFolder){
 
 	if(images.length > 0 ){
 		for(var i=0; i < images.length; i++){
-			$("#images-container").append( "<div class='card mb-4 box-shadow'><div class='card-body'><img src='"+images[i]+"'></div></div>");
+			var template = _.template($("#image-template").html());
+			jQuery("#images-container").append(template({'image':images[i]}));
 		}
+
+		jQuery('.recipe-image').on('click', function(that) {
+		  	// Get the modal
+			var modal = document.getElementById("img-modal");
+
+			// Get the image and insert it inside the modal
+			var img = that.currentTarget;
+			var modalImg = document.getElementById("modal-image");
+
+			 modal.style.display = "block";
+			 modalImg.src = this.src;
+
+
+			jQuery('.close').on('click', function() {
+			 	modal.style.display = "none";
+			});
+
+			jQuery('#img-modal').on('click', function() {
+			 	modal.style.display = "none";
+			});
+		} 
+		);
 	}
 
 }
