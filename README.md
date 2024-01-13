@@ -37,3 +37,5 @@ You can add the description in form of an text file with the name "description.t
 The website will search for images with the name "img.jpg","img.png" or "img.jpeg". Afterwards it will search for "img_1.jpg", "img_2.jpg" until "img_9.jpg". So in theory you could add in up to 30 images, which I wouldn't recommend. But well.
 
 It may be good to reduce the images size, for this there is an script which uses imagemagick (linux) to reduce image sizes.
+
+You can also do the compression in the docker image, if you prefer that.
