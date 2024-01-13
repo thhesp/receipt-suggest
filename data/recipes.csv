@@ -1,17 +1,19 @@
-Name,Link
-Nudeln mal anders,chefkoch-nudeln-mal-anders
-Rinderbraten,chefkoch-rinderbraten
-Hähnchenbrust in Schmand mit grünen Bohnen,chefkoch-haehnchen-bohnen
-Schneller Käse-Gemüse-Schinken-Nudeln-Auflauf,chefkoch-schneller-auflauf
-Türkische Pizza,custom-tuerkische-pizza
-Spaghetti Bolognese,custom-spaghetti-bolognese
-French-Toast-Cordon-Bleu,anderes-french-toast
-Nudeln mit Rührei und Schinken,chefkoch-ruehrei-nudeln
-Kartoffel-Sterz,chefkoch-kartoffel-sterz
-Pizza mit Tomaten Schinken und Käse,chefkoch-pizza
-Schinken - Tomaten- Mozarella - Strudel,chefkoch-strudel
-Gebackene Toast-Muffins mit Ei und Speck,chefkoch-toast-muffins
-Roros Grießnockerlsuppe,chefkoch-griessnockerlsuppe
-All American Burger,chefkoch-american-burger
-Gyros-Nudeln-Auflauf,custom-gyros-nudel-auflauf
-Lasagne,custom-lasagne
+Name,Link,Include,External
+Nudeln mal anders,chefkoch-nudeln-mal-anders,Y,N
+Rinderbraten,chefkoch-rinderbraten,Y,N
+Hähnchenbrust in Schmand mit grünen Bohnen,chefkoch-haehnchen-bohnen,Y,N
+Schneller Käse-Gemüse-Schinken-Nudeln-Auflauf,chefkoch-schneller-auflauf,Y,N
+Türkische Pizza,custom-tuerkische-pizza,Y,N
+Spaghetti Bolognese,custom-spaghetti-bolognese,Y,N
+French-Toast-Cordon-Bleu,anderes-french-toast,Y,N
+Nudeln mit Rührei und Schinken,chefkoch-ruehrei-nudeln,Y,N
+Kartoffel-Sterz,chefkoch-kartoffel-sterz,Y,N
+Pizza mit Tomaten Schinken und Käse,chefkoch-pizza,Y,N
+Schinken - Tomaten- Mozarella - Strudel,chefkoch-strudel,Y,N
+Gebackene Toast-Muffins mit Ei und Speck,chefkoch-toast-muffins,Y,N
+Roros Grießnockerlsuppe,chefkoch-griessnockerlsuppe,Y,N
+All American Burger,chefkoch-american-burger,Y,N
+Gyros-Nudeln-Auflauf,custom-gyros-nudel-auflauf,Y,N
+Lasagne,custom-lasagne,Y,N
+Hähnchen-Spinat-Pasta,https://www.eatbetter.de/rezepte/spinat-haehnchen-pasta-soo-lecker-w%C3%BCrzig,Y,Y
+Eigenes Protein Müsli,custom-protein-muesli,N,N
