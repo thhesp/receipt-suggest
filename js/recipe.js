@@ -69,7 +69,7 @@ function findImages(recipeFolder){
 
 	if(images.length > 0 ){
 		for(var i=0; i < images.length; i++){
-			$("#images-container").append( "<img src='"+images[i]+"'>" );
+			$("#images-container").append( "<div class='card mb-4 box-shadow'><div class='card-body'><img src='"+images[i]+"'></div></div>");
 		}
 	}
 
