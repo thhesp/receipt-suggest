@@ -47,10 +47,10 @@ function transformData(data){
 
 function getLink(data){
 	if(data.External === 'Y'){
-		return data['Link'];
+		return data['Link'].trim();
 	}
 
-	return "recipe.html?recipe="+data['Link']+"&name="+data['Name'];
+	return "recipe.html?recipe="+data['Link'].trim()+"&name="+data['Name'].trim();
 }
 
 function shuffleSuggestions(array) {
