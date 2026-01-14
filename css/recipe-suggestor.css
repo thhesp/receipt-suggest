@@ -15,10 +15,31 @@
 	margin-right: 20px;
 }
 
+#tags-container .btn-tag-sel {
+	margin-right: 5px;
+
+}
+
+#tags-container .btn-tag-sel.active {
+	background-color: #28a745;
+    border-color: #28a745;
+}
+
+
+
 #recipes-container .card {
 	margin-left: 20px;
 	margin-right: 20px;
 	width:200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align:center;
+}
+
+#recipes-container button {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 /* The Modal (background) */

@@ -41,7 +41,11 @@
 
   <div class="recipes">
         <h1>Recipes Overview</h1>
+          <div class="container">
+              <div class="row" id="tags-container">
 
+              </div>
+          </div>
 		  <div class="container">
 		    <div class="row" id="recipes-container">
 		     
@@ -54,14 +58,29 @@
 
 
 	   <script type="text/template" id="recipe-template">
-        <div class="card mb-4 box-shadow">
+        <div class="card mb-4 box-shadow <% _.each(tags, function(el) { %>  tag-<%= el %><% }); %>">
           <div class="card-body">
             <div class="card-text">
               <%= name %>
             </div>
-            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('<%= link %>','_blank')">recipe</button>	
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.open('<%= link %>','_blank')">Open</button>
+              <div class="tags">
+                  <% _.each(tags, function(el) { %>  <span class="badge badge-pill badge-info"><%= el %></span> <% }); %>
+              </div>
             </div>
         </div>
       </script>
+
+<script type="text/template" id="tags-selector-template">
+    <div class="mb-12 box-shadow">
+        <div class="btn-group" role="group" aria-label="Reicpe Tags">
+        <% _.each(tags, function(el) { %>
+            <button type="button" class="btn btn-info btn-sm btn-tag-sel" data-toggle="button" aria-pressed="false" tagVal="<%= el %>">
+                <%= el %>
+            </button>
+        <% }); %>
+        </div>
+    </div>
+</script>
 
 </html>
