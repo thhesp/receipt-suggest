@@ -2,6 +2,10 @@
 	margin-bottom:20px;
 }
 
+h1 {
+    text-align: center;
+}
+
 #images-container img {
 	width:400px;
 	height:400px;
@@ -15,6 +19,13 @@
 	margin-right: 20px;
 }
 
+#tags-container {
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #tags-container .btn-tag-sel {
 	margin-right: 5px;
 
@@ -24,7 +35,6 @@
 	background-color: #28a745;
     border-color: #28a745;
 }
-
 
 
 #recipes-container .card {
@@ -37,10 +47,19 @@
     text-align:center;
 }
 
+#recipes-container .card-body {
+    flex: none;
+}
+
 #recipes-container button {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+
+#recipes-container .badge-info {
+    font-size: 60%;
+}
+
 
 /* The Modal (background) */
 .modal {
