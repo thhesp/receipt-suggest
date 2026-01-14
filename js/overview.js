@@ -85,7 +85,7 @@ function formatTagString(tags) {
 function transformData(data){
 	return {
 		name:data['Name'],
-		tags:normalizeTags(data['Tags']),
+		tags:data['Tags'] != undefined ? normalizeTags(data['Tags']):[],
 		link: getLink(data)
 	};
 }
