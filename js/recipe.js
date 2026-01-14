@@ -24,21 +24,23 @@ function loadIngredients(recipeFolder){
 	        	var ingredients = jQuery.csv.toObjects(data);
 
 	        	if(ingredients.length != 0){
+	        	    jQuery("#ingredients-container").append(_.template($("#ingredients-table-template").html()));
+
 					for(var i = 0; i < ingredients.length; i++){
 						var template = _.template($("#ingredients-template").html());
 						jQuery("#ingredients-table tbody").append(template(ingredients[i]));
 					}
 	        	}else {
-	        		showError("Problem during CSV parsing");
+	        		console.log("Problem during CSV parsing");
 	        	}
 	        } else {
-	        		showError("No ingredients information found");
+	        		console.log("No ingredients information found");
         	}
         },
         error: function(xhr, ajaxOptions, thrownError) {
 	  	  	console.log(xhr.status);
         	console.log(thrownError);
-        	showError("Problems during loading of ingredients CSV");
+        	console.log("Problems during loading of ingredients CSV");
 	  }
      });
 }
@@ -112,6 +114,8 @@ function loadDescription(recipeFolder){
         	console.log(thrownError);
 	  }
      });
+
+     jQuery("#description-container").load(recipeFolder+"description.html");
 }
 
 function fileExists(url) {
