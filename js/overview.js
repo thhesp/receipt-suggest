@@ -91,7 +91,7 @@ function transformData(data){
 }
 
 function normalizeTags(tags){
-    if(tags.trim() == ""){
+    if(tags == undefined || tags.trim() == ""){
         return [];
     }
     return tags.split(";").map(word => word.toUpperCase().trim()).filter(str => /\w+/.test(str));

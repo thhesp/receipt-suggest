@@ -1,4 +1,4 @@
-FROM nginx:alpine as base
+FROM nginx:alpine AS base
 COPY html /usr/share/nginx/html
 COPY css /usr/share/nginx/html/css
 COPY js /usr/share/nginx/html/js
