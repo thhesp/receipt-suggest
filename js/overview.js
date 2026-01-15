@@ -61,10 +61,12 @@ function toggleTag(){
         var finalTags = alreadyActiveTags.filter(e => e !== toggledTag);
         console.log("deactivate ", finalTags);
         showTags(finalTags);
+        disableTags(finalTags);
     } else {
         alreadyActiveTags.push(toggledTag);
         console.log("activate ", alreadyActiveTags);
         showTags(alreadyActiveTags);
+        disableTags(alreadyActiveTags);
     }
 }
 
@@ -80,6 +82,28 @@ function showTags(tags){
 
 function formatTagString(tags) {
     return tags.map( el => ".tag-"+el).join("");
+}
+
+function disableTags(activeTags){
+    var tagString = formatTagString(activeTags);
+    console.log("Disabling Tags ", tagString);
+    if(tagString){
+        jQuery("#tags-container .btn-tag-sel").prop('disabled', true);
+        // enable possible filter
+        var possibleFilter = determinePossibleFilter(tagString);
+        console.log("possible Filters: ", possibleFilter);
+        possibleFilter.forEach(el => jQuery("#tags-container .btn-tag-sel."+el).prop('disabled', false));
+    } else {
+        jQuery("#tags-container .btn-tag-sel").prop('disabled', false);
+    }
+}
+
+function determinePossibleFilter(tagString){
+    var setOfFilters = new Set(jQuery("#recipes-container .card"+tagString).map(function () {
+                                                     return $(this).attr("class").split(' ').filter(el => el.startsWith("tag-"));
+                                                  }).get());
+
+    return Array.from(setOfFilters);
 }
 
 function transformData(data){
