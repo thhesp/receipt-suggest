@@ -36,6 +36,11 @@ h1 {
     border-color: #28a745;
 }
 
+#recipes-container {
+    align-items: center;
+    justify-content: center;
+    text-align:center;
+}
 
 #recipes-container .card {
 	margin-left: 20px;

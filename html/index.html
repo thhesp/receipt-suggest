@@ -72,15 +72,15 @@
       </script>
 
 <script type="text/template" id="tags-selector-template">
-    <div class="mb-12 box-shadow">
-        <div class="btn-group" role="group" aria-label="Reicpe Tags">
+
         <% _.each(tags, function(el) { %>
+            <div class="mb-2">
             <button type="button" class="btn btn-info btn-sm btn-tag-sel" data-toggle="button" aria-pressed="false" tagVal="<%= el %>">
                 <%= el %>
             </button>
+                </div>
         <% }); %>
-        </div>
-    </div>
+
 </script>
 
 </html>
