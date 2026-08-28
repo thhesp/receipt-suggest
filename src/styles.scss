@@ -1,13 +1,18 @@
 /* Global styles */
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --success-color: #28a745;
+  --primary-color: #2f855a;
+  --primary-dark: #276749;
+  --secondary-color: #718096;
+  --success-color: #38a169;
   --danger-color: #dc3545;
   --warning-color: #ffc107;
-  --info-color: #17a2b8;
-  --light-color: #f8f9fa;
-  --dark-color: #343a40;
+  --info-color: #319795;
+  --light-color: #fffdf8;
+  --dark-color: #263238;
+  --page-background: #f6f4ee;
+  --surface: #ffffff;
+  --border-color: #e6e1d7;
+  --shadow: 0 8px 24px rgba(38, 50, 56, 0.08);
 }
 
 * {
@@ -18,12 +23,12 @@
 
 html, body {
   height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Inter, 'Segoe UI', Tahoma, sans-serif;
 }
 
 body {
-  background-color: #f5f5f5;
-  color: #333;
+  background-color: var(--page-background);
+  color: #2d3748;
 }
 
 app-root {
@@ -33,26 +38,27 @@ app-root {
 
 /* Navbar customization */
 .navbar {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 12px rgba(38, 50, 56, 0.16);
+  background: linear-gradient(120deg, #263238, #37474f) !important;
 }
 
 /* Container spacing */
 .container,
 .container-lg,
 .container-md {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  max-width: 1120px;
 }
 
 /* Card styling */
 .card {
-  border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(38, 50, 56, 0.14);
+    transform: translateY(-3px);
   }
 }
 
@@ -65,11 +71,14 @@ app-root {
 
 /* Button styling */
 .btn {
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  border-radius: 8px;
+  min-height: 2.5rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(38, 50, 56, 0.12);
   }
 }
 
@@ -91,7 +100,7 @@ app-root {
 .recipe-image {
   width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   transition: transform 0.3s ease;
 
@@ -177,6 +186,15 @@ app-root {
 
   .card {
     margin-bottom: 1rem;
+  }
+
+  .navbar .navbar-collapse {
+    padding: 0.75rem 0;
+  }
+
+  .navbar .nav-link {
+    margin-left: 0;
+    padding: 0.7rem 0;
   }
 
   .modal .modal-content {

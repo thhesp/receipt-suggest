@@ -1,6 +1,6 @@
 .recipe-card {
-  cursor: pointer;
-  transition: all 0.3s ease;
+  cursor: default;
+  border-top: 4px solid var(--primary-color);
 
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
@@ -8,9 +8,10 @@
   }
 
   .card-title {
-    color: #333;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    color: #263238;
+    font-size: 1.1rem;
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
   }
 
   .tags {
@@ -21,5 +22,12 @@
   .btn {
     width: 100%;
     margin-top: 0.5rem;
+  }
+
+  .badge {
+    background-color: #e6f4ed !important;
+    color: var(--primary-dark);
+    font-weight: 600;
+    padding: 0.45rem 0.6rem;
   }
 }

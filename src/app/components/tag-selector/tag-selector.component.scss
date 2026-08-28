@@ -1,12 +1,14 @@
 .tag-selector {
   padding: 1.5rem;
-  background-color: #f8f9fa;
-  border-radius: 4px;
+  background-color: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
   margin-bottom: 2rem;
 
   h5 {
     margin: 0;
-    color: #333;
+    color: #263238;
   }
 
   .tag-buttons {
@@ -16,6 +18,7 @@
   }
 
   .btn {
+    border-radius: 999px;
     &.disabled {
       opacity: 0.5;
       cursor: not-allowed;
