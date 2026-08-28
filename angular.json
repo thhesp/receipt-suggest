@@ -1,8 +1,7 @@
 {
   "version": 1,
   "cli": {
-    "defaultCollection": "@angular/cli",
-    "analytics": false
+    "defaultCollection": "@angular/cli"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -62,7 +61,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "receipt-suggest:build:production"
