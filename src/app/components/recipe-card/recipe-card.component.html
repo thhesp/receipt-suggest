@@ -1,9 +1,11 @@
 <div class="card recipe-card h-100">
   <img
-    *ngIf="recipe.thumbnail"
+    *ngIf="thumbnailUrl"
     class="card-img-top recipe-thumbnail"
-    [src]="recipe.thumbnail"
+    [src]="thumbnailUrl"
     [alt]="recipe.name"
+    loading="lazy"
+    decoding="async"
   />
   <div class="card-body d-flex flex-column">
     <h5 class="card-title">{{ recipe.name }}</h5>
