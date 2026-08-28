@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
-import { parseCSV } from '../utils/csv-parser.util';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { Ingredient } from '../models/recipe.model';
 
 @Injectable({
@@ -19,17 +18,8 @@ export class RecipeDetailService {
    */
   loadIngredients(recipeLink: string): Observable<Ingredient[]> {
     const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
-    const csvUrl = `${this.BASE_DATA_PATH}/${recipeLink}/ingredients.csv`;
     return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
       map(data => this.parseHtmlIngredients(data)),
-      switchMap(ingredients => ingredients.length > 0
-        ? of(ingredients)
-        : this.http.get(csvUrl, { responseType: 'text' }).pipe(
-          map(data => this.parseIngredients(data))
-        )),
-      catchError(() => this.http.get(csvUrl, { responseType: 'text' }).pipe(
-        map(data => this.parseIngredients(data))
-      )),
       catchError(error => {
         console.warn(`No ingredients found for ${recipeLink}:`, error);
         return of([]);
@@ -42,13 +32,8 @@ export class RecipeDetailService {
    */
   loadDescription(recipeLink: string): Observable<string> {
     const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
-    const txtUrl = `${this.BASE_DATA_PATH}/${recipeLink}/description.txt`;
     return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
       map(data => this.parseDescriptionHtml(data)),
-      catchError(() => this.http.get(txtUrl, { responseType: 'text' })),
-      map(data => this.rejectApplicationShell(data)),
-      catchError(() => this.http.get(`${this.BASE_DATA_PATH}/${recipeLink}/description.html`, { responseType: 'text' })),
-      map(data => this.rejectApplicationShell(data)),
       catchError(error => {
         console.warn(`No description found for ${recipeLink}:`, error);
         return of('');
@@ -94,23 +79,6 @@ export class RecipeDetailService {
     } catch {
       return false;
     }
-  }
-
-  /**
-   * Parse ingredients CSV
-   */
-  private parseIngredients(csvData: string): Ingredient[] {
-    if (!csvData || csvData.trim() === '') {
-      return [];
-    }
-
-    const rows = parseCSV(csvData);
-    return rows
-      .filter(row => row['Name'])
-      .map(row => ({
-        name: row['Name']?.trim() || '',
-        amount: row['Amount']?.trim() || ''
-      }));
   }
 
   private parseHtmlIngredients(html: string): Ingredient[] {

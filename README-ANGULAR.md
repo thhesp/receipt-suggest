@@ -120,35 +120,54 @@ npm run lint
 
 ## 🗂️ Adding Your Own Recipes
 
-### 1. Update recipes.csv
+### 1. Update recipes.metadata.json
 
-Add entries to `src/assets/data/recipes.csv`:
+Add entries to `src/assets/data/recipes.metadata.json`:
 
-```csv
-Name,Link,Tags,Include,External
-Pasta,chefkoch-nudeln-mal-anders,PASTA;VEGETARIAN,Y,N
-Roastbeef,chefkoch-rinderbraten,BEEF;MAIN,Y,N
-External Recipe,https://example.com,QUICK,Y,Y
+```json
+[
+  {
+    "id": "chefkoch-nudeln-mal-anders",
+    "name": "Pasta",
+    "tags": ["PASTA", "VEGETARIAN"],
+    "includeInSuggestions": true,
+    "nutrition": "650 kcal per serving"
+  },
+  {
+    "id": "https://example.com",
+    "name": "External Recipe",
+    "tags": ["QUICK"],
+    "includeInSuggestions": true,
+    "externalUrl": "https://example.com"
+  }
+]
 ```
 
-The CSV is currently the authoring source for the migration. Every build
-generates `recipes.json` with descriptive fields such as
-`includeInSuggestions`, `externalUrl`, and `thumbnail`; the generated file is
-not edited manually.
+The build generates the alphabetically sorted `recipes.json` manifest and adds
+local thumbnails automatically. The generated file is not edited manually.
 
-Recipe folders may also contain a `recipe.html` file. Ingredients marked with
-`data-ingredient`, `data-name`, and `data-amount` are rendered as HTML and
-remain available to the copy-ingredients feature. Existing
-`ingredients.csv` and `description.txt/html` files continue to work while
-recipes are migrated.
+### 2. Add recipe.html
 
-**Columns:**
-- `Name` - Recipe name
-- `Link` - Folder name (or URL if external)
-- `Tags` - Semicolon-separated tags
-- `Include` - Include in suggestions (Y/N)
-- `External` - External URL (Y/N)
-- `Nutrition` - Optional free-form nutritional information, for example `650 kcal per serving`
+Each local recipe has one `recipe.html` file. Ingredients use semantic
+attributes so they remain available to the copy-ingredients feature:
+
+```html
+<article>
+  <section data-ingredients>
+    <h2>Ingredients</h2>
+    <ul>
+      <li data-ingredient><span data-amount>500 g</span> <span data-name>Pasta</span></li>
+    </ul>
+  </section>
+  <section>
+    <h2>Preparation</h2>
+    <p>Cook the pasta...</p>
+  </section>
+</article>
+```
+
+Recipe images remain alongside the HTML file as `img.jpg`, `img.png`, or
+`img.jpeg`, followed by optional numbered images such as `img_1.jpg`.
 
 ### 2. Create Recipe Folder
 
@@ -200,7 +219,6 @@ The Docker build uses multi-stage approach:
 - ✅ Scalable and maintainable code
 
 ### What Stayed the Same
-- Data format (CSV files)
 - Folder structure for recipes
 - Bootstrap styling
 - Feature functionality
