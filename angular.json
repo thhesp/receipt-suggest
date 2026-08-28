@@ -1,7 +1,8 @@
 {
   "version": 1,
   "cli": {
-    "defaultCollection": "@angular/cli"
+    "defaultCollection": "@angular/cli",
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {

@@ -9,16 +9,26 @@
     </div>
 
     <div class="mt-auto">
+      <!-- Internal link -->
       <button
+        *ngIf="!recipe.external"
         type="button"
-        class="btn btn-sm btn-outline-secondary"
-        (click)="onCardClick($event)"
-        [routerLink]="!recipe.external ? ['/recipe', recipe.link] : null"
-        [href]="recipe.external ? recipe.link : null"
-        [target]="recipe.external ? '_blank' : null"
+        class="btn btn-sm btn-outline-secondary w-100"
+        [routerLink]="['/recipe', recipe.link]"
       >
-        {{ recipe.external ? 'External Link' : 'View Recipe' }}
+        View Recipe
       </button>
+
+      <!-- External link -->
+      <a
+        *ngIf="recipe.external"
+        [href]="recipe.link"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn btn-sm btn-outline-secondary w-100 text-decoration-none"
+      >
+        External Link
+      </a>
     </div>
   </div>
 </div>
