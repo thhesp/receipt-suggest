@@ -20,6 +20,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   description$ = new BehaviorSubject<string>('');
   images$ = new BehaviorSubject<string[]>([]);
   isLoading = true;
+  imagesLoading = false;
   error: string | null = null;
 
   selectedImageIndex = 0;
@@ -121,10 +122,15 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
           this.ingredients$.next(ingredients);
           this.description$.next(description);
 
-          // Load images asynchronously
-          this.recipeDetailService.loadImages(this.recipeLink).then(images => {
-            this.images$.next(images);
-            this.isLoading = false;
+          this.isLoading = false;
+
+          // Let the recipe content render before probing for optional images.
+          requestAnimationFrame(() => {
+            this.imagesLoading = true;
+            this.recipeDetailService.loadImages(this.recipeLink).then(images => {
+              this.images$.next(images);
+              this.imagesLoading = false;
+            });
           });
         },
         error: (err) => {
