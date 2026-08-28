@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { RecipeService } from '../../services/recipe.service';
 import { Recipe } from '../../models/recipe.model';
 import { RecipeCardComponent } from '../recipe-card/recipe-card.component';
@@ -38,17 +38,20 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
   private loadRecipes(): void {
     this.recipeService
       .loadRecipes()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
       .subscribe({
         next: (recipes) => {
           this.recipes$.next(recipes);
           this.filteredRecipes$.next(recipes);
           this.extractAllTags(recipes);
-          this.isLoading = false;
         },
         error: (err) => {
           this.error = 'Failed to load recipes. Please try again.';
-          this.isLoading = false;
           console.error('Error loading recipes:', err);
         }
       });
