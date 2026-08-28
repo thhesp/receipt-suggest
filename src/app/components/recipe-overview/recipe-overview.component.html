@@ -1,0 +1,45 @@
+<div class="recipes-container">
+  <h1 class="mb-5">Recipes Overview</h1>
+
+  <ng-container *ngIf="isLoading">
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="error">
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && !error">
+    <div class="container-md mb-5">
+      <app-tag-selector
+        [allTags]="allTags"
+        [filteredRecipes]="filteredRecipes$ | async"
+        (tagsChanged)="onTagsChanged($event)"
+      ></app-tag-selector>
+    </div>
+
+    <div class="container-md">
+      <div class="row">
+        <ng-container *ngIf="filteredRecipes$ | async as recipes">
+          <app-recipe-card
+            *ngFor="let recipe of recipes"
+            [recipe]="recipe"
+            class="col-md-6 col-lg-4 mb-4"
+          ></app-recipe-card>
+
+          <div *ngIf="recipes.length === 0" class="col-12">
+            <div class="alert alert-info" role="alert">
+              No recipes found matching the selected tags.
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>

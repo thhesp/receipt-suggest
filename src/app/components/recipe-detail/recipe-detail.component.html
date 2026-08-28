@@ -1,0 +1,93 @@
+<div class="recipe-detail-container">
+  <h1 class="mb-5">{{ recipeName }}</h1>
+
+  <ng-container *ngIf="isLoading">
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="error">
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && !error">
+    <!-- Images Section -->
+    <div *ngIf="(images$ | async)?.length as imageCount">
+      <div class="container-md mb-5">
+        <div class="row" *ngIf="imageCount > 0">
+          <div class="col-md-6" *ngFor="let image of images$ | async; let i = index">
+            <div class="card mb-4 box-shadow">
+              <div class="card-body">
+                <img
+                  class="recipe-image"
+                  [src]="image"
+                  alt="Recipe image"
+                  (click)="openImageModal(i)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ingredients Section -->
+    <div *ngIf="(ingredients$ | async)?.length as ingredientCount">
+      <div class="container-md mb-5">
+        <h3 class="mb-3">Ingredients</h3>
+        <div *ngIf="ingredientCount > 0">
+          <table class="table table-striped table-bordered table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ingredient of ingredients$ | async">
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.amount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description Section -->
+    <div *ngIf="description$ | async as description">
+      <div class="container-md mb-5">
+        <h3 class="mb-3">Description</h3>
+        <div class="description-content">
+          {{ description }}
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Image Modal -->
+<div id="img-modal" class="modal" [class.show]="showModal" (click)="onModalClick($event)">
+  <span class="close" (click)="closeModal()">&times;</span>
+
+  <div class="modal-content-wrapper">
+    <img class="modal-content" [src]="(images$ | async)?.[selectedImageIndex]" alt="Recipe image full" />
+
+    <div class="modal-controls" *ngIf="(images$ | async)?.length as count">
+      <button class="modal-btn modal-prev" (click)="prevImage()" *ngIf="count > 1">
+        &#10094;
+      </button>
+      <span class="modal-counter" *ngIf="count > 1">
+        {{ selectedImageIndex + 1 }} / {{ count }}
+      </span>
+      <button class="modal-btn modal-next" (click)="nextImage()" *ngIf="count > 1">
+        &#10095;
+      </button>
+    </div>
+  </div>
+</div>

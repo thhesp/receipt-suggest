@@ -1,0 +1,151 @@
+.recipe-detail-container {
+  padding: 2rem 0;
+
+  h1 {
+    color: #333;
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    color: #555;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+  }
+
+  .recipe-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  .description-content {
+    line-height: 1.6;
+    color: #555;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+  }
+
+  table {
+    font-size: 0.95rem;
+
+    thead {
+      background-color: #007bff;
+      color: white;
+    }
+  }
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: fadeIn 0.3s ease;
+
+  &.show {
+    display: block;
+  }
+
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #bbb;
+    }
+  }
+
+  .modal-content-wrapper {
+    position: relative;
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 85vh;
+    margin-top: 3vh;
+    animation: zoomIn 0.3s ease;
+  }
+
+  .modal-content {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .modal-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    color: white;
+  }
+
+  .modal-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .modal-counter {
+    min-width: 60px;
+    text-align: center;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal .modal-content-wrapper {
+    max-width: 95%;
+  }
+
+  .modal-controls {
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,100 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { parseCSV } from '../utils/csv-parser.util';
+import { Ingredient } from '../models/recipe.model';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RecipeDetailService {
+  private readonly BASE_DATA_PATH = 'public/data/recipe';
+  private imageCache = new Map<string, string[]>();
+
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Load ingredients for a recipe
+   */
+  loadIngredients(recipeLink: string): Observable<Ingredient[]> {
+    const url = `${this.BASE_DATA_PATH}/${recipeLink}/ingredients.csv`;
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      map(data => this.parseIngredients(data)),
+      catchError(error => {
+        console.warn(`No ingredients found for ${recipeLink}:`, error);
+        return of([]);
+      })
+    );
+  }
+
+  /**
+   * Load description for a recipe
+   */
+  loadDescription(recipeLink: string): Observable<string> {
+    const url = `${this.BASE_DATA_PATH}/${recipeLink}/description.txt`;
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      catchError(error => {
+        console.warn(`No description found for ${recipeLink}:`, error);
+        return of('');
+      })
+    );
+  }
+
+  /**
+   * Find and load images for a recipe
+   */
+  async loadImages(recipeLink: string): Promise<string[]> {
+    if (this.imageCache.has(recipeLink)) {
+      return this.imageCache.get(recipeLink) || [];
+    }
+
+    const images: string[] = [];
+    const extensions = ['.png', '.jpg', '.jpeg'];
+
+    for (const ext of extensions) {
+      for (let i = 0; i < 10; i++) {
+        const filename = i === 0 ? `img${ext}` : `img_${i}${ext}`;
+        const url = `${this.BASE_DATA_PATH}/${recipeLink}/${filename}`;
+
+        if (await this.fileExists(url)) {
+          images.push(url);
+        } else if (i === 0) {
+          break;
+        }
+      }
+    }
+
+    this.imageCache.set(recipeLink, images);
+    return images;
+  }
+
+  /**
+   * Check if a file exists
+   */
+  private async fileExists(url: string): Promise<boolean> {
+    try {
+      const response = await fetch(url, { method: 'HEAD' });
+      return response.ok;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Parse ingredients CSV
+   */
+  private parseIngredients(csvData: string): Ingredient[] {
+    if (!csvData || csvData.trim() === '') {
+      return [];
+    }
+
+    const rows = parseCSV(csvData);
+    return rows
+      .filter(row => row['Name'])
+      .map(row => ({
+        name: row['Name']?.trim() || '',
+        amount: row['Amount']?.trim() || ''
+      }));
+  }
+}

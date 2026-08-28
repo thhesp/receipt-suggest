@@ -1,0 +1,41 @@
+.tag-selector {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+
+  h5 {
+    margin: 0;
+    color: #333;
+  }
+
+  .tag-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.btn-info {
+      font-weight: 500;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tag-selector {
+    .d-flex {
+      flex-direction: column;
+      align-items: flex-start !important;
+
+      button {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

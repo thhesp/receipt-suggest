@@ -1,0 +1,38 @@
+<div class="suggest-container">
+  <h1 class="mb-5">Suggest Recipes</h1>
+
+  <div class="container-md mb-5">
+    <button
+      type="button"
+      class="btn btn-primary btn-lg"
+      (click)="generateSuggestions()"
+      [disabled]="isLoading"
+    >
+      <span *ngIf="!isLoading">Generate Suggestions</span>
+      <span *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        Loading...
+      </span>
+    </button>
+  </div>
+
+  <ng-container *ngIf="error">
+    <div class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+  </ng-container>
+
+  <div class="container-md" *ngIf="suggestions.length > 0">
+    <div class="row">
+      <app-recipe-card
+        *ngFor="let recipe of suggestions"
+        [recipe]="recipe"
+        class="col-md-6 col-lg-4 mb-4"
+      ></app-recipe-card>
+    </div>
+  </div>
+
+  <div *ngIf="suggestions.length === 0 && !isLoading && !error" class="alert alert-info" role="alert">
+    Click "Generate Suggestions" to get random recipe suggestions!
+  </div>
+</div>
