@@ -69,23 +69,20 @@ npm run lint
 - Ensure Node.js is installed: https://nodejs.org/
 - Restart your terminal after installing Node.js
 
+### "node is either misspelled or cannot be found" during npm install
+- **Root cause**: Node.js is installed but not in your system PATH
+- **Solution**:
+  1. Add Node.js to PATH:
+     - Find your Node.js installation: `where npm` (will show the path)
+     - Add the directory to your Windows PATH environment variable
+     - Restart PowerShell/CMD
+  2. Or reinstall Node.js with "Add to PATH" option checked
+  3. Verify: Open new terminal and run `node --version`
+
 ### Dependencies conflict warnings
 - This is normal - Angular 22 has many peer dependencies
-- The `.npmrc` file is configured to handle this
-- Ignore warnings and proceed
-
-### Port 4200 already in use
-```bash
-npm start -- --port 4300
-```
-
-Use a different port with `--port` flag
-
-### Clear node_modules and reinstall
-```bash
-rm -r node_modules package-lock.json
-npm install
-```
+- The `.npmrc` file is configured to handle this with `legacy-peer-deps=true`
+- These warnings are safe to ignore and will not affect functionality
 
 ## Docker Build
 

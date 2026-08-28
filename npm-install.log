@@ -1,0 +1,19 @@
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: receipt-suggest@2.0.0
+npm error Found: typescript@5.5.4
+npm error node_modules/typescript
+npm error   dev typescript@"~5.5.0" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer typescript@">=6.0 <6.1" from @angular-devkit/build-angular@22.1.6
+npm error node_modules/@angular-devkit/build-angular
+npm error   dev @angular-devkit/build-angular@"^22.0.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\micro\AppData\Local\npm-cache\_logs\2026-08-28T20_19_10_341Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\micro\AppData\Local\npm-cache\_logs\2026-08-28T20_19_10_341Z-debug-0.log
