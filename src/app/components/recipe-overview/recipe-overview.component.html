@@ -16,6 +16,18 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading && !error">
+    <div class="container-md mb-4">
+      <label for="recipe-search" class="form-label">Search recipes</label>
+      <input
+        id="recipe-search"
+        class="form-control"
+        type="search"
+        placeholder="Search by name or tag"
+        [value]="searchTerm"
+        (input)="onSearchChanged($any($event.target).value)"
+      />
+    </div>
+
     <div class="container-md mb-5">
       <app-tag-selector
         [allTags]="allTags"

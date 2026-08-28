@@ -19,6 +19,8 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
   recipes$ = new BehaviorSubject<Recipe[]>([]);
   filteredRecipes$ = new BehaviorSubject<Recipe[]>([]);
   allTags: string[] = [];
+  searchTerm = '';
+  selectedTags: string[] = [];
   isLoading = true;
   error: string | null = null;
 
@@ -70,14 +72,27 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
   }
 
   onTagsChanged(selectedTags: string[]): void {
-    const recipes = this.recipes$.value;
-    if (selectedTags.length === 0) {
-      this.filteredRecipes$.next(recipes);
-    } else {
-      const filtered = recipes.filter(recipe =>
-        selectedTags.some(tag => recipe.tags.includes(tag))
-      );
-      this.filteredRecipes$.next(filtered);
-    }
+    this.selectedTags = selectedTags;
+    this.updateFilteredRecipes();
+  }
+
+  onSearchChanged(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    this.updateFilteredRecipes();
+  }
+
+  private updateFilteredRecipes(): void {
+    const normalizedSearch = this.searchTerm.trim().toLowerCase();
+    const filtered = this.recipes$.value.filter(recipe => {
+      const matchesTags = this.selectedTags.length === 0 ||
+        this.selectedTags.some(tag => recipe.tags.includes(tag));
+      const matchesSearch = normalizedSearch === '' ||
+        recipe.name.toLowerCase().includes(normalizedSearch) ||
+        recipe.tags.some(tag => tag.toLowerCase().includes(normalizedSearch));
+
+      return matchesTags && matchesSearch;
+    });
+
+    this.filteredRecipes$.next(filtered);
   }
 }

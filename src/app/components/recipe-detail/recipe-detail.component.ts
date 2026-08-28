@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject, forkJoin } from 'rxjs';
@@ -24,8 +24,12 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   selectedImageIndex = 0;
   showModal = false;
+  isWakeLockEnabled = false;
+  wakeLockSupported = 'wakeLock' in navigator;
+  copyStatus: 'idle' | 'copied' | 'failed' = 'idle';
 
   private destroy$ = new Subject<void>();
+  private wakeLock: WakeLockSentinel | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,8 +47,60 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.releaseWakeLock();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  async toggleWakeLock(): Promise<void> {
+    if (!this.wakeLockSupported) {
+      return;
+    }
+
+    if (this.isWakeLockEnabled) {
+      this.isWakeLockEnabled = false;
+      await this.releaseWakeLock();
+      return;
+    }
+
+    await this.requestWakeLock();
+  }
+
+  @HostListener('document:visibilitychange')
+  async onVisibilityChange(): Promise<void> {
+    if (document.visibilityState === 'visible' && this.isWakeLockEnabled && !this.wakeLock) {
+      await this.requestWakeLock();
+    }
+  }
+
+  private async requestWakeLock(): Promise<void> {
+    try {
+      this.wakeLock = await navigator.wakeLock.request('screen');
+      this.isWakeLockEnabled = true;
+      this.wakeLock.addEventListener('release', () => {
+        this.wakeLock = null;
+        this.isWakeLockEnabled = false;
+      });
+    } catch (error) {
+      this.isWakeLockEnabled = false;
+      console.warn('Screen wake lock could not be enabled:', error);
+    }
+  }
+
+  async copyIngredients(): Promise<void> {
+    const text = this.ingredients$.value
+      .map(ingredient => `${ingredient.amount} ${ingredient.name}`.trim())
+      .join('\n');
+
+    try {
+      await navigator.clipboard.writeText(text);
+      this.copyStatus = 'copied';
+    } catch (error) {
+      this.copyStatus = this.copyWithFallback(text) ? 'copied' : 'failed';
+      if (this.copyStatus === 'failed') {
+        console.warn('Ingredients could not be copied:', error);
+      }
+    }
   }
 
   private loadRecipeDetails(): void {
@@ -106,5 +162,24 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     if ((event.target as HTMLElement).id === 'img-modal') {
       this.closeModal();
     }
+  }
+
+  private async releaseWakeLock(): Promise<void> {
+    if (this.wakeLock) {
+      await this.wakeLock.release();
+      this.wakeLock = null;
+    }
+  }
+
+  private copyWithFallback(text: string): boolean {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return copied;
   }
 }
