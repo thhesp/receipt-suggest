@@ -7,7 +7,6 @@
     "start": "npm run generate:manifest && ng serve",
     "build": "ng build",
     "generate:manifest": "node scripts/generate-recipe-manifest.mjs",
-    "migrate:data": "node scripts/migrate-recipe-data.mjs",
     "build:prod": "npm run generate:manifest && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
