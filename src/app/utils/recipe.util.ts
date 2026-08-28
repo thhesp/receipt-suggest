@@ -12,11 +12,11 @@ export function normalizeTags(tagsStr: string): string[] {
     .filter(tag => /\w+/.test(tag));
 }
 
-export function getRecipeLink(recipe: { link: string; external: boolean; name: string }): string {
-  if (recipe.external) {
-    return recipe.link;
+export function getRecipeLink(recipe: { id: string; externalUrl?: string; name: string }): string {
+  if (recipe.externalUrl) {
+    return recipe.externalUrl;
   }
-  return `/recipe/${encodeURIComponent(recipe.link)}?name=${encodeURIComponent(recipe.name)}`;
+  return `/recipe/${encodeURIComponent(recipe.id)}?name=${encodeURIComponent(recipe.name)}`;
 }
 
 export function shuffleArray<T>(arr: T[]): T[] {

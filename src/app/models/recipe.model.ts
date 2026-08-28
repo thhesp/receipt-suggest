@@ -1,9 +1,10 @@
 export interface Recipe {
+  id: string;
   name: string;
-  link: string;
   tags: string[];
-  include: boolean;
-  external: boolean;
+  includeInSuggestions: boolean;
+  externalUrl?: string;
+  thumbnail?: string;
 }
 
 export interface Ingredient {

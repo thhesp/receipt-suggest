@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { parseCSV } from '../utils/csv-parser.util';
 import { Recipe } from '../models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-  private readonly RECIPES_CSV_PATH = 'assets/data/recipes.csv';
+  private readonly RECIPES_MANIFEST_PATH = 'assets/data/recipes.json';
   private recipesCache: Recipe[] | null = null;
 
   constructor(private http: HttpClient) {}
@@ -22,8 +21,7 @@ export class RecipeService {
       return of(this.recipesCache);
     }
 
-    return this.http.get(this.RECIPES_CSV_PATH, { responseType: 'text' }).pipe(
-      map(data => this.parseRecipes(data)),
+    return this.http.get<Recipe[]>(this.RECIPES_MANIFEST_PATH).pipe(
       map(recipes => {
         this.recipesCache = recipes;
         return recipes;
@@ -57,37 +55,10 @@ export class RecipeService {
   getSuggestions(count: number = 5): Observable<Recipe[]> {
     return this.loadRecipes().pipe(
       map(recipes => {
-        const included = recipes.filter(r => r.include);
+        const included = recipes.filter(r => r.includeInSuggestions);
         return this.shuffleAndSlice(included, count);
       })
     );
-  }
-
-  /**
-   * Parse CSV data to Recipe objects
-   */
-  private parseRecipes(csvData: string): Recipe[] {
-    const rows = parseCSV(csvData);
-    return rows.map(row => ({
-      name: row['Name']?.trim() || '',
-      link: row['Link']?.trim() || '',
-      tags: this.normalizeTags(row['Tags']),
-      include: (row['Include']?.toUpperCase() || 'N') === 'Y',
-      external: (row['External']?.toUpperCase() || 'N') === 'Y'
-    }));
-  }
-
-  /**
-   * Normalize tags from comma/semicolon separated string
-   */
-  private normalizeTags(tagsStr: string): string[] {
-    if (!tagsStr || tagsStr.trim() === '') {
-      return [];
-    }
-    return tagsStr
-      .split(/[;,]/)
-      .map(tag => tag.toUpperCase().trim())
-      .filter(tag => /\w+/.test(tag));
   }
 
   /**

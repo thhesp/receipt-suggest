@@ -4,9 +4,10 @@
   "description": "Recipe suggestion application - Angular 22+ migration",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run generate:manifest && ng serve",
     "build": "ng build",
-    "build:prod": "ng build --configuration production",
+    "generate:manifest": "node scripts/generate-recipe-manifest.mjs",
+    "build:prod": "npm run generate:manifest && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"

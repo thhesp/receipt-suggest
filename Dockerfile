@@ -22,10 +22,7 @@ FROM nginx:alpine AS base
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built application from builder
-COPY --from=builder /app/dist/receipt-suggest /usr/share/nginx/html
-
-# Copy data folder from built app
-COPY --from=builder /app/dist/receipt-suggest/assets/data /usr/share/nginx/html/assets/data
+COPY --from=builder /app/dist/receipt-suggest/browser /usr/share/nginx/html
 
 FROM base AS image-compressed
 ENV MAGICK_HOME=/usr
@@ -35,8 +32,6 @@ apk add --no-cache --no-interactive imagemagick-dev
 
 ADD ./config/docker_imagemagic_policy.xml /etc/ImageMagick-6/policy.xml
 
-RUN find /usr/share/nginx/html/public/data -type f -name '*.jpg' -exec convert {} -resize 1024x -quality 50% {} \;
-
-RUN find /usr/share/nginx/html/public/data -type f -name '*.png' -exec convert {} -resize 1024x -quality 50% {} \;
-
-RUN find /usr/share/nginx/html/public/data -type f -name '*.jpeg' -exec convert {} -resize 1024x -quality 50% {} \;
+RUN find /usr/share/nginx/html/assets/data -type f -name '*.jpg' -exec convert {} -resize 1024x -quality 50% {} \; && \
+    find /usr/share/nginx/html/assets/data -type f -name '*.png' -exec convert {} -resize 1024x -quality 50% {} \; && \
+    find /usr/share/nginx/html/assets/data -type f -name '*.jpeg' -exec convert {} -resize 1024x -quality 50% {} \;

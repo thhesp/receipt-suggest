@@ -18,9 +18,13 @@ export class RecipeDetailService {
    * Load ingredients for a recipe
    */
   loadIngredients(recipeLink: string): Observable<Ingredient[]> {
-    const url = `${this.BASE_DATA_PATH}/${recipeLink}/ingredients.csv`;
-    return this.http.get(url, { responseType: 'text' }).pipe(
-      map(data => this.parseIngredients(data)),
+    const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
+    const csvUrl = `${this.BASE_DATA_PATH}/${recipeLink}/ingredients.csv`;
+    return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
+      map(data => this.parseHtmlIngredients(data)),
+      catchError(() => this.http.get(csvUrl, { responseType: 'text' }).pipe(
+        map(data => this.parseIngredients(data))
+      )),
       catchError(error => {
         console.warn(`No ingredients found for ${recipeLink}:`, error);
         return of([]);
@@ -32,8 +36,11 @@ export class RecipeDetailService {
    * Load description for a recipe
    */
   loadDescription(recipeLink: string): Observable<string> {
-    const url = `${this.BASE_DATA_PATH}/${recipeLink}/description.txt`;
-    return this.http.get(url, { responseType: 'text' }).pipe(
+    const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
+    const txtUrl = `${this.BASE_DATA_PATH}/${recipeLink}/description.txt`;
+    return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
+      catchError(() => this.http.get(txtUrl, { responseType: 'text' })),
+      catchError(() => this.http.get(`${this.BASE_DATA_PATH}/${recipeLink}/description.html`, { responseType: 'text' })),
       catchError(error => {
         console.warn(`No description found for ${recipeLink}:`, error);
         return of('');
@@ -96,5 +103,13 @@ export class RecipeDetailService {
         name: row['Name']?.trim() || '',
         amount: row['Amount']?.trim() || ''
       }));
+  }
+
+  private parseHtmlIngredients(html: string): Ingredient[] {
+    const document = new DOMParser().parseFromString(html, 'text/html');
+    return Array.from(document.querySelectorAll('[data-ingredient]')).map(element => ({
+      name: element.querySelector('[data-name]')?.textContent?.trim() ?? '',
+      amount: element.querySelector('[data-amount]')?.textContent?.trim() ?? ''
+    })).filter(ingredient => ingredient.name);
   }
 }

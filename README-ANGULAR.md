@@ -9,7 +9,7 @@ A modern, fully-typed Angular 22+ application for suggesting and managing recipe
 - **Recipe Details**: View ingredients, descriptions, and images for each recipe
 - **Tag Filtering**: Filter recipes by tags with smart filtering (disable unavailable tags)
 - **Responsive Design**: Mobile-friendly interface using Bootstrap 5
-- **CSV Data Loading**: Load recipes from CSV files with automatic caching
+- **Generated Recipe Manifest**: Build-time JSON manifest with explicit metadata and thumbnails
 - **Image Gallery**: Interactive image viewing with modal display
 - **Standalone Components**: Modern Angular 22+ architecture with standalone components
 
@@ -130,6 +130,17 @@ Pasta,chefkoch-nudeln-mal-anders,PASTA;VEGETARIAN,Y,N
 Roastbeef,chefkoch-rinderbraten,BEEF;MAIN,Y,N
 External Recipe,https://example.com,QUICK,Y,Y
 ```
+
+The CSV is currently the authoring source for the migration. Every build
+generates `recipes.json` with descriptive fields such as
+`includeInSuggestions`, `externalUrl`, and `thumbnail`; the generated file is
+not edited manually.
+
+Recipe folders may also contain a `recipe.html` file. Ingredients marked with
+`data-ingredient`, `data-name`, and `data-amount` are rendered as HTML and
+remain available to the copy-ingredients feature. Existing
+`ingredients.csv` and `description.txt/html` files continue to work while
+recipes are migrated.
 
 **Columns:**
 - `Name` - Recipe name
