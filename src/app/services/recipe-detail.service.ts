@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { parseCSV } from '../utils/csv-parser.util';
 import { Ingredient } from '../models/recipe.model';
 
@@ -22,6 +22,11 @@ export class RecipeDetailService {
     const csvUrl = `${this.BASE_DATA_PATH}/${recipeLink}/ingredients.csv`;
     return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
       map(data => this.parseHtmlIngredients(data)),
+      switchMap(ingredients => ingredients.length > 0
+        ? of(ingredients)
+        : this.http.get(csvUrl, { responseType: 'text' }).pipe(
+          map(data => this.parseIngredients(data))
+        )),
       catchError(() => this.http.get(csvUrl, { responseType: 'text' }).pipe(
         map(data => this.parseIngredients(data))
       )),
@@ -39,6 +44,7 @@ export class RecipeDetailService {
     const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
     const txtUrl = `${this.BASE_DATA_PATH}/${recipeLink}/description.txt`;
     return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
+      map(data => this.removeIngredientSection(data)),
       catchError(() => this.http.get(txtUrl, { responseType: 'text' })),
       catchError(() => this.http.get(`${this.BASE_DATA_PATH}/${recipeLink}/description.html`, { responseType: 'text' })),
       catchError(error => {
@@ -111,5 +117,11 @@ export class RecipeDetailService {
       name: element.querySelector('[data-name]')?.textContent?.trim() ?? '',
       amount: element.querySelector('[data-amount]')?.textContent?.trim() ?? ''
     })).filter(ingredient => ingredient.name);
+  }
+
+  private removeIngredientSection(html: string): string {
+    const document = new DOMParser().parseFromString(html, 'text/html');
+    document.querySelector('[data-ingredients]')?.remove();
+    return document.body.innerHTML;
   }
 }
