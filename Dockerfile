@@ -24,8 +24,8 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy built application from builder
 COPY --from=builder /app/dist/receipt-suggest /usr/share/nginx/html
 
-# Copy data folder
-COPY public/data /usr/share/nginx/html/public/data
+# Copy data folder from built app
+COPY --from=builder /app/dist/receipt-suggest/assets/data /usr/share/nginx/html/assets/data
 
 FROM base AS image-compressed
 ENV MAGICK_HOME=/usr

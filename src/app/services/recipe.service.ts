@@ -9,7 +9,7 @@ import { Recipe } from '../models/recipe.model';
   providedIn: 'root'
 })
 export class RecipeService {
-  private readonly RECIPES_CSV_PATH = 'public/data/recipes.csv';
+  private readonly RECIPES_CSV_PATH = 'assets/data/recipes.csv';
   private recipesCache: Recipe[] | null = null;
 
   constructor(private http: HttpClient) {}

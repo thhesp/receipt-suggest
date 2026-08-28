@@ -26,13 +26,6 @@ This will install all Angular 22, TypeScript, Bootstrap, and testing dependencie
 
 **Note**: The first installation may take 2-5 minutes depending on your internet speed.
 
-### 3. Verify installation
-```bash
-npm run ng -- version
-```
-
-You should see Angular CLI and Angular version 22.x.x
-
 ## Running the Application
 
 ### Development Server

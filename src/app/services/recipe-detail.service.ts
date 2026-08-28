@@ -9,7 +9,7 @@ import { Ingredient } from '../models/recipe.model';
   providedIn: 'root'
 })
 export class RecipeDetailService {
-  private readonly BASE_DATA_PATH = 'public/data/recipe';
+  private readonly BASE_DATA_PATH = 'assets/data/recipe';
   private imageCache = new Map<string, string[]>();
 
   constructor(private http: HttpClient) {}
