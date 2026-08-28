@@ -72,6 +72,9 @@ const recipes = rows.map(row => {
       thumbnail: image ? `assets/data/recipe/${id}/${image}` : undefined
     } : {})
   };
+}).sort((left, right) => {
+  const nameOrder = left.name.localeCompare(right.name, undefined, { sensitivity: 'base' });
+  return nameOrder || left.id.localeCompare(right.id);
 });
 
 await writeFile(outputPath, `${JSON.stringify(recipes, null, 2)}\n`);
