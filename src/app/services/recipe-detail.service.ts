@@ -14,12 +14,12 @@ export class RecipeDetailService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Load ingredients for a recipe
+   * Load structured ingredients for a recipe
    */
   loadIngredients(recipeLink: string): Observable<Ingredient[]> {
-    const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
-    return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
-      map(data => this.parseHtmlIngredients(data)),
+    const recipeUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.json`;
+    return this.http.get<{ ingredients?: Ingredient[] }>(recipeUrl).pipe(
+      map(data => data.ingredients ?? []),
       catchError(error => {
         console.warn(`No ingredients found for ${recipeLink}:`, error);
         return of([]);
@@ -79,14 +79,6 @@ export class RecipeDetailService {
     } catch {
       return false;
     }
-  }
-
-  private parseHtmlIngredients(html: string): Ingredient[] {
-    const document = new DOMParser().parseFromString(html, 'text/html');
-    return Array.from(document.querySelectorAll('[data-ingredient]')).map(element => ({
-      name: element.querySelector('[data-name]')?.textContent?.trim() ?? '',
-      amount: element.querySelector('[data-amount]')?.textContent?.trim() ?? ''
-    })).filter(ingredient => ingredient.name);
   }
 
   private removeIngredientSection(html: string): string {

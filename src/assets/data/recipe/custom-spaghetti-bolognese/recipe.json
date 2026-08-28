@@ -1,0 +1,56 @@
+{
+  "id": "custom-spaghetti-bolognese",
+  "name": "Spaghetti Bolognese",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "500g",
+      "name": "Spaghetti"
+    },
+    {
+      "amount": "400g",
+      "name": "Hackfleisch"
+    },
+    {
+      "amount": "300g",
+      "name": "stückige Tomaten"
+    },
+    {
+      "amount": "2",
+      "name": "Zwiebeln"
+    },
+    {
+      "amount": "1",
+      "name": "Karotten"
+    },
+    {
+      "amount": "",
+      "name": "Parmesan"
+    },
+    {
+      "amount": "",
+      "name": "Paprikapulver"
+    },
+    {
+      "amount": "",
+      "name": "Rosmarin"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Oregano"
+    },
+    {
+      "amount": "",
+      "name": "Milch"
+    }
+  ]
+}

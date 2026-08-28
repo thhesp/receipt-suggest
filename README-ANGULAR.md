@@ -56,7 +56,7 @@ src/
 - `getSuggestions(count)`: Get random suggestions
 
 **RecipeDetailService**
-- `loadIngredients(recipeLink)`: Load semantic ingredients from recipe HTML
+- `loadIngredients(recipeLink)`: Load structured ingredients from recipe JSON
 - `loadDescription(recipeLink)`: Load recipe HTML description
 - `loadImages(recipeLink)`: Find and load recipe images
 
@@ -119,45 +119,31 @@ npm run lint
 
 ## 🗂️ Adding Your Own Recipes
 
-### 1. Update recipes.metadata.json
+### 1. Create recipe.json
 
-Add entries to `src/assets/data/recipes.metadata.json`:
+Each recipe folder contains its metadata and ingredients:
 
 ```json
-[
-  {
+{
     "id": "chefkoch-nudeln-mal-anders",
     "name": "Pasta",
     "tags": ["PASTA", "VEGETARIAN"],
     "includeInSuggestions": true,
-    "nutrition": "650 kcal per serving"
-  },
-  {
-    "id": "https://example.com",
-    "name": "External Recipe",
-    "tags": ["QUICK"],
-    "includeInSuggestions": true,
-    "externalUrl": "https://example.com"
-  }
-]
+    "nutrition": "650 kcal per serving",
+    "ingredients": [{ "name": "Pasta", "amount": "500 g" }]
+}
 ```
 
-The build generates the alphabetically sorted `recipes.json` manifest and adds
-local thumbnails automatically. The generated file is not edited manually.
+The build scans recipe folders and generates the alphabetically sorted
+`recipes.json` overview manifest. The generated file is not edited manually.
 
 ### 2. Add recipe.html
 
-Each local recipe has one `recipe.html` file. Ingredients use semantic
-attributes so they remain available to the copy-ingredients feature:
+Each local recipe has one `recipe.html` file for description and preparation.
+Ingredients belong in `recipe.json` and are rendered by Angular:
 
 ```html
 <article>
-  <section data-ingredients>
-    <h2>Ingredients</h2>
-    <ul>
-      <li data-ingredient><span data-amount>500 g</span> <span data-name>Pasta</span></li>
-    </ul>
-  </section>
   <section>
     <h2>Preparation</h2>
     <p>Cook the pasta...</p>
@@ -165,7 +151,7 @@ attributes so they remain available to the copy-ingredients feature:
 </article>
 ```
 
-Recipe images remain alongside the HTML file as `img.jpg`, `img.png`, or
+Recipe images remain alongside the JSON and HTML files as `img.jpg`, `img.png`, or
 `img.jpeg`, followed by optional numbered images such as `img_1.jpg`.
 
 Create a new local recipe with the helper:

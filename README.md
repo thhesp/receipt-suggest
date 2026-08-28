@@ -4,28 +4,27 @@ A simple Angular application for browsing and suggesting recipes.
 
 ## Recipe data
 
-Recipe metadata is stored in `src/assets/data/recipes.metadata.json`:
+Each recipe folder contains a `recipe.json` file with metadata and ingredients:
 
 ```json
-[
-  {
+{
     "id": "custom-pasta",
     "name": "Pasta",
     "tags": ["PASTA"],
     "includeInSuggestions": true,
-    "nutrition": "650 kcal per serving"
-  }
-]
+    "nutrition": "650 kcal per serving",
+    "ingredients": [{ "name": "Pasta", "amount": "500 g" }]
+}
 ```
 
 Local recipes have a folder under `src/assets/data/recipe/{id}/` containing
-one `recipe.html` file. Ingredients use `data-ingredient`, `data-name`, and
-`data-amount` attributes so the application can render and copy them. Images
-can be placed next to the HTML file as `img.jpg`, `img.png`, or `img.jpeg`,
+`recipe.json` and `recipe.html`. Angular renders the ingredient table and copy
+feature from JSON; `recipe.html` contains description and preparation markup.
+Images can be placed next to the files as `img.jpg`, `img.png`, or `img.jpeg`,
 with optional numbered images such as `img_1.jpg`.
 
-External recipes do not need a folder. Set both `id` and `externalUrl` to the
-external recipe URL. The optional `nutrition` field is free-form and can
+External recipes use the same folder structure and set `externalUrl` in
+`recipe.json`. The optional `nutrition` field is free-form and can
 contain values such as `650 kcal per serving` or `25 g protein`.
 
 The build generates the alphabetically sorted `recipes.json` manifest and

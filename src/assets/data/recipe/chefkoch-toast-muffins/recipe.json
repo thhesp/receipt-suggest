@@ -1,0 +1,32 @@
+{
+  "id": "chefkoch-toast-muffins",
+  "name": "Gebackene Toast-Muffins mit Ei und Speck",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "4 Scheiben",
+      "name": "Toastbrot"
+    },
+    {
+      "amount": "4 Scheiben",
+      "name": "Schinken"
+    },
+    {
+      "amount": "4",
+      "name": "Eier"
+    },
+    {
+      "amount": "",
+      "name": "Thymian"
+    },
+    {
+      "amount": "",
+      "name": "Öl"
+    },
+    {
+      "amount": "",
+      "name": "Butter"
+    }
+  ]
+}

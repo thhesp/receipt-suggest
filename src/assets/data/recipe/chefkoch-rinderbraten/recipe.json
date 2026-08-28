@@ -1,0 +1,40 @@
+{
+  "id": "chefkoch-rinderbraten",
+  "name": "Rinderbraten",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "500g",
+      "name": "Rinderbraten"
+    },
+    {
+      "amount": "1",
+      "name": "Zwiebel"
+    },
+    {
+      "amount": "1 Becher",
+      "name": "Sahne"
+    },
+    {
+      "amount": "",
+      "name": "Butter"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Wasser"
+    },
+    {
+      "amount": "",
+      "name": "Brühwürfel"
+    }
+  ]
+}

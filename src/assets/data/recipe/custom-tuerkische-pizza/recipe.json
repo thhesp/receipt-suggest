@@ -1,0 +1,30 @@
+{
+  "id": "custom-tuerkische-pizza",
+  "name": "Türkische Pizza",
+  "tags": [
+    "PIZZA"
+  ],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "4",
+      "name": "Türkische Pizza"
+    },
+    {
+      "amount": "8",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "4",
+      "name": "Gurke"
+    },
+    {
+      "amount": "1",
+      "name": "Salat"
+    },
+    {
+      "amount": "120g",
+      "name": "Zaziki"
+    }
+  ]
+}

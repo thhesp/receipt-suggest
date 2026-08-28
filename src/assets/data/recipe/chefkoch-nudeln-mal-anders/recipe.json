@@ -1,0 +1,46 @@
+{
+  "id": "chefkoch-nudeln-mal-anders",
+  "name": "Nudeln mal anders",
+  "tags": [
+    "NUDELN"
+  ],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "500g",
+      "name": "Nudeln"
+    },
+    {
+      "amount": "6 Tomaten",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "2 Kugeln",
+      "name": "Mozarella"
+    },
+    {
+      "amount": "3 Handvoll",
+      "name": "Cashewnüsse"
+    },
+    {
+      "amount": "",
+      "name": "Basilikum"
+    },
+    {
+      "amount": "",
+      "name": "Oregano"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Öl"
+    }
+  ]
+}
