@@ -44,9 +44,11 @@ export class RecipeDetailService {
     const htmlUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`;
     const txtUrl = `${this.BASE_DATA_PATH}/${recipeLink}/description.txt`;
     return this.http.get(htmlUrl, { responseType: 'text' }).pipe(
-      map(data => this.removeIngredientSection(data)),
+      map(data => this.parseDescriptionHtml(data)),
       catchError(() => this.http.get(txtUrl, { responseType: 'text' })),
+      map(data => this.rejectApplicationShell(data)),
       catchError(() => this.http.get(`${this.BASE_DATA_PATH}/${recipeLink}/description.html`, { responseType: 'text' })),
+      map(data => this.rejectApplicationShell(data)),
       catchError(error => {
         console.warn(`No description found for ${recipeLink}:`, error);
         return of('');
@@ -123,5 +125,16 @@ export class RecipeDetailService {
     const document = new DOMParser().parseFromString(html, 'text/html');
     document.querySelector('[data-ingredients]')?.remove();
     return document.body.innerHTML;
+  }
+
+  private parseDescriptionHtml(html: string): string {
+    return this.removeIngredientSection(this.rejectApplicationShell(html));
+  }
+
+  private rejectApplicationShell(content: string): string {
+    if (/<app-root\b|polyfills\.js|main\.js/.test(content)) {
+      throw new Error('Received the application shell instead of recipe content');
+    }
+    return content;
   }
 }
