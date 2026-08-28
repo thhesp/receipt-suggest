@@ -17,7 +17,7 @@ A modern, fully-typed Angular 22+ application for suggesting and managing recipe
 
 ### Key Technologies
 - **Angular 22+** - Latest Angular framework
-- **TypeScript 5.4+** - Strict type checking
+- **TypeScript 6.0+** - Strict type checking
 - **Bootstrap 5** - Responsive UI framework
 - **RxJS** - Reactive programming with Observables
 - **Docker** - Multi-stage build for production deployment
@@ -43,7 +43,7 @@ src/
 │   │   ├── csv-parser.util.ts      # CSV parsing logic
 │   │   └── recipe.util.ts          # Recipe utility functions
 │   ├── app.routes.ts               # Routing configuration
-│   └── app.component.ts            # Root component
+│   └── app.component.ts            # Root component (under components/app)
 ├── index.html
 ├── main.ts                         # Bootstrap application
 └── styles.scss                     # Global styles
@@ -115,14 +115,14 @@ npm run build:prod
 npm test
 
 # Run linter
-npm lint
+npm run lint
 ```
 
 ## 🗂️ Adding Your Own Recipes
 
 ### 1. Update recipes.csv
 
-Add entries to `public/data/recipes.csv`:
+Add entries to `src/assets/data/recipes.csv`:
 
 ```csv
 Name,Link,Tags,Include,External
@@ -140,7 +140,7 @@ External Recipe,https://example.com,QUICK,Y,Y
 
 ### 2. Create Recipe Folder
 
-Create a folder at `public/data/recipe/{link}/` with:
+Create a folder at `src/assets/data/recipe/{link}/` with:
 
 #### ingredients.csv
 ```csv

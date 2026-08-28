@@ -98,8 +98,8 @@ docker run -p 8080:80 receipt-suggest:prod
 Tested and working with:
 - Node.js 20.x LTS
 - npm 10.x
-- Angular 22.0.0
-- TypeScript 5.5.0
+- Angular 22.1.4
+- TypeScript 6.0.x
 - Bootstrap 5.3.0
 
 ## Next Steps
@@ -107,7 +107,7 @@ Tested and working with:
 1. Run `npm install` to set up your environment
 2. Run `npm start` to start development
 3. Check `README-ANGULAR.md` for architecture and usage details
-4. Add your recipes to `public/data/`
+4. Add your recipes to `src/assets/data/`
 
 ---
 
