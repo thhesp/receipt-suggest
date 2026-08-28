@@ -40,7 +40,6 @@ src/
 │   ├── models/
 │   │   └── recipe.model.ts         # TypeScript interfaces
 │   ├── utils/
-│   │   ├── csv-parser.util.ts      # CSV parsing logic
 │   │   └── recipe.util.ts          # Recipe utility functions
 │   ├── app.routes.ts               # Routing configuration
 │   └── app.component.ts            # Root component (under components/app)
@@ -52,13 +51,13 @@ src/
 ### Service Layer
 
 **RecipeService**
-- `loadRecipes()`: Load all recipes from CSV
+- `loadRecipes()`: Load the generated JSON manifest
 - `getRecipesByTags(tags)`: Filter recipes by selected tags
 - `getSuggestions(count)`: Get random suggestions
 
 **RecipeDetailService**
-- `loadIngredients(recipeLink)`: Load ingredients CSV
-- `loadDescription(recipeLink)`: Load recipe description
+- `loadIngredients(recipeLink)`: Load semantic ingredients from recipe HTML
+- `loadDescription(recipeLink)`: Load recipe HTML description
 - `loadImages(recipeLink)`: Find and load recipe images
 
 ### Components
@@ -95,7 +94,7 @@ src/
 ## 📦 Installation & Development
 
 ### Prerequisites
-- Node.js 20+ (LTS recommended)
+- Node.js 24+ (LTS recommended)
 - npm 10+ or yarn 4+
 
 ### Setup
@@ -169,31 +168,24 @@ attributes so they remain available to the copy-ingredients feature:
 Recipe images remain alongside the HTML file as `img.jpg`, `img.png`, or
 `img.jpeg`, followed by optional numbered images such as `img_1.jpg`.
 
-### 2. Create Recipe Folder
+Create a new local recipe with the helper:
 
-Create a folder at `src/assets/data/recipe/{link}/` with:
-
-#### ingredients.csv
-```csv
-Name,Amount
-Bread,2 slices
-Ham,2 slices
-Gruyere cheese,2 slices
+```powershell
+npm run recipe:new -- custom-pasta "Custom Pasta"
 ```
 
-#### description.txt or description.html
-Text or HTML content describing the recipe
+Validate the metadata and all local recipe folders before committing:
 
-#### Images
-- `img.jpg`, `img.png`, or `img.jpeg` - First image
-- `img_1.jpg`, `img_2.jpg`, ... up to `img_9.jpg` - Additional images
+```powershell
+npm run recipe:validate
+```
 
 ## 🐳 Docker Build
 
 ### Development
 ```bash
 docker build -t receipt-suggest:latest .
-docker run -p 80:8080 receipt-suggest:latest
+docker run -p 8080:80 receipt-suggest:latest
 ```
 
 ### Production with Image Compression
@@ -272,9 +264,8 @@ npm test -- --include='**/recipe.service.spec.ts'
 Ideas for extending the application:
 - [ ] Recipe ratings and reviews
 - [ ] Favorite recipes storage (localStorage)
-- [ ] Advanced search and filtering
+- [x] Search by recipe name and tags
 - [ ] Shopping list generator
-- [ ] Nutritional information
 - [ ] User-submitted recipes
 - [ ] Recipe planning calendar
 - [ ] PWA support with offline mode
