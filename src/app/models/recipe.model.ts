@@ -3,6 +3,7 @@ export interface Recipe {
   name: string;
   tags: string[];
   includeInSuggestions: boolean;
+  nutrition?: string;
   externalUrl?: string;
   thumbnail?: string;
 }

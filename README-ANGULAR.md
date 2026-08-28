@@ -148,6 +148,7 @@ recipes are migrated.
 - `Tags` - Semicolon-separated tags
 - `Include` - Include in suggestions (Y/N)
 - `External` - External URL (Y/N)
+- `Nutrition` - Optional free-form nutritional information, for example `650 kcal per serving`
 
 ### 2. Create Recipe Folder
 

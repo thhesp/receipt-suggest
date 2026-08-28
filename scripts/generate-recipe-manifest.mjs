@@ -67,6 +67,7 @@ const recipes = rows.map(row => {
     name: row.Name,
     tags: normalizeTags(row.Tags),
     includeInSuggestions: row.Include.toUpperCase() === 'Y',
+    ...(row.Nutrition ? { nutrition: row.Nutrition } : {}),
     ...(isExternal ? { externalUrl: id } : {}),
     ...(!isExternal && hasRecipeDirectory ? {
       thumbnail: image ? `assets/data/recipe/${id}/${image}` : undefined
