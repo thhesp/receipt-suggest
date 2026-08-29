@@ -1,0 +1,27 @@
+<div class="shopping-list-container">
+  <h1 class="mb-4">Shopping List</h1>
+
+  <div *ngIf="items$ | async as items">
+    <div *ngIf="items.length === 0" class="alert alert-info">
+      Add selected ingredients from a recipe to build your shopping list.
+    </div>
+
+    <ul *ngIf="items.length > 0" class="list-group">
+      <li *ngFor="let item of items" class="list-group-item d-flex align-items-center gap-3">
+        <input
+          class="form-check-input mt-0"
+          type="checkbox"
+          [checked]="item.checked"
+          [attr.aria-label]="'Mark ' + item.name + ' as bought'"
+          (change)="updateChecked(item.id, $any($event.target).checked)"
+        />
+        <span class="flex-grow-1" [class.text-decoration-line-through]="item.checked">
+          {{ item.amount }} {{ item.name }}
+        </span>
+        <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeItem(item.id)">
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>

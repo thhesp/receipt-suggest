@@ -17,6 +17,16 @@
     </div>
 
     <div class="mt-auto">
+      <button
+        class="btn btn-sm mb-2"
+        [class.btn-outline-danger]="!isFavorite"
+        [class.btn-danger]="isFavorite"
+        type="button"
+        [attr.aria-pressed]="isFavorite"
+        (click)="toggleFavorite()"
+      >
+        {{ isFavorite ? 'Remove favorite' : 'Add favorite' }}
+      </button>
       <!-- Internal link -->
       <button
         *ngIf="!recipe.externalUrl"

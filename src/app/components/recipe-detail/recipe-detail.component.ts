@@ -5,6 +5,7 @@ import { BehaviorSubject, Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
 import { Ingredient } from '../../models/recipe.model';
+import { UserRecipeStateService } from '../../services/user-recipe-state.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -27,7 +28,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   showModal = false;
   isWakeLockEnabled = false;
   wakeLockSupported = 'wakeLock' in navigator;
-  copyStatus: 'idle' | 'copied' | 'failed' = 'idle';
+  copyStatus: 'idle' | 'copied' | 'failed' | 'added' = 'idle';
   isSelectingIngredients = false;
   selectedIngredientIndexes = new Set<number>();
 
@@ -36,7 +37,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private recipeDetailService: RecipeDetailService
+    private recipeDetailService: RecipeDetailService,
+    private userRecipeState: UserRecipeStateService
   ) {}
 
   ngOnInit(): void {
@@ -114,6 +116,14 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   hasSelectedIngredients(): boolean {
     return this.selectedIngredientIndexes.size > 0;
+  }
+
+  addSelectedIngredientsToShoppingList(): void {
+    const selectedIngredients = this.ingredients$.value.filter((_, index) =>
+      this.selectedIngredientIndexes.has(index)
+    );
+    this.userRecipeState.addIngredients(this.recipeLink, selectedIngredients);
+    this.copyStatus = 'added';
   }
 
   async copySelectedIngredients(): Promise<void> {
