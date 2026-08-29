@@ -1,0 +1,30 @@
+{
+  "id": "chefkoch-ruehrei-nudeln",
+  "name": "Nudeln mit Rührei und Schinken",
+  "tags": [
+    "NUDELN"
+  ],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "400g",
+      "name": "Nudeln"
+    },
+    {
+      "amount": "200g",
+      "name": "Schinken"
+    },
+    {
+      "amount": "6",
+      "name": "Eier"
+    },
+    {
+      "amount": "3",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "200g",
+      "name": "Käse"
+    }
+  ]
+}

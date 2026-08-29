@@ -1,0 +1,58 @@
+{
+  "id": "chefkoch-schneller-auflauf",
+  "name": "Schneller Käse-Gemüse-Schinken-Nudeln-Auflauf",
+  "tags": [
+    "NUDELN"
+  ],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "500g",
+      "name": "Nudeln"
+    },
+    {
+      "amount": "850g",
+      "name": "Erbsen&amp;Karotten"
+    },
+    {
+      "amount": "250g",
+      "name": "Schinken"
+    },
+    {
+      "amount": "300g",
+      "name": "Gruyere Käse"
+    },
+    {
+      "amount": "4",
+      "name": "Knoblauchzehe"
+    },
+    {
+      "amount": "100g",
+      "name": "Butter"
+    },
+    {
+      "amount": "4 El",
+      "name": "Mehl"
+    },
+    {
+      "amount": "1l",
+      "name": "Milch"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Muskat"
+    },
+    {
+      "amount": "",
+      "name": "Öl"
+    }
+  ]
+}

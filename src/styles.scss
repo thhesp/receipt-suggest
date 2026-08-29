@@ -1,0 +1,203 @@
+/* Global styles */
+:root {
+  --primary-color: #2f855a;
+  --primary-dark: #276749;
+  --secondary-color: #718096;
+  --success-color: #38a169;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #319795;
+  --light-color: #fffdf8;
+  --dark-color: #263238;
+  --page-background: #f6f4ee;
+  --surface: #ffffff;
+  --border-color: #e6e1d7;
+  --shadow: 0 8px 24px rgba(38, 50, 56, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Inter, 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+  background-color: var(--page-background);
+  color: #2d3748;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+}
+
+/* Navbar customization */
+.navbar {
+  box-shadow: 0 2px 12px rgba(38, 50, 56, 0.16);
+  background: linear-gradient(120deg, #263238, #37474f) !important;
+}
+
+/* Container spacing */
+.container,
+.container-lg,
+.container-md {
+  max-width: 1120px;
+}
+
+/* Card styling */
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 12px 28px rgba(38, 50, 56, 0.14);
+    transform: translateY(-3px);
+  }
+}
+
+/* Badge styling */
+.badge {
+  font-size: 0.75rem;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Button styling */
+.btn {
+  border-radius: 8px;
+  min-height: 2.5rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(38, 50, 56, 0.12);
+  }
+}
+
+/* Tag filters */
+.btn-tag-sel {
+  &.active {
+    background-color: var(--info-color);
+    border-color: var(--info-color);
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Recipe images */
+.recipe-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* Modal styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  &.show {
+    display: block;
+  }
+
+  .modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90vh;
+    margin-top: 5vh;
+    animation: zoomIn 0.3s ease;
+  }
+
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      color: #bbb;
+    }
+  }
+}
+
+/* Loading state */
+.loading-spinner {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container,
+  .container-lg,
+  .container-md {
+    padding: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  .navbar .navbar-collapse {
+    padding: 0.75rem 0;
+  }
+
+  .navbar .nav-link {
+    margin-left: 0;
+    padding: 0.7rem 0;
+  }
+
+  .modal .modal-content {
+    max-width: 95%;
+  }
+}

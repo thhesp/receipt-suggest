@@ -1,0 +1,48 @@
+{
+  "id": "chefkoch-strudel",
+  "name": "Schinken - Tomaten- Mozarella - Strudel",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "450g",
+      "name": "Blätterteig"
+    },
+    {
+      "amount": "200g",
+      "name": "Schinken"
+    },
+    {
+      "amount": "200g",
+      "name": "Mozzarella"
+    },
+    {
+      "amount": "2",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "100g",
+      "name": "Quark"
+    },
+    {
+      "amount": "2",
+      "name": "Eier"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Oregano"
+    },
+    {
+      "amount": "",
+      "name": "Majoran"
+    }
+  ]
+}

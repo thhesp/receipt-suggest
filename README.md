@@ -1,44 +1,52 @@
 # receipt-suggest
 
-Main idea was to have a "simple" website to suggest recipes to cook. Since I never have an good idea what to cook and don't want to think about it.
+Angular application for browsing and suggesting recipes.
 
-## Usage
-You can just add (or replace) your own data in data and build the Dockerimage.
+The overview can be filtered by name and tags. Multiple selected tags are
+combined with **AND**, so recipes must contain every selected tag. The tag panel
+shows the number of visible recipes and the total.
 
+## Recipe data
 
-## Add your own data
-### Add your entries to recipes.csv
-It is pretty simple how to add you own recipes. You can add them to recipes.csv, the first part of the CSV is the name of the recipe, while the second part ist the folder where more data for this recipe can be found.
+Each recipe folder contains a `recipe.json` file with metadata and ingredients:
 
-It looks like this:
-|Name|Link|Include|External|
-|Pasta|chefkoch-nudeln-mal-anders|Y|N|
-|Roastbeef|chefkoch-rinderbraten|Y|N|
+```json
+{
+    "id": "custom-pasta",
+    "name": "Pasta",
+    "tags": ["PASTA"],
+    "includeInSuggestions": true,
+    "nutrition": "650 kcal per serving",
+    "ingredients": [{ "name": "Pasta", "amount": "500 g" }]
+}
+```
 
-The include flag decides if it should be included on random generated suggestions. And with the external flag you can point the URL to an external page with the recipe, instead of linking to infos in your data folder.
-Valid values are "Y" for "yes" and "N" for "no", for both of these flags.
+Local recipes have a folder under `src/assets/data/recipe/{id}/` containing
+`recipe.json` and `recipe.html`. Angular renders the ingredient table and copy
+feature from JSON; `recipe.html` contains description and preparation markup.
+Images can be placed next to the files as `img.jpg`, `img.png`, or `img.jpeg`,
+with optional numbered images such as `img_1.jpg`.
 
-### Subfolders for each recipe
-More information can be found in the recipe subfolder. You have to create an folder for which recipe. If you are using linux, there is also an helper.sh script which will create the folders & files based on the recipes.csv (shouldn't overwrite existing data).
+External recipes use the same folder structure and set `externalUrl` in
+`recipe.json`. The optional `nutrition` field is free-form and can
+contain values such as `650 kcal per serving` or `25 g protein`.
 
-All infos and images are optional, if there is no data this is also fine.
+The build generates the alphabetically sorted `recipes.json` manifest and
+detects local thumbnails automatically.
 
-#### Ingredients
-You can add the ingredients again in form of an CSV file, it looks like this:
+## Development
 
-|Name|Amount|
-|Bread|2 slices|
-|Ham|2 slices|
-|Gruyere cheese|2 slices|
+```powershell
+npm install
+npm start
+```
 
-It has to be named "ingredients.csv".
+For a production build, run `npm run build:prod`. It validates recipe metadata
+and generates the recipe manifest automatically.
 
-#### Description
-You can add the description in form of an text file with the name "description.txt". This could in theory even be HTML (or javascript). So be aware not to load this from unverified sources, so nobody does shady stuff with it.
+## Docker
 
-##### Images
-The website will search for images with the name "img.jpg","img.png" or "img.jpeg". Afterwards it will search for "img_1.jpg", "img_2.jpg" until "img_9.jpg". So in theory you could add in up to 30 images, which I wouldn't recommend. But well.
-
-It may be good to reduce the images size, for this there is an script which uses imagemagick (linux) to reduce image sizes.
-
-You can also do the compression in the docker image, if you prefer that.
+```powershell
+docker build -t receipt-suggest:latest .
+docker run -p 8080:80 receipt-suggest:latest
+```

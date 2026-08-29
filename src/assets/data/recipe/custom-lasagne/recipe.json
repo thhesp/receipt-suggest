@@ -1,0 +1,64 @@
+{
+  "id": "custom-lasagne",
+  "name": "Lasagne",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "375g",
+      "name": "Lasagneplatten"
+    },
+    {
+      "amount": "750g",
+      "name": "Hackfleisch"
+    },
+    {
+      "amount": "2",
+      "name": "Zwiebeln"
+    },
+    {
+      "amount": "150ml",
+      "name": "Brühe"
+    },
+    {
+      "amount": "800g",
+      "name": "stückige Tomaten"
+    },
+    {
+      "amount": "400g",
+      "name": "Käse"
+    },
+    {
+      "amount": "225g",
+      "name": "Naturjoghurt"
+    },
+    {
+      "amount": "70g",
+      "name": "Tomatenmark"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Oregano"
+    },
+    {
+      "amount": "",
+      "name": "Cayennepfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Paprikapulver"
+    },
+    {
+      "amount": "",
+      "name": "Basilikum"
+    }
+  ]
+}

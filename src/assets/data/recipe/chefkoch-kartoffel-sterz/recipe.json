@@ -1,0 +1,28 @@
+{
+  "id": "chefkoch-kartoffel-sterz",
+  "name": "Kartoffel-Sterz",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "1kg",
+      "name": "mehlige Kartoffeln"
+    },
+    {
+      "amount": "100g",
+      "name": "Mehl"
+    },
+    {
+      "amount": "200ml",
+      "name": "Sahne"
+    },
+    {
+      "amount": "1 Glas",
+      "name": "Apfelmus"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    }
+  ]
+}

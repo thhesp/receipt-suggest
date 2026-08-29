@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Angular
+dist/
+out-tsc/
+.angular/
+src/assets/data/recipes.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+npm-*.log
+yarn-debug.log*
+
+# Environment
+.env
+.env.local
+
+# Build
+karma.conf.js
+tsconfig.spec.json
+
+# Testing
+coverage/

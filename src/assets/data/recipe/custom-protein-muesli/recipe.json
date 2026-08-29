@@ -1,0 +1,9 @@
+{
+  "id": "custom-protein-muesli",
+  "name": "Eigenes Protein Müsli",
+  "tags": [
+    "MÜSLI"
+  ],
+  "includeInSuggestions": false,
+  "ingredients": []
+}

@@ -1,0 +1,17 @@
+.suggest-container {
+  padding: 2.5rem 0 4rem;
+
+  h1 {
+    color: #263238;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .btn {
+    &:disabled {
+      opacity: 0.7;
+    }
+  }
+}

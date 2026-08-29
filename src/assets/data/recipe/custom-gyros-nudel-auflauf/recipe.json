@@ -1,0 +1,40 @@
+{
+  "id": "custom-gyros-nudel-auflauf",
+  "name": "Gyros-Nudeln-Auflauf",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "500g",
+      "name": "Schweinefleisch (Gyros)"
+    },
+    {
+      "amount": "1 Pck",
+      "name": "Schlagsahne"
+    },
+    {
+      "amount": "1 Flasche",
+      "name": "Cocktailsauße"
+    },
+    {
+      "amount": "500g",
+      "name": "Nudeln"
+    },
+    {
+      "amount": "200g",
+      "name": "Käse"
+    },
+    {
+      "amount": "",
+      "name": "Thymian"
+    },
+    {
+      "amount": "",
+      "name": "Oregano"
+    },
+    {
+      "amount": "",
+      "name": "Basilikum"
+    }
+  ]
+}

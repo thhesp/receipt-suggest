@@ -1,0 +1,56 @@
+{
+  "id": "chefkoch-american-burger",
+  "name": "All American Burger",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "4",
+      "name": "Eier (M)"
+    },
+    {
+      "amount": "1",
+      "name": "Zwiebeln"
+    },
+    {
+      "amount": "1",
+      "name": "Röstzwiebeln"
+    },
+    {
+      "amount": "500g",
+      "name": "Rinderhackfleisch"
+    },
+    {
+      "amount": "4 Scheiben",
+      "name": "Schmerzkäse"
+    },
+    {
+      "amount": "1",
+      "name": "Salat"
+    },
+    {
+      "amount": "2",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "4",
+      "name": "Burgerbrötchen"
+    },
+    {
+      "amount": "",
+      "name": "Burgersauce"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Öl"
+    }
+  ]
+}

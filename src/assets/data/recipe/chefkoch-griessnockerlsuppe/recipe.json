@@ -1,0 +1,48 @@
+{
+  "id": "chefkoch-griessnockerlsuppe",
+  "name": "Roros Grießnockerlsuppe",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "60g",
+      "name": "Butter"
+    },
+    {
+      "amount": "130g",
+      "name": "Grieß"
+    },
+    {
+      "amount": "2",
+      "name": "Eier"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Muskat"
+    },
+    {
+      "amount": "",
+      "name": "Majoran"
+    },
+    {
+      "amount": "",
+      "name": "Schnittlauch"
+    },
+    {
+      "amount": "",
+      "name": "Gemüsebrühe"
+    },
+    {
+      "amount": "",
+      "name": "Möhren"
+    }
+  ]
+}

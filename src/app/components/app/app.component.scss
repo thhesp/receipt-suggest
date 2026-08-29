@@ -1,0 +1,15 @@
+/* App-specific styles */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.nav-link {
+  margin-left: 1rem;
+  transition: color 0.3s ease;
+
+  &.active {
+    color: #fff !important;
+    font-weight: 500;
+  }
+}

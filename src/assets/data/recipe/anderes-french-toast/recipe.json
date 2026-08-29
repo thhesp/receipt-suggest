@@ -1,0 +1,60 @@
+{
+  "id": "anderes-french-toast",
+  "name": "French-Toast-Cordon-Bleu",
+  "tags": [],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "2 Scheiben",
+      "name": "Weißbrot"
+    },
+    {
+      "amount": "2 Scheiben",
+      "name": "Kochschinken"
+    },
+    {
+      "amount": "2 Scheiben",
+      "name": "Gruyere Käse"
+    },
+    {
+      "amount": "2",
+      "name": "Eier (M)"
+    },
+    {
+      "amount": "125ml",
+      "name": "Milch"
+    },
+    {
+      "amount": "40g",
+      "name": "Butter"
+    },
+    {
+      "amount": "10 Halme",
+      "name": "Schnittlauch"
+    },
+    {
+      "amount": "400g",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "3 EL",
+      "name": "Essig"
+    },
+    {
+      "amount": "4 El",
+      "name": "Olivenöl"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    },
+    {
+      "amount": "",
+      "name": "Chilipulver"
+    }
+  ]
+}

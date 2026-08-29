@@ -1,0 +1,54 @@
+{
+  "id": "chefkoch-pizza",
+  "name": "Pizza mit Tomaten Schinken und Käse",
+  "tags": [
+    "PIZZA"
+  ],
+  "includeInSuggestions": true,
+  "ingredients": [
+    {
+      "amount": "400g",
+      "name": "Mehl"
+    },
+    {
+      "amount": "30g",
+      "name": "Hefe"
+    },
+    {
+      "amount": "400g",
+      "name": "Tomaten"
+    },
+    {
+      "amount": "300g",
+      "name": "Schinken"
+    },
+    {
+      "amount": "300g",
+      "name": "Käse (stark schmeckend)"
+    },
+    {
+      "amount": "100g",
+      "name": "Parmesan (gerieben)"
+    },
+    {
+      "amount": "",
+      "name": "Zucker"
+    },
+    {
+      "amount": "",
+      "name": "Öl"
+    },
+    {
+      "amount": "",
+      "name": "Wasser"
+    },
+    {
+      "amount": "",
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
+    }
+  ]
+}
