@@ -28,6 +28,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   isWakeLockEnabled = false;
   wakeLockSupported = 'wakeLock' in navigator;
   copyStatus: 'idle' | 'copied' | 'failed' = 'idle';
+  isSelectingIngredients = false;
+  selectedIngredientIndexes = new Set<number>();
 
   private destroy$ = new Subject<void>();
   private wakeLock: WakeLockSentinel | null = null;
@@ -88,8 +90,35 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  async copyIngredients(): Promise<void> {
+  startIngredientSelection(): void {
+    this.selectedIngredientIndexes = new Set(
+      this.ingredients$.value.map((_, index) => index)
+    );
+    this.isSelectingIngredients = true;
+    this.copyStatus = 'idle';
+  }
+
+  cancelIngredientSelection(): void {
+    this.isSelectingIngredients = false;
+    this.copyStatus = 'idle';
+  }
+
+  updateIngredientSelection(index: number, isSelected: boolean): void {
+    if (isSelected) {
+      this.selectedIngredientIndexes.add(index);
+    } else {
+      this.selectedIngredientIndexes.delete(index);
+    }
+    this.copyStatus = 'idle';
+  }
+
+  hasSelectedIngredients(): boolean {
+    return this.selectedIngredientIndexes.size > 0;
+  }
+
+  async copySelectedIngredients(): Promise<void> {
     const text = this.ingredients$.value
+      .filter((_, index) => this.selectedIngredientIndexes.has(index))
       .map(ingredient => `${ingredient.amount} ${ingredient.name}`.trim())
       .join('\n');
 
