@@ -22,6 +22,7 @@ Thumbs.db
 
 # Logs
 npm-debug.log*
+npm-*.log
 yarn-debug.log*
 
 # Environment

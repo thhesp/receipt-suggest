@@ -1,6 +1,10 @@
 # receipt-suggest
 
-A simple Angular application for browsing and suggesting recipes.
+Angular application for browsing and suggesting recipes.
+
+The overview can be filtered by name and tags. Multiple selected tags are
+combined with **AND**, so recipes must contain every selected tag. The tag panel
+shows the number of visible recipes and the total.
 
 ## Recipe data
 
@@ -36,6 +40,9 @@ detects local thumbnails automatically.
 npm install
 npm start
 ```
+
+For a production build, run `npm run build:prod`. It validates recipe metadata
+and generates the recipe manifest automatically.
 
 ## Docker
 

@@ -85,7 +85,7 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
     const normalizedSearch = this.searchTerm.trim().toLowerCase();
     const filtered = this.recipes$.value.filter(recipe => {
       const matchesTags = this.selectedTags.length === 0 ||
-        this.selectedTags.some(tag => recipe.tags.includes(tag));
+        this.selectedTags.every(tag => recipe.tags.includes(tag));
       const matchesSearch = normalizedSearch === '' ||
         recipe.name.toLowerCase().includes(normalizedSearch) ||
         recipe.tags.some(tag => tag.toLowerCase().includes(normalizedSearch));

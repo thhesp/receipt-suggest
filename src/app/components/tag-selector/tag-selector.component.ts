@@ -13,6 +13,7 @@ import { Recipe } from '../../models/recipe.model';
 export class TagSelectorComponent implements OnInit {
   @Input() allTags: string[] = [];
   @Input() filteredRecipes: Recipe[] | null = [];
+  @Input() totalRecipes = 0;
   @Output() tagsChanged = new EventEmitter<string[]>();
 
   selectedTags: Set<string> = new Set();

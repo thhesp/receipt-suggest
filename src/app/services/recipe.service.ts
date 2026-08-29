@@ -43,7 +43,7 @@ export class RecipeService {
           return recipes;
         }
         return recipes.filter(recipe =>
-          tags.some(tag => recipe.tags.includes(tag))
+          tags.every(tag => recipe.tags.includes(tag))
         );
       })
     );

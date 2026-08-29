@@ -32,6 +32,7 @@
       <app-tag-selector
         [allTags]="allTags"
         [filteredRecipes]="filteredRecipes$ | async"
+        [totalRecipes]="(recipes$ | async)?.length ?? 0"
         (tagsChanged)="onTagsChanged($event)"
       ></app-tag-selector>
     </div>
