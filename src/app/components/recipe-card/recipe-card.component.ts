@@ -18,7 +18,6 @@ export class RecipeCardComponent implements AfterViewInit, OnDestroy {
   @Input() recipe!: Recipe;
   thumbnailUrl: string | null = null;
   isFavorite = false;
-  isPlanned = false;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -31,7 +30,6 @@ export class RecipeCardComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.isFavorite = this.userRecipeState.isFavorite(this.recipe.id);
-        this.isPlanned = this.userRecipeState.isPlanned(this.recipe.id);
         this.changeDetectorRef.markForCheck();
       });
 
@@ -56,7 +54,4 @@ export class RecipeCardComponent implements AfterViewInit, OnDestroy {
     this.userRecipeState.toggleFavorite(this.recipe.id);
   }
 
-  togglePlanned(): void {
-    this.userRecipeState.togglePlanned(this.recipe);
-  }
 }

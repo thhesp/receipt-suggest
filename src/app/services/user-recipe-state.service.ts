@@ -45,7 +45,7 @@ export class UserRecipeStateService {
     return this.stateSubject.value.plannedRecipes[recipeId]?.planned ?? false;
   }
 
-  togglePlanned(recipe: Recipe): void {
+  togglePlanned(recipe: Pick<Recipe, 'id' | 'name'>): void {
     const current = this.isPlanned(recipe.id);
     this.updateState({
       ...this.stateSubject.value,

@@ -29,6 +29,15 @@
         <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
         {{ isFavorite ? 'Favorite' : 'Add favorite' }}
       </button>
+      <button
+        class="plan-button"
+        [class.is-planned]="isPlanned"
+        type="button"
+        [attr.aria-pressed]="isPlanned"
+        (click)="togglePlanned()"
+      >
+        {{ isPlanned ? 'Planned for cooking' : 'Plan to cook' }}
+      </button>
       <div *ngIf="wakeLockSupported" class="form-check form-switch">
         <input
           id="wake-lock"

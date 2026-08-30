@@ -32,6 +32,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   isSelectingIngredients = false;
   selectedIngredientIndexes = new Set<number>();
   isFavorite = false;
+  isPlanned = false;
 
   private destroy$ = new Subject<void>();
   private wakeLock: WakeLockSentinel | null = null;
@@ -47,11 +48,13 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.isFavorite = this.userRecipeState.isFavorite(this.recipeLink);
+        this.isPlanned = this.userRecipeState.isPlanned(this.recipeLink);
       });
 
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.recipeLink = params['link'];
       this.isFavorite = this.userRecipeState.isFavorite(this.recipeLink);
+      this.isPlanned = this.userRecipeState.isPlanned(this.recipeLink);
       this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(queryParams => {
         this.recipeName = queryParams['name'] || '';
         this.loadRecipeDetails();
@@ -61,6 +64,10 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   toggleFavorite(): void {
     this.userRecipeState.toggleFavorite(this.recipeLink);
+  }
+
+  togglePlanned(): void {
+    this.userRecipeState.togglePlanned({ id: this.recipeLink, name: this.recipeName });
   }
 
   ngOnDestroy(): void {
