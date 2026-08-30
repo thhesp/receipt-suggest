@@ -29,15 +29,18 @@
         <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
         {{ isFavorite ? 'Favorite' : 'Add favorite' }}
       </button>
-      <button
-        class="plan-button"
-        [class.is-planned]="isPlanned"
-        type="button"
-        [attr.aria-pressed]="isPlanned"
-        (click)="togglePlanned()"
-      >
-        {{ isPlanned ? 'Planned for cooking' : 'Plan to cook' }}
-      </button>
+      <div class="form-check form-switch">
+        <input
+          id="plan-to-cook"
+          class="form-check-input"
+          type="checkbox"
+          [checked]="isPlanned"
+          (change)="togglePlanned()"
+        />
+        <label class="form-check-label" for="plan-to-cook">
+          Plan to cook
+        </label>
+      </div>
       <div *ngIf="wakeLockSupported" class="form-check form-switch">
         <input
           id="wake-lock"
