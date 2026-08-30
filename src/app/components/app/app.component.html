@@ -27,6 +27,26 @@
         <li class="nav-item">
           <a
             class="nav-link"
+            routerLink="/shopping-list"
+            routerLinkActive="active"
+            (click)="closeMenu()"
+          >
+            Shopping List
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="/planned-recipes"
+            routerLinkActive="active"
+            (click)="closeMenu()"
+          >
+            Planned Recipes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
             routerLink="/suggest"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"

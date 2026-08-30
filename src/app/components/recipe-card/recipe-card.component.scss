@@ -36,4 +36,28 @@
     font-weight: 600;
     padding: 0.45rem 0.6rem;
   }
+
+  .favorite-mark {
+    background-color: #ffe8a1 !important;
+    color: #664d03;
+  }
+
+  .favorite-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: #6c757d;
+    font-size: 1.35rem;
+    height: 2.5rem;
+    line-height: 1;
+    padding: 0;
+    width: 2.5rem;
+
+    &.is-favorite {
+      background-color: #fff3cd;
+      border-color: #d4a017;
+      color: #a66e00;
+    }
+
+  }
 }

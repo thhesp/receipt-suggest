@@ -11,18 +11,33 @@
     <h5 class="card-title">{{ recipe.name }}</h5>
 
     <div class="tags mb-3">
+      <span *ngIf="isFavorite" class="badge favorite-mark me-2 mb-2">
+        &#9829; Favorite
+      </span>
       <span *ngFor="let tag of recipe.tags" class="badge bg-info me-2 mb-2">
         {{ tag }}
       </span>
     </div>
 
     <div class="mt-auto">
+      <button
+        class="favorite-button mb-2"
+        type="button"
+        [class.is-favorite]="isFavorite"
+        [attr.aria-label]="isFavorite ? 'Remove ' + recipe.name + ' from favorites' : 'Add ' + recipe.name + ' to favorites'"
+        [attr.aria-pressed]="isFavorite"
+        (click)="toggleFavorite()"
+      >
+        <span *ngIf="isFavorite" aria-hidden="true">&#9829;</span>
+        <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
+      </button>
       <!-- Internal link -->
       <button
         *ngIf="!recipe.externalUrl"
         type="button"
         class="btn btn-sm btn-outline-secondary w-100"
         [routerLink]="['/recipe', recipe.id]"
+        [queryParams]="{ name: recipe.name }"
       >
         View Recipe
       </button>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { UserRecipeStateService } from '../../services/user-recipe-state.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,12 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 export class AppComponent {
   title = 'Recipe Suggest';
   isMenuOpen = false;
+
+  constructor(private userRecipeState: UserRecipeStateService) {}
+
+  ngOnInit(): void {
+    this.userRecipeState.initialize();
+  }
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;

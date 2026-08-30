@@ -5,6 +5,7 @@ import { BehaviorSubject, Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
 import { Ingredient } from '../../models/recipe.model';
+import { UserRecipeStateService } from '../../services/user-recipe-state.service';
 
 @Component({
   selector: 'app-recipe-detail',
@@ -27,26 +28,46 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   showModal = false;
   isWakeLockEnabled = false;
   wakeLockSupported = 'wakeLock' in navigator;
-  copyStatus: 'idle' | 'copied' | 'failed' = 'idle';
+  copyStatus: 'idle' | 'copied' | 'failed' | 'added' = 'idle';
   isSelectingIngredients = false;
   selectedIngredientIndexes = new Set<number>();
+  isFavorite = false;
+  isPlanned = false;
 
   private destroy$ = new Subject<void>();
   private wakeLock: WakeLockSentinel | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private recipeDetailService: RecipeDetailService
+    private recipeDetailService: RecipeDetailService,
+    private userRecipeState: UserRecipeStateService
   ) {}
 
   ngOnInit(): void {
+    this.userRecipeState.state$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.isFavorite = this.userRecipeState.isFavorite(this.recipeLink);
+        this.isPlanned = this.userRecipeState.isPlanned(this.recipeLink);
+      });
+
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
       this.recipeLink = params['link'];
+      this.isFavorite = this.userRecipeState.isFavorite(this.recipeLink);
+      this.isPlanned = this.userRecipeState.isPlanned(this.recipeLink);
       this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(queryParams => {
         this.recipeName = queryParams['name'] || '';
         this.loadRecipeDetails();
       });
     });
+  }
+
+  toggleFavorite(): void {
+    this.userRecipeState.toggleFavorite(this.recipeLink);
+  }
+
+  togglePlanned(): void {
+    this.userRecipeState.togglePlanned({ id: this.recipeLink, name: this.recipeName });
   }
 
   ngOnDestroy(): void {
@@ -114,6 +135,14 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   hasSelectedIngredients(): boolean {
     return this.selectedIngredientIndexes.size > 0;
+  }
+
+  addSelectedIngredientsToShoppingList(): void {
+    const selectedIngredients = this.ingredients$.value.filter((_, index) =>
+      this.selectedIngredientIndexes.has(index)
+    );
+    this.userRecipeState.addIngredients(this.recipeLink, this.recipeName, selectedIngredients);
+    this.copyStatus = 'added';
   }
 
   async copySelectedIngredients(): Promise<void> {

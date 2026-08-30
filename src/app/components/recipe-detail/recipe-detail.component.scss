@@ -19,11 +19,33 @@
     background-color: var(--surface);
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
     padding: 1rem;
   }
 
   .copy-status {
     color: #198754;
+  }
+
+  .favorite-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: #6c757d;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 2.5rem;
+    line-height: 1;
+    padding: 0.5rem 0.75rem;
+
+    &.is-favorite {
+      background-color: #fff3cd;
+      border-color: #d4a017;
+      color: #a66e00;
+    }
+
   }
 
   .recipe-image {
