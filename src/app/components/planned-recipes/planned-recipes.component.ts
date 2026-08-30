@@ -57,4 +57,10 @@ export class PlannedRecipesComponent implements OnInit, OnDestroy {
       error: () => this.isCreatingShoppingList = false
     });
   }
+
+  removeFromPlan(recipe: Recipe): void {
+    if (this.userRecipeState.isPlanned(recipe.id)) {
+      this.userRecipeState.togglePlanned(recipe);
+    }
+  }
 }
