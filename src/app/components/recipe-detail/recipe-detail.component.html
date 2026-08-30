@@ -1,18 +1,5 @@
 <div class="recipe-detail-container">
-  <div class="d-flex justify-content-center align-items-center gap-3 mb-5">
-    <h1 class="mb-0">{{ recipeName }}</h1>
-    <button
-      class="favorite-button"
-      [class.is-favorite]="isFavorite"
-      type="button"
-      [attr.aria-pressed]="isFavorite"
-      [attr.aria-label]="isFavorite ? 'Remove recipe from favorites' : 'Add recipe to favorites'"
-      (click)="toggleFavorite()"
-    >
-      <span *ngIf="isFavorite" aria-hidden="true">&#9829;</span>
-      <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
-    </button>
-  </div>
+  <h1 class="mb-5">{{ recipeName }}</h1>
 
   <ng-container *ngIf="isLoading">
     <div class="text-center py-5">
@@ -29,8 +16,20 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading && !error">
-    <div class="detail-actions mb-4" *ngIf="wakeLockSupported">
-      <div class="form-check form-switch">
+    <div class="detail-actions mb-4">
+      <button
+        class="favorite-button"
+        [class.is-favorite]="isFavorite"
+        type="button"
+        [attr.aria-pressed]="isFavorite"
+        [attr.aria-label]="isFavorite ? 'Remove recipe from favorites' : 'Add recipe to favorites'"
+        (click)="toggleFavorite()"
+      >
+        <span *ngIf="isFavorite" aria-hidden="true">&#9829;</span>
+        <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
+        {{ isFavorite ? 'Favorite' : 'Add favorite' }}
+      </button>
+      <div *ngIf="wakeLockSupported" class="form-check form-switch">
         <input
           id="wake-lock"
           class="form-check-input"

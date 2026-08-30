@@ -19,6 +19,9 @@
     background-color: var(--surface);
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
     padding: 1rem;
   }
 
@@ -29,13 +32,13 @@
   .favorite-button {
     background: transparent;
     border: 1px solid var(--border-color);
-    border-radius: 50%;
+    border-radius: 8px;
     color: #6c757d;
-    font-size: 1.75rem;
-    height: 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 2.5rem;
     line-height: 1;
-    padding: 0;
-    width: 3rem;
+    padding: 0.5rem 0.75rem;
 
     &.is-favorite {
       background-color: #fff3cd;
