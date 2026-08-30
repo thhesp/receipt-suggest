@@ -37,6 +37,7 @@
         type="button"
         class="btn btn-sm btn-outline-secondary w-100"
         [routerLink]="['/recipe', recipe.id]"
+        [queryParams]="{ name: recipe.name }"
       >
         View Recipe
       </button>

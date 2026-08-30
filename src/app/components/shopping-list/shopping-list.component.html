@@ -10,6 +10,7 @@
       <button class="btn btn-outline-primary me-2" type="button" (click)="copy(groups)">Copy list</button>
       <button class="btn btn-outline-danger" type="button" (click)="clear()">Clear list</button>
     </div>
+    <p *ngIf="status" class="text-success" aria-live="polite">{{ status }}</p>
     <section *ngFor="let group of groups" class="mb-4">
       <h2 class="h5">{{ group.recipeName }}</h2>
       <ul class="list-group">

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RecipeService } from '../../services/recipe.service';
 import { UserRecipeStateService } from '../../services/user-recipe-state.service';
 import { ShoppingListItem } from '../../models/user-recipe-state.model';
 
@@ -17,11 +19,21 @@ interface ShoppingListGroup {
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent {
-  readonly groups$ = this.userRecipeState.state$.pipe(
-    map(() => this.groupItems(this.userRecipeState.getShoppingListItems()))
+  readonly groups$ = combineLatest([
+    this.userRecipeState.state$,
+    this.recipeService.loadRecipes()
+  ]).pipe(
+    map(([, recipes]) => this.groupItems(
+      this.userRecipeState.getShoppingListItems(),
+      new Map(recipes.map(recipe => [recipe.id, recipe.name]))
+    ))
   );
+  status = '';
 
-  constructor(private userRecipeState: UserRecipeStateService) {}
+  constructor(
+    private userRecipeState: UserRecipeStateService,
+    private recipeService: RecipeService
+  ) {}
 
   updateChecked(id: string, checked: boolean): void {
     this.userRecipeState.setShoppingListItemChecked(id, checked);
@@ -29,10 +41,12 @@ export class ShoppingListComponent {
 
   removeItem(id: string): void {
     this.userRecipeState.removeShoppingListItem(id);
+    this.status = 'Item removed from shopping list.';
   }
 
   clear(): void {
     this.userRecipeState.clearShoppingList();
+    this.status = 'Shopping list cleared.';
   }
 
   async copy(groups: ShoppingListGroup[]): Promise<void> {
@@ -40,13 +54,18 @@ export class ShoppingListComponent {
       group.recipeName,
       ...group.items.map(item => `${item.amount} ${item.name}`.trim())
     ].join('\n')).join('\n\n');
-    await navigator.clipboard.writeText(text);
+    try {
+      await navigator.clipboard.writeText(text);
+      this.status = 'Shopping list copied.';
+    } catch {
+      this.status = 'Shopping list could not be copied.';
+    }
   }
 
-  private groupItems(items: ShoppingListItem[]): ShoppingListGroup[] {
+  private groupItems(items: ShoppingListItem[], recipeNames: Map<string, string>): ShoppingListGroup[] {
     const groups = new Map<string, ShoppingListItem[]>();
     items.forEach(item => {
-      const recipeName = item.recipeName || item.recipeId;
+      const recipeName = item.recipeName || recipeNames.get(item.recipeId) || 'Unknown recipe';
       groups.set(recipeName, [...(groups.get(recipeName) ?? []), item]);
     });
     return Array.from(groups, ([recipeName, groupItems]) => ({ recipeName, items: groupItems }));
