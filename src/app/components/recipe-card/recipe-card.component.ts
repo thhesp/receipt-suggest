@@ -50,4 +50,7 @@ export class RecipeCardComponent implements AfterViewInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  toggleFavorite(): void {
+    this.userRecipeState.toggleFavorite(this.recipe.id);
+  }
 }

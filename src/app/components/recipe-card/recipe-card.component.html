@@ -12,7 +12,7 @@
 
     <div class="tags mb-3">
       <span *ngIf="isFavorite" class="badge favorite-mark me-2 mb-2">
-        Favorite
+        &#9829; Favorite
       </span>
       <span *ngFor="let tag of recipe.tags" class="badge bg-info me-2 mb-2">
         {{ tag }}
@@ -20,6 +20,18 @@
     </div>
 
     <div class="mt-auto">
+      <button
+        *ngIf="recipe.externalUrl"
+        class="favorite-button mb-2"
+        type="button"
+        [class.is-favorite]="isFavorite"
+        [attr.aria-label]="isFavorite ? 'Remove ' + recipe.name + ' from favorites' : 'Add ' + recipe.name + ' to favorites'"
+        [attr.aria-pressed]="isFavorite"
+        (click)="toggleFavorite()"
+      >
+        <span *ngIf="isFavorite" aria-hidden="true">&#9829;</span>
+        <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
+      </button>
       <!-- Internal link -->
       <button
         *ngIf="!recipe.externalUrl"
