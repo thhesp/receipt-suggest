@@ -1,0 +1,16 @@
+<div class="planned-recipes-container">
+  <h1 class="mb-4">Planned Recipes</h1>
+  <ng-container *ngIf="recipes$ | async as recipes">
+    <div *ngIf="recipes.length === 0" class="alert alert-info">
+      Mark recipes from the overview when you plan to cook them.
+    </div>
+    <div *ngIf="recipes.length > 0" class="mb-4">
+      <button class="btn btn-primary" type="button" [disabled]="isCreatingShoppingList" (click)="createShoppingList(recipes)">
+        Create shopping list
+      </button>
+    </div>
+    <div class="row">
+      <app-recipe-card *ngFor="let recipe of recipes" [recipe]="recipe" class="col-md-6 col-lg-4 mb-4"></app-recipe-card>
+    </div>
+  </ng-container>
+</div>

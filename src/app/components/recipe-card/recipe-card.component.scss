@@ -58,5 +58,21 @@
       border-color: #d4a017;
       color: #a66e00;
     }
+
+    .plan-button {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #6c757d;
+      font-size: 0.8rem;
+      min-height: 2.5rem;
+      padding: 0.4rem 0.65rem;
+
+      &.is-planned {
+        background-color: #e6f4ed;
+        border-color: var(--primary-color);
+        color: var(--primary-dark);
+      }
+    }
   }
 }

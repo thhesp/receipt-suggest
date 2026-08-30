@@ -31,6 +31,15 @@
         <span *ngIf="isFavorite" aria-hidden="true">&#9829;</span>
         <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
       </button>
+      <button
+        class="plan-button mb-2 ms-2"
+        type="button"
+        [class.is-planned]="isPlanned"
+        [attr.aria-pressed]="isPlanned"
+        (click)="togglePlanned()"
+      >
+        {{ isPlanned ? 'Planned' : 'Plan to cook' }}
+      </button>
       <!-- Internal link -->
       <button
         *ngIf="!recipe.externalUrl"

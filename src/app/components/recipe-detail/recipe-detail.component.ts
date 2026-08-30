@@ -134,7 +134,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     const selectedIngredients = this.ingredients$.value.filter((_, index) =>
       this.selectedIngredientIndexes.has(index)
     );
-    this.userRecipeState.addIngredients(this.recipeLink, selectedIngredients);
+    this.userRecipeState.addIngredients(this.recipeLink, this.recipeName, selectedIngredients);
     this.copyStatus = 'added';
   }
 

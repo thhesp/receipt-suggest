@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Ingredient } from '../models/recipe.model';
-import { FavoriteState, ShoppingListItem, UserRecipeState } from '../models/user-recipe-state.model';
+import { Ingredient, Recipe } from '../models/recipe.model';
+import { FavoriteState, PlannedRecipeState, ShoppingListItem, UserRecipeState } from '../models/user-recipe-state.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserRecipeStateService {
@@ -41,7 +41,28 @@ export class UserRecipeStateService {
     });
   }
 
-  addIngredients(recipeId: string, ingredients: Ingredient[]): void {
+  isPlanned(recipeId: string): boolean {
+    return this.stateSubject.value.plannedRecipes[recipeId]?.planned ?? false;
+  }
+
+  togglePlanned(recipe: Recipe): void {
+    const current = this.isPlanned(recipe.id);
+    this.updateState({
+      ...this.stateSubject.value,
+      plannedRecipes: {
+        ...this.stateSubject.value.plannedRecipes,
+        [recipe.id]: { name: recipe.name, planned: !current, updatedAt: Date.now() }
+      }
+    });
+  }
+
+  getPlannedRecipeIds(): string[] {
+    return Object.entries(this.stateSubject.value.plannedRecipes)
+      .filter(([, state]) => state.planned)
+      .map(([recipeId]) => recipeId);
+  }
+
+  addIngredients(recipeId: string, recipeName: string, ingredients: Ingredient[]): void {
     const updatedAt = Date.now();
     const shoppingList = { ...this.stateSubject.value.shoppingList };
     ingredients.forEach(ingredient => {
@@ -50,6 +71,7 @@ export class UserRecipeStateService {
         ...shoppingList[id],
         id,
         recipeId,
+        recipeName,
         name: ingredient.name,
         amount: ingredient.amount,
         checked: false,
@@ -81,6 +103,13 @@ export class UserRecipeStateService {
         [id]: { ...item, name: '', amount: '', updatedAt: Date.now() }
       }
     });
+  }
+
+  clearShoppingList(): void {
+    const updatedAt = Date.now();
+    const shoppingList = Object.fromEntries(Object.entries(this.stateSubject.value.shoppingList)
+      .map(([id, item]) => [id, { ...item, name: '', amount: '', updatedAt }]));
+    this.updateState({ ...this.stateSubject.value, shoppingList });
   }
 
   getShoppingListItems(): ShoppingListItem[] {
@@ -125,6 +154,7 @@ export class UserRecipeStateService {
     return {
       version: 1,
       favorites: this.mergeRecords<FavoriteState>(left.favorites, right?.favorites),
+      plannedRecipes: this.mergeRecords<PlannedRecipeState>(left.plannedRecipes, right?.plannedRecipes),
       shoppingList: this.mergeRecords<ShoppingListItem>(left.shoppingList, right?.shoppingList)
     };
   }
@@ -141,6 +171,6 @@ export class UserRecipeStateService {
   }
 
   private emptyState(): UserRecipeState {
-    return { version: 1, favorites: {}, shoppingList: {} };
+    return { version: 1, favorites: {}, plannedRecipes: {}, shoppingList: {} };
   }
 }
