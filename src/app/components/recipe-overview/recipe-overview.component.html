@@ -28,6 +28,18 @@
       />
     </div>
 
+    <div class="container-md mb-4">
+      <button
+        class="btn btn-outline-danger"
+        [class.active]="showFavoritesOnly"
+        type="button"
+        [attr.aria-pressed]="showFavoritesOnly"
+        (click)="toggleFavoritesOnly()"
+      >
+        Favorites only
+      </button>
+    </div>
+
     <div class="container-md mb-5">
       <app-tag-selector
         [allTags]="allTags"

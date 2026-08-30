@@ -7,6 +7,7 @@ import { RecipeService } from '../../services/recipe.service';
 import { Recipe } from '../../models/recipe.model';
 import { RecipeCardComponent } from '../recipe-card/recipe-card.component';
 import { TagSelectorComponent } from '../tag-selector/tag-selector.component';
+import { UserRecipeStateService } from '../../services/user-recipe-state.service';
 
 @Component({
   selector: 'app-recipe-overview',
@@ -21,6 +22,7 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
   allTags: string[] = [];
   searchTerm = '';
   selectedTags: string[] = [];
+  showFavoritesOnly = false;
   isLoading = true;
   error: string | null = null;
 
@@ -28,10 +30,14 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private recipeService: RecipeService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private userRecipeState: UserRecipeStateService
   ) {}
 
   ngOnInit(): void {
+    this.userRecipeState.state$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateFilteredRecipes());
     this.loadRecipes();
   }
 
@@ -81,6 +87,11 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
     this.updateFilteredRecipes();
   }
 
+  toggleFavoritesOnly(): void {
+    this.showFavoritesOnly = !this.showFavoritesOnly;
+    this.updateFilteredRecipes();
+  }
+
   private updateFilteredRecipes(): void {
     const normalizedSearch = this.searchTerm.trim().toLowerCase();
     const filtered = this.recipes$.value.filter(recipe => {
@@ -89,8 +100,10 @@ export class RecipeOverviewComponent implements OnInit, OnDestroy {
       const matchesSearch = normalizedSearch === '' ||
         recipe.name.toLowerCase().includes(normalizedSearch) ||
         recipe.tags.some(tag => tag.toLowerCase().includes(normalizedSearch));
+      const matchesFavorites = !this.showFavoritesOnly ||
+        this.userRecipeState.isFavorite(recipe.id);
 
-      return matchesTags && matchesSearch;
+      return matchesTags && matchesSearch && matchesFavorites;
     });
 
     this.filteredRecipes$.next(filtered);

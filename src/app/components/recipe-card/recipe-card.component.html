@@ -11,22 +11,15 @@
     <h5 class="card-title">{{ recipe.name }}</h5>
 
     <div class="tags mb-3">
+      <span *ngIf="isFavorite" class="badge favorite-mark me-2 mb-2">
+        Favorite
+      </span>
       <span *ngFor="let tag of recipe.tags" class="badge bg-info me-2 mb-2">
         {{ tag }}
       </span>
     </div>
 
     <div class="mt-auto">
-      <button
-        class="btn btn-sm mb-2"
-        [class.btn-outline-danger]="!isFavorite"
-        [class.btn-danger]="isFavorite"
-        type="button"
-        [attr.aria-pressed]="isFavorite"
-        (click)="toggleFavorite()"
-      >
-        {{ isFavorite ? 'Remove favorite' : 'Add favorite' }}
-      </button>
       <!-- Internal link -->
       <button
         *ngIf="!recipe.externalUrl"

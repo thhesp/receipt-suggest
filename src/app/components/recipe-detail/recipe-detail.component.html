@@ -1,5 +1,17 @@
 <div class="recipe-detail-container">
-  <h1 class="mb-5">{{ recipeName }}</h1>
+  <div class="d-flex justify-content-center align-items-center gap-3 mb-5">
+    <h1 class="mb-0">{{ recipeName }}</h1>
+    <button
+      class="btn btn-sm"
+      [class.btn-outline-danger]="!isFavorite"
+      [class.btn-danger]="isFavorite"
+      type="button"
+      [attr.aria-pressed]="isFavorite"
+      (click)="toggleFavorite()"
+    >
+      {{ isFavorite ? 'Remove favorite' : 'Add favorite' }}
+    </button>
+  </div>
 
   <ng-container *ngIf="isLoading">
     <div class="text-center py-5">
