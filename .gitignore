@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-package-lock.json
 yarn.lock
 
 # Angular
@@ -31,7 +30,6 @@ yarn-debug.log*
 .htpasswd
 
 # Build
-karma.conf.js
 tsconfig.spec.json
 
 # Testing
