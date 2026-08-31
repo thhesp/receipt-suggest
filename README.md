@@ -50,3 +50,13 @@ and generates the recipe manifest automatically.
 docker build -t receipt-suggest:latest .
 docker run -p 8080:80 receipt-suggest:latest
 ```
+
+### Private data and user state
+
+The `private-user-state-image` Docker target accepts private recipe data and
+the authenticated nginx configuration through a separate `private-data` build
+context. It runs the user-state API and stores its files in
+`/var/lib/receipt-suggest-user-state`. Mount a named volume or host directory
+at that path to retain favorites, cooking plans, and shopping lists across
+container replacement. The target requires `basic_auth_user` and
+`basic_auth_password` BuildKit secrets.
