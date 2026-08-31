@@ -53,10 +53,11 @@ docker run -p 8080:80 receipt-suggest:latest
 
 ### Private data and user state
 
-The `private-user-state-image` Docker target accepts private recipe data and
-through a separate `private-data` build context. It runs the user-state API and
-uses the authenticated nginx configuration in `digital_ocean.conf`. It stores
-its files in
+The `user-state-image` Docker target is a working authenticated production
+example that runs the user-state API using `prod.conf`. The
+`private-user-state-image` target accepts private recipe data and a replacement
+`prod.conf` through a separate `private-data` build context, so private
+deployments can provide their own nginx settings. Both store user state in
 `/var/lib/receipt-suggest-user-state`. Mount a named volume or host directory
 at that path to retain favorites, cooking plans, and shopping lists across
 container replacement. The target requires a `basic_auth_users` BuildKit
