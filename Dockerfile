@@ -16,6 +16,7 @@ RUN npm run build:prod
 
 FROM nginx:alpine AS nginx-base
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx-common.conf /etc/nginx/receipt-suggest-common.conf
 
 FROM nginx-base AS base
 COPY --from=builder /app/dist/receipt-suggest/browser /usr/share/nginx/html
@@ -31,6 +32,9 @@ RUN apk add --no-cache imagemagick imagemagick-jpeg
 COPY config/docker_imagemagic_policy.xml /etc/ImageMagick-6/policy.xml
 RUN find /app/dist/receipt-suggest/browser/assets/data -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) \
     -exec mogrify -strip -resize '1024x>' -quality 50 {} +
+
+FROM nginx-base AS image-compressed
+COPY --from=compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
 
 FROM nginx-base AS user-state-runtime
 COPY user-state-server.mjs /usr/local/bin/user-state-server.mjs
@@ -56,5 +60,4 @@ LABEL org.opencontainers.image.revision=$APP_REVISION
 COPY --from=private-compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
 COPY --from=private-data prod.conf /etc/nginx/conf.d/default.conf
 
-FROM nginx-base AS image-compressed
-COPY --from=compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
+FROM user-state-image AS production

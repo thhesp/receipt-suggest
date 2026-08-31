@@ -7,3 +7,4 @@ out-tsc
 coverage
 npm-debug.log*
 *.log
+.htpasswd
