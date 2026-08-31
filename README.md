@@ -47,6 +47,34 @@ and generates the recipe manifest automatically.
 ## Docker
 
 ```powershell
-docker build -t receipt-suggest:latest .
-docker run -p 8080:80 receipt-suggest:latest
+.\new-htpasswd.ps1 -Username alice
+docker build --secret id=basic_auth_users,src=.htpasswd -t receipt-suggest:latest .
+docker run --rm -p 8080:8080 --volume receipt-suggest-user-state:/var/lib/receipt-suggest-user-state receipt-suggest:latest
 ```
+
+### Private data and user state
+
+The `user-state-image` Docker target is a working authenticated production
+example that runs the user-state API using `prod.conf`. The
+`private-user-state-image` target accepts private recipe data and a replacement
+`prod.conf` through a separate `private-data` build context, so private
+deployments can provide their own nginx settings. Both store user state in
+`/var/lib/receipt-suggest-user-state`. Mount a named volume or host directory
+at that path to retain favorites, cooking plans, and shopping lists across
+container replacement. Basic Auth is configured at the server level, so every
+page, asset, and API request requires an authenticated user. The target
+requires a `basic_auth_users` BuildKit secret containing an `htpasswd` file.
+
+Create the password file without storing it in this repository:
+
+```powershell
+.\new-htpasswd.ps1 -Username alice -OutputFile ..\my-recipes\.htpasswd
+```
+
+The helper uses a locally installed `htpasswd` executable when available;
+otherwise it uses Docker Desktop's `httpd:2.4-alpine` image. Add another user
+with `-Append`. For a local private-data test, run `..\my-recipes\build.ps1`;
+that script supplies the generated file to Docker as a BuildKit secret.
+
+`image-compressed` is an explicit static-only development target. It has no
+user-state API or authentication and must not be used for a deployment.
