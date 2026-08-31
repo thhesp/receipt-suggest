@@ -44,13 +44,9 @@ LABEL org.opencontainers.image.revision=$APP_REVISION
 COPY --from=private-compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
 COPY --from=private-data digital_ocean.conf /etc/nginx/conf.d/default.conf
 ARG AUTH_CACHE_BUST
-RUN --mount=type=secret,id=basic_auth_user \
-    --mount=type=secret,id=basic_auth_password \
-    apk add --no-cache apache2-utils && \
-    user="$(cat /run/secrets/basic_auth_user)" && \
-    password="$(cat /run/secrets/basic_auth_password)" && \
-    test -n "$user" && test -n "$password" && \
-    htpasswd -bc /usr/share/.htpasswd "$user" "$password" && \
+RUN --mount=type=secret,id=basic_auth_users \
+    test -s /run/secrets/basic_auth_users && \
+    cp /run/secrets/basic_auth_users /usr/share/.htpasswd && \
     chown root:nginx /usr/share/.htpasswd && \
     chmod 640 /usr/share/.htpasswd
 VOLUME ["/var/lib/receipt-suggest-user-state"]
