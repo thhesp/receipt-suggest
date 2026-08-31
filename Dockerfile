@@ -4,7 +4,7 @@ FROM node:24-alpine AS build-base
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 
 FROM build-base AS builder
