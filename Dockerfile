@@ -42,7 +42,7 @@ FROM user-state-runtime AS private-user-state-image
 ARG APP_REVISION
 LABEL org.opencontainers.image.revision=$APP_REVISION
 COPY --from=private-compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
-COPY --from=private-data digital_ocean.conf /etc/nginx/conf.d/default.conf
+COPY digital_ocean.conf /etc/nginx/conf.d/default.conf
 ARG AUTH_CACHE_BUST
 RUN --mount=type=secret,id=basic_auth_users \
     test -s /run/secrets/basic_auth_users && \

@@ -54,9 +54,21 @@ docker run -p 8080:80 receipt-suggest:latest
 ### Private data and user state
 
 The `private-user-state-image` Docker target accepts private recipe data and
-the authenticated nginx configuration through a separate `private-data` build
-context. It runs the user-state API and stores its files in
+through a separate `private-data` build context. It runs the user-state API and
+uses the authenticated nginx configuration in `digital_ocean.conf`. It stores
+its files in
 `/var/lib/receipt-suggest-user-state`. Mount a named volume or host directory
 at that path to retain favorites, cooking plans, and shopping lists across
-container replacement. The target requires `basic_auth_user` and
-`basic_auth_password` BuildKit secrets.
+container replacement. The target requires a `basic_auth_users` BuildKit
+secret containing an `htpasswd` file.
+
+Create the password file without storing it in this repository:
+
+```powershell
+.\new-htpasswd.ps1 -Username alice -OutputFile ..\my-recipes\.htpasswd
+```
+
+The helper uses a locally installed `htpasswd` executable when available;
+otherwise it uses Docker Desktop's `httpd:2.4-alpine` image. Add another user
+with `-Append`. For a local private-data test, run `..\my-recipes\build.ps1`;
+that script supplies the generated file to Docker as a BuildKit secret.
