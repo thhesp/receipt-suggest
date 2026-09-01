@@ -45,9 +45,10 @@ export class RecipeDetailService {
    */
   loadImages(recipeLink: string): Observable<string[]> {
     return this.loadRecipe(recipeLink).pipe(
-      map(recipe => (recipe.images ?? []).map(image =>
-        `${this.BASE_DATA_PATH}/${recipeLink}/${image}`
-      )),
+      map(recipe => [...new Set([
+        ...(recipe.thumbnail ? [recipe.thumbnail] : []),
+        ...(recipe.images ?? [])
+      ])].map(image => `${this.BASE_DATA_PATH}/${recipeLink}/${image}`)),
       catchError(error => {
         console.warn(`No images found for ${recipeLink}:`, error);
         return of([]);
