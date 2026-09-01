@@ -17,6 +17,8 @@ Each recipe folder contains a `recipe.json` file with metadata and ingredients:
     "tags": ["PASTA"],
     "includeInSuggestions": true,
     "nutrition": "650 kcal per serving",
+    "images": ["pasta.jpg", "pasta-serving.jpg"],
+    "thumbnail": "pasta.jpg",
     "ingredients": [{ "name": "Pasta", "amount": "500 g" }]
 }
 ```
@@ -24,15 +26,18 @@ Each recipe folder contains a `recipe.json` file with metadata and ingredients:
 Local recipes have a folder under `src/assets/data/recipe/{id}/` containing
 `recipe.json` and `recipe.html`. Angular renders the ingredient table and copy
 feature from JSON; `recipe.html` contains description and preparation markup.
-Images can be placed next to the files as `img.jpg`, `img.png`, or `img.jpeg`,
-with optional numbered images such as `img_1.jpg`.
+List user-facing image filenames in the optional `images` array. Set
+`thumbnail` to one of those filenames when a card thumbnail is needed. Image
+filenames must be local `.jpg`, `.jpeg`, or `.png` files in the recipe folder.
+The Docker build copies only declared images, so unlisted images can remain as
+source backups without being served.
 
 External recipes use the same folder structure and set `externalUrl` in
 `recipe.json`. The optional `nutrition` field is free-form and can
 contain values such as `650 kcal per serving` or `25 g protein`.
 
-The build generates the alphabetically sorted `recipes.json` manifest and
-detects local thumbnails automatically.
+The build generates the alphabetically sorted `recipes.json` manifest from the
+declared thumbnails.
 
 ## Development
 

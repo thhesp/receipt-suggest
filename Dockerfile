@@ -8,11 +8,11 @@ RUN npm ci
 COPY . .
 
 FROM build-base AS builder
-RUN npm run build:prod
+RUN node scripts/prune-recipe-images.mjs && npm run build:prod
 
 FROM build-base AS private-builder
 COPY --from=private-data data /app/src/assets/data
-RUN npm run build:prod
+RUN node scripts/prune-recipe-images.mjs && npm run build:prod
 
 FROM nginx:alpine AS nginx-base
 COPY nginx.conf /etc/nginx/conf.d/default.conf

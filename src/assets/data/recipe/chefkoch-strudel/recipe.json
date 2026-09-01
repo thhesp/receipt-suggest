@@ -3,6 +3,8 @@
   "name": "Schinken - Tomaten- Mozarella - Strudel",
   "tags": [],
   "includeInSuggestions": true,
+  "images": ["img.jpg"],
+  "thumbnail": "img.jpg",
   "ingredients": [
     {
       "amount": "450g",

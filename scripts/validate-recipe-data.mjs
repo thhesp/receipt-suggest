@@ -30,6 +30,16 @@ for (const directory of directories.filter(entry => entry.isDirectory())) {
   } else if (!existsSync(path.join(recipeRoot, directory.name, 'recipe.html'))) {
     errors.push(`Missing recipe.html: ${directory.name}`);
   }
+  const images = recipe.images ?? [];
+  if (!Array.isArray(images) || images.some(image => !isImageFilename(image))) {
+    errors.push(`Invalid images: ${directory.name}`);
+  } else if (images.some(image => !existsSync(path.join(recipeRoot, directory.name, image)))) {
+    errors.push(`Missing declared image: ${directory.name}`);
+  }
+  if (recipe.thumbnail !== undefined &&
+      (!isImageFilename(recipe.thumbnail) || !images.includes(recipe.thumbnail))) {
+    errors.push(`Invalid thumbnail: ${directory.name}`);
+  }
 }
 
 if (errors.length) {
@@ -37,4 +47,9 @@ if (errors.length) {
   process.exitCode = 1;
 } else {
   console.log(`Validated ${count} recipes in ${path.relative(projectRoot, dataDirectory)}`);
+}
+
+function isImageFilename(filename) {
+  return typeof filename === 'string' &&
+    /^[^/\\]+\.(?:jpg|jpeg|png)$/i.test(filename);
 }

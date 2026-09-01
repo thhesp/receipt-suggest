@@ -137,10 +137,6 @@
       </div>
     </div>
 
-    <!-- Images are optional and loaded after the recipe content. -->
-    <div *ngIf="imagesLoading" class="container-md mb-5 text-muted" aria-live="polite">
-      Loading images...
-    </div>
     <div *ngIf="(images$ | async)?.length as imageCount">
       <div class="container-md mb-5">
         <div class="row" *ngIf="imageCount > 0">

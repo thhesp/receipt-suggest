@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { Ingredient } from '../models/recipe.model';
+import { catchError, map, shareReplay } from 'rxjs/operators';
+import { Ingredient, RecipeFile } from '../models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeDetailService {
   private readonly BASE_DATA_PATH = 'assets/data/recipe';
-  private imageCache = new Map<string, string[]>();
+  private recipeCache = new Map<string, Observable<RecipeFile>>();
 
   constructor(private http: HttpClient) {}
 
@@ -17,8 +17,7 @@ export class RecipeDetailService {
    * Load structured ingredients for a recipe
    */
   loadIngredients(recipeLink: string): Observable<Ingredient[]> {
-    const recipeUrl = `${this.BASE_DATA_PATH}/${recipeLink}/recipe.json`;
-    return this.http.get<{ ingredients?: Ingredient[] }>(recipeUrl).pipe(
+    return this.loadRecipe(recipeLink).pipe(
       map(data => data.ingredients ?? []),
       catchError(error => {
         console.warn(`No ingredients found for ${recipeLink}:`, error);
@@ -42,43 +41,19 @@ export class RecipeDetailService {
   }
 
   /**
-   * Find and load images for a recipe
+   * Load the images explicitly declared in a recipe's metadata.
    */
-  async loadImages(recipeLink: string): Promise<string[]> {
-    if (this.imageCache.has(recipeLink)) {
-      return this.imageCache.get(recipeLink) || [];
-    }
-
-    const images: string[] = [];
-    const extensions = ['.png', '.jpg', '.jpeg'];
-
-    for (const ext of extensions) {
-      for (let i = 0; i < 10; i++) {
-        const filename = i === 0 ? `img${ext}` : `img_${i}${ext}`;
-        const url = `${this.BASE_DATA_PATH}/${recipeLink}/${filename}`;
-
-        if (await this.fileExists(url)) {
-          images.push(url);
-        } else if (i === 0) {
-          break;
-        }
-      }
-    }
-
-    this.imageCache.set(recipeLink, images);
-    return images;
-  }
-
-  /**
-   * Check if a file exists
-   */
-  private async fileExists(url: string): Promise<boolean> {
-    try {
-      const response = await fetch(url, { method: 'HEAD' });
-      return response.ok;
-    } catch {
-      return false;
-    }
+  loadImages(recipeLink: string): Observable<string[]> {
+    return this.loadRecipe(recipeLink).pipe(
+      map(recipe => [...new Set([
+        ...(recipe.thumbnail ? [recipe.thumbnail] : []),
+        ...(recipe.images ?? [])
+      ])].map(image => `${this.BASE_DATA_PATH}/${recipeLink}/${image}`)),
+      catchError(error => {
+        console.warn(`No images found for ${recipeLink}:`, error);
+        return of([]);
+      })
+    );
   }
 
   private removeIngredientSection(html: string): string {
@@ -96,5 +71,18 @@ export class RecipeDetailService {
       throw new Error('Received the application shell instead of recipe content');
     }
     return content;
+  }
+
+  private loadRecipe(recipeLink: string): Observable<RecipeFile> {
+    const cachedRecipe = this.recipeCache.get(recipeLink);
+    if (cachedRecipe) {
+      return cachedRecipe;
+    }
+
+    const recipe = this.http.get<RecipeFile>(
+      `${this.BASE_DATA_PATH}/${recipeLink}/recipe.json`
+    ).pipe(shareReplay({ bufferSize: 1, refCount: false }));
+    this.recipeCache.set(recipeLink, recipe);
+    return recipe;
   }
 }

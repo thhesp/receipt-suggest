@@ -3,6 +3,8 @@
   "name": "Spaghetti Bolognese",
   "tags": [],
   "includeInSuggestions": true,
+  "images": ["img.jpg"],
+  "thumbnail": "img.jpg",
   "ingredients": [
     {
       "amount": "500g",
