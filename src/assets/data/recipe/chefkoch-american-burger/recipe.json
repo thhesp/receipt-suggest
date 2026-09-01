@@ -3,6 +3,8 @@
   "name": "All American Burger",
   "tags": [],
   "includeInSuggestions": true,
+  "images": ["img.jpg"],
+  "thumbnail": "img.jpg",
   "ingredients": [
     {
       "amount": "4",

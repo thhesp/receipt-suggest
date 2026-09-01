@@ -16,9 +16,6 @@ for (const directory of directories.filter(entry => entry.isDirectory())) {
     throw new Error(`Missing recipe.json: ${path.relative(projectRoot, recipePath)}`);
   }
   const recipe = JSON.parse(await readFile(recipePath, 'utf8'));
-  const image = ['img.jpg', 'img.png', 'img.jpeg'].find(filename =>
-    existsSync(path.join(recipeRoot, directory.name, filename))
-  );
   recipes.push({
     id: recipe.id,
     name: recipe.name,
@@ -26,8 +23,8 @@ for (const directory of directories.filter(entry => entry.isDirectory())) {
     includeInSuggestions: recipe.includeInSuggestions,
     ...(recipe.nutrition ? { nutrition: recipe.nutrition } : {}),
     ...(recipe.externalUrl ? { externalUrl: recipe.externalUrl } : {}),
-    ...(!recipe.externalUrl && image ? {
-      thumbnail: `assets/data/recipe/${directory.name}/${image}`
+    ...(!recipe.externalUrl && recipe.thumbnail ? {
+      thumbnail: `assets/data/recipe/${directory.name}/${recipe.thumbnail}`
     } : {})
   });
 }

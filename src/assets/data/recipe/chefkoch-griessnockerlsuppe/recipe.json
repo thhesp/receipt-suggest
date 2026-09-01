@@ -3,6 +3,8 @@
   "name": "Roros Grießnockerlsuppe",
   "tags": [],
   "includeInSuggestions": true,
+  "images": ["img.jpg"],
+  "thumbnail": "img.jpg",
   "ingredients": [
     {
       "amount": "60g",

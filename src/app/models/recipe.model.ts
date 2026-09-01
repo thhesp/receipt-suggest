@@ -13,6 +13,12 @@ export interface Ingredient {
   amount: string;
 }
 
+export interface RecipeFile {
+  ingredients: Ingredient[];
+  images?: string[];
+  thumbnail?: string;
+}
+
 export interface RecipeDetail extends Recipe {
   ingredients: Ingredient[];
   description: string;

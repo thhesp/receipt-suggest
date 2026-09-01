@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, Subject, forkJoin } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
 import { Ingredient } from '../../models/recipe.model';
@@ -21,7 +21,6 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   description$ = new BehaviorSubject<string>('');
   images$ = new BehaviorSubject<string[]>([]);
   isLoading = true;
-  imagesLoading = false;
   error: string | null = null;
 
   selectedImageIndex = 0;
@@ -169,27 +168,23 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Load ingredients and description in parallel
-    forkJoin({
-      ingredients: this.recipeDetailService.loadIngredients(this.recipeLink),
-      description: this.recipeDetailService.loadDescription(this.recipeLink)
-    })
+    this.isLoading = true;
+    this.error = null;
+    this.ingredients$.next([]);
+    this.images$.next([]);
+    this.description$.next('');
+
+    // Rendering starts as soon as recipe metadata is available. Browser image
+    // requests then proceed independently instead of gating the detail view.
+    this.recipeDetailService.loadIngredients(this.recipeLink)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({ ingredients, description }) => {
+        next: ingredients => {
           this.ingredients$.next(ingredients);
-          this.description$.next(description);
-
           this.isLoading = false;
-
-          // Let the recipe content render before probing for optional images.
-          requestAnimationFrame(() => {
-            this.imagesLoading = true;
-            this.recipeDetailService.loadImages(this.recipeLink).then(images => {
-              this.images$.next(images);
-              this.imagesLoading = false;
-            });
-          });
+          this.recipeDetailService.loadImages(this.recipeLink)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(images => this.images$.next(images));
         },
         error: (err) => {
           this.error = 'Failed to load recipe details.';
@@ -197,6 +192,10 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
           console.error('Error loading recipe details:', err);
         }
       });
+
+    this.recipeDetailService.loadDescription(this.recipeLink)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(description => this.description$.next(description));
   }
 
   openImageModal(index: number): void {

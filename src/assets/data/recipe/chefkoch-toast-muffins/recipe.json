@@ -3,6 +3,8 @@
   "name": "Gebackene Toast-Muffins mit Ei und Speck",
   "tags": [],
   "includeInSuggestions": true,
+  "images": ["img.jpg"],
+  "thumbnail": "img.jpg",
   "ingredients": [
     {
       "amount": "4 Scheiben",

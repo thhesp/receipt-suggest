@@ -23,6 +23,7 @@ await writeFile(path.join(recipePath, 'recipe.json'), `${JSON.stringify({
   name,
   tags: [],
   includeInSuggestions: false,
+  images: [],
   ingredients: []
 }, null, 2)}\n`);
 await writeFile(path.join(recipePath, 'recipe.html'), `<article>
