@@ -1,7 +1,7 @@
 {
   "id": "chefkoch-kartoffel-sterz",
   "name": "Kartoffel-Sterz",
-  "tags": [],
+  "tags": ["KARTOFFELN", "VEGETARISCH"],
   "includeInSuggestions": true,
   "workTime": "ca. 20 Min.",
   "cookingTime": "ca. 30 Min.",

@@ -1,7 +1,7 @@
 {
   "id": "custom-spaghetti-bolognese",
   "name": "Spaghetti Bolognese",
-  "tags": [],
+  "tags": ["PASTA", "RIND"],
   "includeInSuggestions": true,
   "cookingTime": "ca. 25–30 Min.",
   "images": ["img.jpg"],

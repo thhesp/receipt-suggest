@@ -1,7 +1,7 @@
 {
   "id": "chefkoch-rinderbraten",
   "name": "Rinderbraten",
-  "tags": [],
+  "tags": ["RIND", "BRATEN"],
   "includeInSuggestions": true,
   "workTime": "ca. 20 Min.",
   "cookingTime": "ca. 2 Std. 15 Min.",

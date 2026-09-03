@@ -1,8 +1,9 @@
 {
   "id": "anderes-french-toast",
   "name": "French-Toast-Cordon-Bleu",
-  "tags": [],
+  "tags": ["FRÜHSTÜCK", "TOAST", "SCHINKEN"],
   "includeInSuggestions": true,
+  "nutrition": "758 kcal pro Portion",
   "workTime": "20 Min.",
   "cookingTime": "4–6 Min.",
   "images": ["img.jpg"],

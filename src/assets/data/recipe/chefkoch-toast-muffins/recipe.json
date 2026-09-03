@@ -1,7 +1,7 @@
 {
   "id": "chefkoch-toast-muffins",
   "name": "Gebackene Toast-Muffins mit Ei und Speck",
-  "tags": [],
+  "tags": ["FRÜHSTÜCK", "TOAST", "SPECK"],
   "includeInSuggestions": true,
   "workTime": "ca. 10 Min.",
   "cookingTime": "ca. 30 Min.",

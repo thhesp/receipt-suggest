@@ -1,7 +1,7 @@
 {
   "id": "chefkoch-strudel",
   "name": "Schinken - Tomaten- Mozarella - Strudel",
-  "tags": [],
+  "tags": ["BLÄTTERTEIG", "SCHINKEN"],
   "includeInSuggestions": true,
   "workTime": "ca. 15 Min.",
   "cookingTime": "30–35 Min.",

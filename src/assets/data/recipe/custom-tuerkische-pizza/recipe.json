@@ -2,7 +2,9 @@
   "id": "custom-tuerkische-pizza",
   "name": "Türkische Pizza",
   "tags": [
-    "PIZZA"
+    "PIZZA",
+    "TÜRKISCHE KÜCHE",
+    "SCHNELL"
   ],
   "includeInSuggestions": true,
   "images": ["img.jpg"],

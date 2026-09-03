@@ -1,7 +1,7 @@
 {
   "id": "custom-gyros-nudel-auflauf",
   "name": "Gyros-Nudeln-Auflauf",
-  "tags": [],
+  "tags": ["PASTA", "AUFLAUF", "SCHWEIN"],
   "includeInSuggestions": true,
   "cookingTime": "ca. 20 Min.",
   "images": ["img.jpg"],

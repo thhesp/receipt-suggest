@@ -1,8 +1,9 @@
 {
   "id": "chefkoch-american-burger",
   "name": "All American Burger",
-  "tags": [],
+  "tags": ["BURGER", "RIND"],
   "includeInSuggestions": true,
+  "nutrition": "ca. 558 kcal pro Portion",
   "workTime": "ca. 45 Min.",
   "cookingTime": "ca. 10 Min.",
   "images": ["img.jpg"],

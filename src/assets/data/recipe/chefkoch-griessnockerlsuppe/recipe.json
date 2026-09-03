@@ -1,7 +1,7 @@
 {
   "id": "chefkoch-griessnockerlsuppe",
   "name": "Roros Grießnockerlsuppe",
-  "tags": [],
+  "tags": ["SUPPE", "VEGETARISCH"],
   "includeInSuggestions": true,
   "workTime": "ca. 15 Min.",
   "cookingTime": "ca. 20–25 Min.",
