@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
-import { Ingredient, RecipeFile } from '../models/recipe.model';
+import { Ingredient, RecipeFile, RecipeTimes } from '../models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +48,22 @@ export class RecipeDetailService {
       catchError(error => {
         console.warn(`No tags found for ${recipeLink}:`, error);
         return of([]);
+      })
+    );
+  }
+
+  /**
+   * Load active preparation times for a recipe.
+   */
+  loadTimes(recipeLink: string): Observable<RecipeTimes> {
+    return this.loadRecipe(recipeLink).pipe(
+      map(data => ({
+        workTime: data.workTime,
+        cookingTime: data.cookingTime
+      })),
+      catchError(error => {
+        console.warn(`No preparation times found for ${recipeLink}:`, error);
+        return of({});
       })
     );
   }

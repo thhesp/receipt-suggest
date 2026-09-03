@@ -5,6 +5,8 @@
     "PIZZA"
   ],
   "includeInSuggestions": true,
+  "workTime": "ca. 15 Min.",
+  "cookingTime": "15–20 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

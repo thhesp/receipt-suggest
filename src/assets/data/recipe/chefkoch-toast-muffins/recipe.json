@@ -3,6 +3,8 @@
   "name": "Gebackene Toast-Muffins mit Ei und Speck",
   "tags": [],
   "includeInSuggestions": true,
+  "workTime": "ca. 10 Min.",
+  "cookingTime": "ca. 30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

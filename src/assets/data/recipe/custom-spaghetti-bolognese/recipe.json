@@ -3,6 +3,7 @@
   "name": "Spaghetti Bolognese",
   "tags": [],
   "includeInSuggestions": true,
+  "cookingTime": "ca. 25–30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

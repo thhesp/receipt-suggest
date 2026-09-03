@@ -22,6 +22,8 @@ for (const directory of directories.filter(entry => entry.isDirectory())) {
     tags: recipe.tags,
     includeInSuggestions: recipe.includeInSuggestions,
     ...(recipe.nutrition ? { nutrition: recipe.nutrition } : {}),
+    ...(recipe.workTime ? { workTime: recipe.workTime } : {}),
+    ...(recipe.cookingTime ? { cookingTime: recipe.cookingTime } : {}),
     ...(recipe.externalUrl ? { externalUrl: recipe.externalUrl } : {}),
     ...(!recipe.externalUrl && recipe.thumbnail ? {
       thumbnail: `assets/data/recipe/${directory.name}/${recipe.thumbnail}`

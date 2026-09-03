@@ -3,6 +3,8 @@
   "name": "Schinken - Tomaten- Mozarella - Strudel",
   "tags": [],
   "includeInSuggestions": true,
+  "workTime": "ca. 15 Min.",
+  "cookingTime": "30–35 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

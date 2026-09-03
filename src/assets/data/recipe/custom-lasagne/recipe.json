@@ -3,6 +3,7 @@
   "name": "Lasagne",
   "tags": [],
   "includeInSuggestions": true,
+  "cookingTime": "ca. 30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

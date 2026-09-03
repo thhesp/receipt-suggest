@@ -8,6 +8,16 @@
       <div *ngIf="tags$ | async as tags" class="d-flex flex-wrap justify-content-center gap-2 mt-2">
         <span *ngFor="let tag of tags" class="badge bg-info">{{ tag }}</span>
       </div>
+      <ng-container *ngIf="times$ | async as times">
+        <div *ngIf="hasTimes(times)" class="recipe-times mt-2">
+          <span *ngIf="times.workTime">
+            <strong>Work time:</strong> {{ times.workTime }}
+          </span>
+          <span *ngIf="times.cookingTime">
+            <strong>Cooking time:</strong> {{ times.cookingTime }}
+          </span>
+        </div>
+      </ng-container>
     </header>
 
     <ng-container *ngIf="isLoading">

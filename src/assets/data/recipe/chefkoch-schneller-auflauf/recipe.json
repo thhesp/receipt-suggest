@@ -5,6 +5,8 @@
     "PASTA"
   ],
   "includeInSuggestions": true,
+  "workTime": "ca. 20 Min.",
+  "cookingTime": "30–40 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

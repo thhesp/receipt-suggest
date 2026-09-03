@@ -3,6 +3,8 @@
   "name": "Kartoffel-Sterz",
   "tags": [],
   "includeInSuggestions": true,
+  "workTime": "ca. 20 Min.",
+  "cookingTime": "ca. 30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

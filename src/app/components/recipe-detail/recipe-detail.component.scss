@@ -48,6 +48,14 @@
     text-align: center;
   }
 
+  .recipe-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    justify-content: center;
+    color: #4a5568;
+  }
+
   .detail-section {
     background-color: var(--surface);
     border: 1px solid var(--border-color);

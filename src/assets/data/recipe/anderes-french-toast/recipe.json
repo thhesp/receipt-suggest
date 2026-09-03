@@ -3,6 +3,8 @@
   "name": "French-Toast-Cordon-Bleu",
   "tags": [],
   "includeInSuggestions": true,
+  "workTime": "20 Min.",
+  "cookingTime": "4–6 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

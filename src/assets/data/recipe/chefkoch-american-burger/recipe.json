@@ -3,6 +3,8 @@
   "name": "All American Burger",
   "tags": [],
   "includeInSuggestions": true,
+  "workTime": "ca. 45 Min.",
+  "cookingTime": "ca. 10 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
