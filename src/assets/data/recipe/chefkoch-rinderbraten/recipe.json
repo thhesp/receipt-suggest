@@ -1,8 +1,10 @@
 {
   "id": "chefkoch-rinderbraten",
   "name": "Rinderbraten",
-  "tags": [],
+  "tags": ["BRATEN", "RIND"],
   "includeInSuggestions": true,
+  "workTime": "ca. 20 Min.",
+  "cookingTime": "ca. 2 Std. 15 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -15,7 +17,7 @@
       "name": "Zwiebel"
     },
     {
-      "amount": "1 Becher",
+      "amount": "½ Becher",
       "name": "Sahne"
     },
     {
@@ -31,12 +33,16 @@
       "name": "Pfeffer"
     },
     {
-      "amount": "",
+      "amount": "400ml",
       "name": "Wasser"
     },
     {
       "amount": "",
       "name": "Brühwürfel"
+    },
+    {
+      "amount": "",
+      "name": "Saucenbinder"
     }
   ]
 }

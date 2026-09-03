@@ -1,8 +1,9 @@
 {
   "id": "custom-spaghetti-bolognese",
   "name": "Spaghetti Bolognese",
-  "tags": [],
+  "tags": ["PASTA"],
   "includeInSuggestions": true,
+  "cookingTime": "ca. 25–30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -11,19 +12,19 @@
       "name": "Spaghetti"
     },
     {
-      "amount": "400g",
-      "name": "Hackfleisch"
+      "amount": "350–400g",
+      "name": "Hackfleisch vom Rind"
     },
     {
-      "amount": "300g",
-      "name": "stückige Tomaten"
+      "amount": "ca. 300g",
+      "name": "Tomaten, geschält oder gewürfelt (Dose)"
     },
     {
-      "amount": "2",
+      "amount": "ca. 140g",
       "name": "Zwiebeln"
     },
     {
-      "amount": "1",
+      "amount": "100–150g",
       "name": "Karotten"
     },
     {

@@ -2,9 +2,11 @@
   "id": "chefkoch-ruehrei-nudeln",
   "name": "Nudeln mit Rührei und Schinken",
   "tags": [
-    "PASTA"
+    "PASTA",
+    "SCHWEIN"
   ],
   "includeInSuggestions": true,
+  "workTime": "ca. 15 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [

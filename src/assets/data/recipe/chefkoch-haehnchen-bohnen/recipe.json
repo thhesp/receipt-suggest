@@ -2,9 +2,11 @@
   "id": "chefkoch-haehnchen-bohnen",
   "name": "Hähnchenbrust in Schmand mit grünen Bohnen",
   "tags": [
+    "PFANNENGERICHT",
     "HÄHNCHEN"
   ],
   "includeInSuggestions": true,
+  "workTime": "ca. 15 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -17,7 +19,7 @@
       "name": "Schmand"
     },
     {
-      "amount": "400g",
+      "amount": "3 Portionen",
       "name": "Hähnchenbrustfilet"
     },
     {
@@ -37,11 +39,11 @@
       "name": "Paprikapulver"
     },
     {
-      "amount": "",
-      "name": "Gemüsebrühe"
+      "amount": "1 TL",
+      "name": "gekörnte Gemüsebrühe"
     },
     {
-      "amount": "",
+      "amount": "1 EL",
       "name": "Öl"
     }
   ]

@@ -43,6 +43,7 @@
     <div class="container-md mb-5">
       <app-tag-selector
         [allTags]="allTags"
+        [recipes]="recipes$ | async"
         [filteredRecipes]="filteredRecipes$ | async"
         [totalRecipes]="(recipes$ | async)?.length ?? 0"
         (tagsChanged)="onTagsChanged($event)"

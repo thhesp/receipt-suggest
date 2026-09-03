@@ -1,8 +1,10 @@
 {
   "id": "chefkoch-kartoffel-sterz",
   "name": "Kartoffel-Sterz",
-  "tags": [],
+  "tags": ["BEILAGE", "VEGETARISCH"],
   "includeInSuggestions": true,
+  "workTime": "ca. 20 Min.",
+  "cookingTime": "ca. 30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -19,8 +21,16 @@
       "name": "Sahne"
     },
     {
+      "amount": "",
+      "name": "Fett zum Ausbacken, z. B. Butter"
+    },
+    {
       "amount": "1 Glas",
-      "name": "Apfelmus"
+      "name": "Apfelmus oder Kompott"
+    },
+    {
+      "amount": "",
+      "name": "Puderzucker (optional)"
     },
     {
       "amount": "",

@@ -2,9 +2,13 @@
   "id": "chefkoch-schneller-auflauf",
   "name": "Schneller Käse-Gemüse-Schinken-Nudeln-Auflauf",
   "tags": [
-    "PASTA"
+    "PASTA",
+    "AUFLAUF",
+    "SCHWEIN"
   ],
   "includeInSuggestions": true,
+  "workTime": "ca. 20 Min.",
+  "cookingTime": "30–40 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -14,7 +18,7 @@
     },
     {
       "amount": "850g",
-      "name": "Erbsen&amp;Karotten"
+      "name": "Erbsen und Karotten, gemischt"
     },
     {
       "amount": "250g",
@@ -54,7 +58,7 @@
     },
     {
       "amount": "",
-      "name": "Öl"
+      "name": "Olivenöl"
     }
   ]
 }

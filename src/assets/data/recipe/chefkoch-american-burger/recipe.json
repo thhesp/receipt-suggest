@@ -1,8 +1,11 @@
 {
   "id": "chefkoch-american-burger",
   "name": "All American Burger",
-  "tags": [],
+  "tags": ["BURGER", "RIND"],
   "includeInSuggestions": true,
+  "nutrition": "ca. 558 kcal pro Portion",
+  "workTime": "ca. 45 Min.",
+  "cookingTime": "ca. 10 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -15,7 +18,7 @@
       "name": "Zwiebeln"
     },
     {
-      "amount": "1",
+      "amount": "",
       "name": "Röstzwiebeln"
     },
     {
@@ -24,11 +27,11 @@
     },
     {
       "amount": "4 Scheiben",
-      "name": "Schmerzkäse"
+      "name": "Schmelzkäse"
     },
     {
-      "amount": "1",
-      "name": "Salat"
+      "amount": "4 Blätter",
+      "name": "Eisbergsalat"
     },
     {
       "amount": "2",
@@ -51,8 +54,8 @@
       "name": "Pfeffer"
     },
     {
-      "amount": "",
-      "name": "Öl"
+      "amount": "3 EL",
+      "name": "neutrales Pflanzenöl"
     }
   ]
 }

@@ -1,14 +1,17 @@
 {
   "id": "anderes-french-toast",
   "name": "French-Toast-Cordon-Bleu",
-  "tags": [],
+  "tags": ["SANDWICH", "SCHWEIN"],
   "includeInSuggestions": true,
+  "nutrition": "758 kcal pro Portion",
+  "workTime": "20 Min.",
+  "cookingTime": "4–6 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
     {
       "amount": "2 Scheiben",
-      "name": "Weißbrot"
+      "name": "Kastanienweißbrot (je 4 cm dick)"
     },
     {
       "amount": "2 Scheiben",
@@ -16,7 +19,7 @@
     },
     {
       "amount": "2 Scheiben",
-      "name": "Gruyere Käse"
+      "name": "Gruyère"
     },
     {
       "amount": "2",
@@ -39,8 +42,12 @@
       "name": "Tomaten"
     },
     {
+      "amount": "100g",
+      "name": "Rettich"
+    },
+    {
       "amount": "3 EL",
-      "name": "Essig"
+      "name": "Weißweinessig"
     },
     {
       "amount": "4 El",

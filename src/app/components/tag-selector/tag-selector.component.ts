@@ -12,19 +12,24 @@ import { Recipe } from '../../models/recipe.model';
 })
 export class TagSelectorComponent implements OnInit {
   @Input() allTags: string[] = [];
+  @Input() recipes: Recipe[] | null = [];
   @Input() filteredRecipes: Recipe[] | null = [];
   @Input() totalRecipes = 0;
   @Output() tagsChanged = new EventEmitter<string[]>();
 
   selectedTags: Set<string> = new Set();
   availableTags: Map<string, boolean> = new Map();
+  tagRecipeCounts: Map<string, number> = new Map();
+  areTagsCollapsed = true;
 
   ngOnInit(): void {
     this.updateAvailableTags();
+    this.updateTagRecipeCounts();
   }
 
   ngOnChanges(): void {
     this.updateAvailableTags();
+    this.updateTagRecipeCounts();
   }
 
   toggleTag(tag: string): void {
@@ -69,9 +74,28 @@ export class TagSelectorComponent implements OnInit {
     return this.availableTags.get(tag) ?? true;
   }
 
+  getTagRecipeCount(tag: string): number {
+    return this.tagRecipeCounts.get(tag) ?? 0;
+  }
+
+  toggleTagsCollapsed(): void {
+    this.areTagsCollapsed = !this.areTagsCollapsed;
+  }
+
   clearFilters(): void {
     this.selectedTags.clear();
     this.updateAvailableTags();
     this.tagsChanged.emit([]);
+  }
+
+  private updateTagRecipeCounts(): void {
+    this.tagRecipeCounts.clear();
+
+    this.allTags.forEach(tag => this.tagRecipeCounts.set(tag, 0));
+    this.recipes?.forEach(recipe => {
+      recipe.tags.forEach(tag => {
+        this.tagRecipeCounts.set(tag, (this.tagRecipeCounts.get(tag) ?? 0) + 1);
+      });
+    });
   }
 }

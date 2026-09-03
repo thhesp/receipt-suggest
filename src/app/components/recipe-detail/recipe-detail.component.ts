@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
-import { Ingredient } from '../../models/recipe.model';
+import { Ingredient, RecipeTimes } from '../../models/recipe.model';
 import { UserRecipeStateService } from '../../services/user-recipe-state.service';
 
 @Component({
@@ -18,6 +18,9 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   recipeName = '';
   recipeLink = '';
   ingredients$ = new BehaviorSubject<Ingredient[]>([]);
+  nutrition$ = new BehaviorSubject<string>('');
+  tags$ = new BehaviorSubject<string[]>([]);
+  times$ = new BehaviorSubject<RecipeTimes>({});
   description$ = new BehaviorSubject<string>('');
   images$ = new BehaviorSubject<string[]>([]);
   isLoading = true;
@@ -171,6 +174,9 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
     this.ingredients$.next([]);
+    this.nutrition$.next('');
+    this.tags$.next([]);
+    this.times$.next({});
     this.images$.next([]);
     this.description$.next('');
 
@@ -196,6 +202,22 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.recipeDetailService.loadDescription(this.recipeLink)
       .pipe(takeUntil(this.destroy$))
       .subscribe(description => this.description$.next(description));
+
+    this.recipeDetailService.loadNutrition(this.recipeLink)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(nutrition => this.nutrition$.next(nutrition));
+
+    this.recipeDetailService.loadTags(this.recipeLink)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tags => this.tags$.next(tags));
+
+    this.recipeDetailService.loadTimes(this.recipeLink)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(times => this.times$.next(times));
+  }
+
+  hasTimes(times: RecipeTimes | null): boolean {
+    return Boolean(times?.workTime || times?.cookingTime);
   }
 
   openImageModal(index: number): void {

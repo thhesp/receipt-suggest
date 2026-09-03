@@ -2,9 +2,12 @@
   "id": "chefkoch-pizza",
   "name": "Pizza mit Tomaten Schinken und Käse",
   "tags": [
-    "PIZZA"
+    "PIZZA",
+    "SCHWEIN"
   ],
   "includeInSuggestions": true,
+  "workTime": "ca. 15 Min.",
+  "cookingTime": "15–20 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -33,23 +36,23 @@
       "name": "Parmesan (gerieben)"
     },
     {
-      "amount": "",
+      "amount": "½ TL",
       "name": "Zucker"
     },
     {
-      "amount": "",
+      "amount": "8 EL",
       "name": "Öl"
     },
     {
-      "amount": "",
-      "name": "Wasser"
+      "amount": "225ml",
+      "name": "Wasser, lauwarm"
     },
     {
-      "amount": "",
+      "amount": "1½ TL",
       "name": "Salz"
     },
     {
-      "amount": "",
+      "amount": "1 Prise",
       "name": "Pfeffer"
     }
   ]

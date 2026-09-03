@@ -1,8 +1,9 @@
 {
   "id": "custom-lasagne",
   "name": "Lasagne",
-  "tags": [],
+  "tags": ["PASTA", "AUFLAUF"],
   "includeInSuggestions": true,
+  "cookingTime": "ca. 30 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -20,7 +21,7 @@
     },
     {
       "amount": "150ml",
-      "name": "Brühe"
+      "name": "Brühe (optional)"
     },
     {
       "amount": "800g",
@@ -28,7 +29,7 @@
     },
     {
       "amount": "400g",
-      "name": "Käse"
+      "name": "geriebener Käse (z. B. Gouda)"
     },
     {
       "amount": "225g",
@@ -61,6 +62,14 @@
     {
       "amount": "",
       "name": "Basilikum"
+    },
+    {
+      "amount": "",
+      "name": "Öl zum Einreiben der Auflaufform"
+    },
+    {
+      "amount": "",
+      "name": "Parmesan zum Bestreuen (optional)"
     }
   ]
 }

@@ -1,8 +1,9 @@
 {
   "id": "custom-gyros-nudel-auflauf",
   "name": "Gyros-Nudeln-Auflauf",
-  "tags": [],
+  "tags": ["PASTA", "AUFLAUF", "SCHWEIN"],
   "includeInSuggestions": true,
+  "cookingTime": "ca. 20 Min.",
   "images": ["img.jpg"],
   "thumbnail": "img.jpg",
   "ingredients": [
@@ -16,27 +17,19 @@
     },
     {
       "amount": "1 Flasche",
-      "name": "Cocktailsauße"
+      "name": "Cocktailsoße"
     },
     {
-      "amount": "500g",
+      "amount": "250–500g",
       "name": "Nudeln"
     },
     {
       "amount": "200g",
-      "name": "Käse"
+      "name": "Käse (Emmentaler?)"
     },
     {
       "amount": "",
-      "name": "Thymian"
-    },
-    {
-      "amount": "",
-      "name": "Oregano"
-    },
-    {
-      "amount": "",
-      "name": "Basilikum"
+      "name": "Kräuter nach Belieben"
     }
   ]
 }
