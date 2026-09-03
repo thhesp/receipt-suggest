@@ -1,7 +1,7 @@
 {
   "id": "custom-lasagne",
   "name": "Lasagne",
-  "tags": ["PASTA", "AUFLAUF", "RIND"],
+  "tags": ["PASTA", "AUFLAUF"],
   "includeInSuggestions": true,
   "cookingTime": "ca. 30 Min.",
   "images": ["img.jpg"],

@@ -2,7 +2,8 @@
   "id": "custom-protein-muesli",
   "name": "Eigenes Protein Müsli",
   "tags": [
-    "MÜSLI"
+    "SNACK",
+    "VEGETARISCH"
   ],
   "includeInSuggestions": false,
   "ingredients": []
