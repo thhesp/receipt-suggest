@@ -16,27 +16,19 @@
     },
     {
       "amount": "1 Flasche",
-      "name": "Cocktailsauße"
+      "name": "Cocktailsoße"
     },
     {
-      "amount": "500g",
+      "amount": "250–500g",
       "name": "Nudeln"
     },
     {
       "amount": "200g",
-      "name": "Käse"
+      "name": "Käse (Emmentaler?)"
     },
     {
       "amount": "",
-      "name": "Thymian"
-    },
-    {
-      "amount": "",
-      "name": "Oregano"
-    },
-    {
-      "amount": "",
-      "name": "Basilikum"
+      "name": "Kräuter nach Belieben"
     }
   ]
 }

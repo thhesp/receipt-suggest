@@ -15,7 +15,7 @@
       "name": "Zwiebeln"
     },
     {
-      "amount": "1",
+      "amount": "",
       "name": "Röstzwiebeln"
     },
     {
@@ -24,11 +24,11 @@
     },
     {
       "amount": "4 Scheiben",
-      "name": "Schmerzkäse"
+      "name": "Schmelzkäse"
     },
     {
-      "amount": "1",
-      "name": "Salat"
+      "amount": "4 Blätter",
+      "name": "Eisbergsalat"
     },
     {
       "amount": "2",
@@ -51,8 +51,8 @@
       "name": "Pfeffer"
     },
     {
-      "amount": "",
-      "name": "Öl"
+      "amount": "3 EL",
+      "name": "neutrales Pflanzenöl"
     }
   ]
 }

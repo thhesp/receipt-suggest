@@ -8,11 +8,11 @@
   "ingredients": [
     {
       "amount": "60g",
-      "name": "Butter"
+      "name": "Butter, weich"
     },
     {
       "amount": "130g",
-      "name": "Grieß"
+      "name": "Hartweizengrieß"
     },
     {
       "amount": "2",
@@ -31,7 +31,7 @@
       "name": "Muskat"
     },
     {
-      "amount": "",
+      "amount": "1 TL",
       "name": "Majoran"
     },
     {
@@ -39,12 +39,12 @@
       "name": "Schnittlauch"
     },
     {
-      "amount": "",
+      "amount": "2 Liter",
       "name": "Gemüsebrühe"
     },
     {
       "amount": "",
-      "name": "Möhren"
+      "name": "Möhren, optional"
     }
   ]
 }

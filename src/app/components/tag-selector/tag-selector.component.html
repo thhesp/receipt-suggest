@@ -1,22 +1,33 @@
 <div class="tag-selector">
-  <div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="d-flex justify-content-between align-items-center">
     <div>
       <h5>Filter by Tags</h5>
       <small class="text-muted">
         Showing {{ filteredRecipes?.length ?? 0 }} of {{ totalRecipes }} recipes
       </small>
     </div>
-    <button
-      *ngIf="selectedTags.size > 0"
-      type="button"
-      class="btn btn-sm btn-secondary"
-      (click)="clearFilters()"
-    >
-      Clear Filters
-    </button>
+    <div class="tag-actions">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-secondary"
+        [attr.aria-expanded]="!areTagsCollapsed"
+        aria-controls="tag-buttons"
+        (click)="toggleTagsCollapsed()"
+      >
+        {{ areTagsCollapsed ? 'Show tags' : 'Hide tags' }}
+      </button>
+      <button
+        *ngIf="selectedTags.size > 0"
+        type="button"
+        class="btn btn-sm btn-secondary"
+        (click)="clearFilters()"
+      >
+        Clear Filters
+      </button>
+    </div>
   </div>
 
-  <div class="tag-buttons">
+  <div *ngIf="!areTagsCollapsed" id="tag-buttons" class="tag-buttons mt-3">
     <button
       *ngFor="let tag of allTags"
       type="button"
@@ -29,7 +40,7 @@
       [disabled]="!isTagAvailable(tag) && !isTagSelected(tag)"
       (click)="toggleTag(tag)"
     >
-      {{ tag }}
+      {{ tag }} ({{ getTagRecipeCount(tag) }})
     </button>
   </div>
 </div>

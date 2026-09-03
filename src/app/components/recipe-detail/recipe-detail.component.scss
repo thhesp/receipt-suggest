@@ -1,32 +1,80 @@
 .recipe-detail-container {
-  padding: 2.5rem 0 4rem;
+  padding: clamp(1.5rem, 4vw, 3.5rem) 1rem 4rem;
+
+  .recipe-detail-content {
+    margin: 0 auto;
+    max-width: 960px;
+  }
+
+  .recipe-header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
 
   h1 {
     color: #263238;
     font-size: clamp(1.8rem, 5vw, 2.5rem);
     font-weight: 700;
-    margin-bottom: 1.5rem;
-    text-align: center;
+    margin: 0;
   }
 
-  h3 {
+  h2 {
     color: #555;
     border-bottom: 2px solid var(--primary-color);
+    font-size: clamp(1.35rem, 3vw, 1.65rem);
+    margin-bottom: 1.25rem;
     padding-bottom: 0.5rem;
   }
 
   .detail-actions {
-    background-color: var(--surface);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    padding: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    max-width: 100%;
+    padding: 0.25rem;
+    width: fit-content;
+  }
+
+  .form-switch {
+    margin: 0;
+  }
+
+  .nutrition-info {
+    color: #4a5568;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  .detail-section {
+    background-color: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+
+  .ingredient-actions,
+  .ingredient-selection-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .ingredient-actions {
+    margin-bottom: 1rem;
+  }
+
+  .ingredient-selection {
+    margin-bottom: 1rem;
   }
 
   .copy-status {
     color: #198754;
+    margin-bottom: 0.75rem;
   }
 
   .favorite-button {
@@ -63,17 +111,24 @@
   .description-content {
     line-height: 1.6;
     color: #4a5568;
-    padding: 1rem;
-    background-color: var(--surface);
-    border-radius: 4px;
+    max-width: 75ch;
   }
 
   table {
+    margin-bottom: 0;
     font-size: 0.95rem;
 
     thead {
       background-color: #007bff;
       color: white;
+    }
+  }
+
+  .image-card {
+    overflow: hidden;
+
+    .card-body {
+      padding: 0;
     }
   }
 }
@@ -98,6 +153,8 @@
     position: absolute;
     top: 20px;
     right: 35px;
+    background: transparent;
+    border: 0;
     color: white;
     font-size: 40px;
     font-weight: bold;
@@ -177,6 +234,33 @@
 }
 
 @media (max-width: 768px) {
+  .recipe-detail-container {
+    padding: 1.25rem 0.75rem 2.5rem;
+
+    .detail-actions {
+      gap: 0.5rem 0.75rem;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .form-switch {
+      padding-left: 2.75rem;
+    }
+
+    .form-check-input {
+      margin-left: -2.75rem;
+    }
+
+    .form-check-label {
+      padding-top: 0.1rem;
+    }
+
+    .ingredient-actions .btn,
+    .ingredient-selection-actions .btn {
+      width: 100%;
+    }
+  }
+
   .modal .modal-content-wrapper {
     max-width: 95%;
   }

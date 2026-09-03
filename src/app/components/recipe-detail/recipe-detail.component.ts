@@ -18,6 +18,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   recipeName = '';
   recipeLink = '';
   ingredients$ = new BehaviorSubject<Ingredient[]>([]);
+  nutrition$ = new BehaviorSubject<string>('');
+  tags$ = new BehaviorSubject<string[]>([]);
   description$ = new BehaviorSubject<string>('');
   images$ = new BehaviorSubject<string[]>([]);
   isLoading = true;
@@ -171,6 +173,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
     this.ingredients$.next([]);
+    this.nutrition$.next('');
+    this.tags$.next([]);
     this.images$.next([]);
     this.description$.next('');
 
@@ -196,6 +200,14 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.recipeDetailService.loadDescription(this.recipeLink)
       .pipe(takeUntil(this.destroy$))
       .subscribe(description => this.description$.next(description));
+
+    this.recipeDetailService.loadNutrition(this.recipeLink)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(nutrition => this.nutrition$.next(nutrition));
+
+    this.recipeDetailService.loadTags(this.recipeLink)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(tags => this.tags$.next(tags));
   }
 
   openImageModal(index: number): void {

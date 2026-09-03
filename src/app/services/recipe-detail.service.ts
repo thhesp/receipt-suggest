@@ -27,6 +27,32 @@ export class RecipeDetailService {
   }
 
   /**
+   * Load nutrition information for a recipe.
+   */
+  loadNutrition(recipeLink: string): Observable<string> {
+    return this.loadRecipe(recipeLink).pipe(
+      map(data => data.nutrition ?? ''),
+      catchError(error => {
+        console.warn(`No nutrition information found for ${recipeLink}:`, error);
+        return of('');
+      })
+    );
+  }
+
+  /**
+   * Load tags for a recipe.
+   */
+  loadTags(recipeLink: string): Observable<string[]> {
+    return this.loadRecipe(recipeLink).pipe(
+      map(data => data.tags ?? []),
+      catchError(error => {
+        console.warn(`No tags found for ${recipeLink}:`, error);
+        return of([]);
+      })
+    );
+  }
+
+  /**
    * Load description for a recipe
    */
   loadDescription(recipeLink: string): Observable<string> {

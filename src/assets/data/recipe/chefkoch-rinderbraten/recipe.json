@@ -15,7 +15,7 @@
       "name": "Zwiebel"
     },
     {
-      "amount": "1 Becher",
+      "amount": "½ Becher",
       "name": "Sahne"
     },
     {
@@ -31,12 +31,16 @@
       "name": "Pfeffer"
     },
     {
-      "amount": "",
+      "amount": "400ml",
       "name": "Wasser"
     },
     {
       "amount": "",
       "name": "Brühwürfel"
+    },
+    {
+      "amount": "",
+      "name": "Saucenbinder"
     }
   ]
 }

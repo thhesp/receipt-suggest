@@ -10,6 +10,10 @@
   <div class="card-body d-flex flex-column">
     <h5 class="card-title">{{ recipe.name }}</h5>
 
+    <p *ngIf="recipe.nutrition" class="nutrition-info mb-3">
+      <strong>Nutrition:</strong> {{ recipe.nutrition }}
+    </p>
+
     <div class="tags mb-3">
       <span *ngIf="isFavorite" class="badge favorite-mark me-2 mb-2">
         &#9829; Favorite

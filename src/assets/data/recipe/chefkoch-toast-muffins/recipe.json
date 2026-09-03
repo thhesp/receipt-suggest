@@ -19,16 +19,20 @@
       "name": "Eier"
     },
     {
-      "amount": "",
+      "amount": "3 TL",
       "name": "Thymian"
     },
     {
       "amount": "",
-      "name": "Öl"
+      "name": "Butter"
     },
     {
       "amount": "",
-      "name": "Butter"
+      "name": "Salz"
+    },
+    {
+      "amount": "",
+      "name": "Pfeffer"
     }
   ]
 }

@@ -20,7 +20,7 @@
     },
     {
       "amount": "150ml",
-      "name": "Brühe"
+      "name": "Brühe (optional)"
     },
     {
       "amount": "800g",
@@ -28,7 +28,7 @@
     },
     {
       "amount": "400g",
-      "name": "Käse"
+      "name": "geriebener Käse (z. B. Gouda)"
     },
     {
       "amount": "225g",
@@ -61,6 +61,14 @@
     {
       "amount": "",
       "name": "Basilikum"
+    },
+    {
+      "amount": "",
+      "name": "Öl zum Einreiben der Auflaufform"
+    },
+    {
+      "amount": "",
+      "name": "Parmesan zum Bestreuen (optional)"
     }
   ]
 }

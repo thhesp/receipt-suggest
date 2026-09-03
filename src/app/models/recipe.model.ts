@@ -15,6 +15,8 @@ export interface Ingredient {
 
 export interface RecipeFile {
   ingredients: Ingredient[];
+  tags: string[];
+  nutrition?: string;
   images?: string[];
   thumbnail?: string;
 }
