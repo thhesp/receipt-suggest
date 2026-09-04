@@ -10,8 +10,8 @@
   <div class="card-body d-flex flex-column">
     <h5 class="card-title">{{ recipe.name }}</h5>
 
-    <p *ngIf="recipe.nutrition" class="nutrition-info mb-3">
-      <strong>Nutrition:</strong> {{ recipe.nutrition }}
+    <p *ngIf="recipe.kcalPerPortion" class="kcalPerPortion-info mb-3">
+      <strong>KCal pro Portion:</strong> {{ recipe.kcalPerPortion }}
     </p>
 
     <div class="tags mb-3">

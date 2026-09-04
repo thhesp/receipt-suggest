@@ -18,7 +18,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   recipeName = '';
   recipeLink = '';
   ingredients$ = new BehaviorSubject<Ingredient[]>([]);
-  nutrition$ = new BehaviorSubject<string>('');
+  kcalPerPortion$ = new BehaviorSubject<string>('');
   tags$ = new BehaviorSubject<string[]>([]);
   times$ = new BehaviorSubject<RecipeTimes>({});
   description$ = new BehaviorSubject<string>('');
@@ -174,7 +174,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.error = null;
     this.ingredients$.next([]);
-    this.nutrition$.next('');
+    this.kcalPerPortion$.next('');
     this.tags$.next([]);
     this.times$.next({});
     this.images$.next([]);
@@ -203,9 +203,9 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(description => this.description$.next(description));
 
-    this.recipeDetailService.loadNutrition(this.recipeLink)
+    this.recipeDetailService.loadkcalPerPortion(this.recipeLink)
       .pipe(takeUntil(this.destroy$))
-      .subscribe(nutrition => this.nutrition$.next(nutrition));
+      .subscribe(kcalPerPortion => this.kcalPerPortion$.next(kcalPerPortion));
 
     this.recipeDetailService.loadTags(this.recipeLink)
       .pipe(takeUntil(this.destroy$))

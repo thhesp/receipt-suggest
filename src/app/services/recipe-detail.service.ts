@@ -27,13 +27,13 @@ export class RecipeDetailService {
   }
 
   /**
-   * Load nutrition information for a recipe.
+   * Load kcalPerPortion information for a recipe.
    */
-  loadNutrition(recipeLink: string): Observable<string> {
+  loadkcalPerPortion(recipeLink: string): Observable<string> {
     return this.loadRecipe(recipeLink).pipe(
-      map(data => data.nutrition ?? ''),
+      map(data => data.kcalPerPortion ?? ''),
       catchError(error => {
-        console.warn(`No nutrition information found for ${recipeLink}:`, error);
+        console.warn(`No kcalPerPortion information found for ${recipeLink}:`, error);
         return of('');
       })
     );

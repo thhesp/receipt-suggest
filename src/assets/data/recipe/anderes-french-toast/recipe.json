@@ -3,7 +3,7 @@
   "name": "French-Toast-Cordon-Bleu",
   "tags": ["SANDWICH", "SCHWEIN"],
   "includeInSuggestions": true,
-  "nutrition": "758 kcal pro Portion",
+  "kcalPerPortion": 758,
   "workTime": "20 Min.",
   "cookingTime": "4–6 Min.",
   "images": ["img.jpg"],

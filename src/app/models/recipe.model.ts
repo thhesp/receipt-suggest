@@ -3,7 +3,7 @@ export interface Recipe {
   name: string;
   tags: string[];
   includeInSuggestions: boolean;
-  nutrition?: string;
+  kcalPerPortion?: string;
   workTime?: string;
   cookingTime?: string;
   externalUrl?: string;
@@ -23,7 +23,7 @@ export interface RecipeTimes {
 export interface RecipeFile {
   ingredients: Ingredient[];
   tags: string[];
-  nutrition?: string;
+  kcalPerPortion?: string;
   workTime?: string;
   cookingTime?: string;
   images?: string[];

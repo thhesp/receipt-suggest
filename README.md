@@ -16,7 +16,7 @@ Each recipe folder contains a `recipe.json` file with metadata and ingredients:
     "name": "Pasta",
     "tags": ["PASTA"],
     "includeInSuggestions": true,
-    "nutrition": "650 kcal per serving",
+    "kcalPerPortion": "650 kcal per serving",
     "images": ["pasta.jpg", "pasta-serving.jpg"],
     "thumbnail": "pasta.jpg",
     "ingredients": [{ "name": "Pasta", "amount": "500 g" }]
@@ -33,7 +33,7 @@ The Docker build copies only declared images, so unlisted images can remain as
 source backups without being served.
 
 External recipes use the same folder structure and set `externalUrl` in
-`recipe.json`. The optional `nutrition` field is free-form and can
+`recipe.json`. The optional `kcalPerPortion` field is free-form and can
 contain values such as `650 kcal per serving` or `25 g protein`.
 
 The build generates the alphabetically sorted `recipes.json` manifest from the

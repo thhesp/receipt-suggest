@@ -3,7 +3,7 @@
   "name": "All American Burger",
   "tags": ["BURGER", "RIND"],
   "includeInSuggestions": true,
-  "nutrition": "ca. 558 kcal pro Portion",
+  "kcalPerPortion": 558,
   "workTime": "ca. 45 Min.",
   "cookingTime": "ca. 10 Min.",
   "images": ["img.jpg"],

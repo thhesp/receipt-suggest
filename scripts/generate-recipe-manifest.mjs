@@ -21,7 +21,7 @@ for (const directory of directories.filter(entry => entry.isDirectory())) {
     name: recipe.name,
     tags: recipe.tags,
     includeInSuggestions: recipe.includeInSuggestions,
-    ...(recipe.nutrition ? { nutrition: recipe.nutrition } : {}),
+    ...(recipe.kcalPerPortion ? { kcalPerPortion: recipe.kcalPerPortion } : {}),
     ...(recipe.workTime ? { workTime: recipe.workTime } : {}),
     ...(recipe.cookingTime ? { cookingTime: recipe.cookingTime } : {}),
     ...(recipe.externalUrl ? { externalUrl: recipe.externalUrl } : {}),
