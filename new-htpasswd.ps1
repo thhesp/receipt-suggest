@@ -19,7 +19,7 @@ $confirmationBstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($passw
 
 try {
     $plainPassword = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($passwordBstr)
-    $plainConfirmation = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($passwordConfirmation)
+    $plainConfirmation = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($confirmationBstr)
 
     if ($plainPassword -cne $plainConfirmation) {
         throw 'The passwords do not match.'
