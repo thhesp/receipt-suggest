@@ -47,6 +47,7 @@ COPY --from=compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx
 COPY prod.conf /etc/nginx/conf.d/default.conf
 ARG AUTH_CACHE_BUST
 RUN --mount=type=secret,id=basic_auth_users \
+    printf '%s' "$AUTH_CACHE_BUST" > /dev/null && \
     test -s /run/secrets/basic_auth_users && \
     cp /run/secrets/basic_auth_users /usr/share/.htpasswd && \
     chown root:nginx /usr/share/.htpasswd && \

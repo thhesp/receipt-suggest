@@ -53,7 +53,7 @@ and generates the recipe manifest automatically.
 
 ```powershell
 .\new-htpasswd.ps1 -Username alice
-docker build --secret id=basic_auth_users,src=.htpasswd -t receipt-suggest:latest .
+docker build --build-arg AUTH_CACHE_BUST=$(Get-Date -Format FileDateTime) --secret id=basic_auth_users,src=.htpasswd -t receipt-suggest:latest .
 docker run --rm -p 8080:8080 --volume receipt-suggest-user-state:/var/lib/receipt-suggest-user-state receipt-suggest:latest
 ```
 
@@ -78,7 +78,10 @@ Create the password file without storing it in this repository:
 
 The helper uses a locally installed `htpasswd` executable when available;
 otherwise it uses Docker Desktop's `httpd:2.4-alpine` image. Add another user
-with `-Append`. For a local private-data test, run `..\my-recipes\build.ps1`;
-that script supplies the generated file to Docker as a BuildKit secret.
+with `-Append`. After changing the password file, rebuild and redeploy the
+image with a new `AUTH_CACHE_BUST` value as shown above; BuildKit does not
+invalidate cached layers when a secret changes. For a local private-data test,
+run `..\my-recipes\build.ps1`; that script supplies the generated file to
+Docker as a BuildKit secret.
 `image-compressed` is an explicit static-only development target. It has no
 user-state API or authentication and must not be used for a deployment.
