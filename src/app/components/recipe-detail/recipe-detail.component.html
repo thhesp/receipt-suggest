@@ -48,6 +48,9 @@
           <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
           {{ isFavorite ? 'Favorite' : 'Add favorite' }}
         </button>
+        <button class="btn btn-outline-primary" type="button" (click)="shareRecipe()">
+          Share recipe
+        </button>
         <div class="form-check form-switch">
           <input
             id="plan-to-cook"
@@ -73,6 +76,9 @@
           </label>
         </div>
       </div>
+      <p class="copy-status" role="status" *ngIf="shareStatus === 'shared'">Recipe shared</p>
+      <p class="copy-status" role="status" *ngIf="shareStatus === 'copied'">Recipe link copied</p>
+      <p class="copy-status text-danger" role="status" *ngIf="shareStatus === 'failed'">Recipe link could not be copied</p>
 
       <section *ngIf="(ingredients$ | async)?.length as ingredientCount" class="detail-section">
         <h2>Ingredients</h2>
