@@ -129,7 +129,7 @@
                 <tr *ngFor="let ingredient of ingredients$ | async; let i = index">
                   <td *ngIf="isSelectingIngredients">
                     <input
-                      class="form-check-input"
+                      class="ingredient-checkbox"
                       type="checkbox"
                       [checked]="selectedIngredientIndexes.has(i)"
                       [attr.aria-label]="'Select ' + ingredient.name"

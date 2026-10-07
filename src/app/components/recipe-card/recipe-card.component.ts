@@ -16,6 +16,7 @@ import { UserRecipeStateService } from '../../services/user-recipe-state.service
 })
 export class RecipeCardComponent implements AfterViewInit, OnDestroy {
   @Input() recipe!: Recipe;
+  @Input() stretch = true;
   thumbnailUrl: string | null = null;
   isFavorite = false;
   private destroy$ = new Subject<void>();
