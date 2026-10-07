@@ -46,7 +46,15 @@ FROM user-state-runtime AS user-state-image
 COPY --from=compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
 COPY prod.conf /etc/nginx/conf.d/default.conf
 ARG AUTH_CACHE_BUST
+ARG APP_REVISION
+ARG OVERLAY_REVISION
+ARG BUILD_TIMESTAMP
+ARG DEPLOYMENT_RUN_URL
 RUN --mount=type=secret,id=basic_auth_users \
+    printf '%s' "$AUTH_CACHE_BUST" > /dev/null && \
+    printf '{"appRevision":"%s","overlayRevision":"%s","builtAt":"%s","runUrl":"%s"}\n' \
+      "$APP_REVISION" "$OVERLAY_REVISION" "$BUILD_TIMESTAMP" "$DEPLOYMENT_RUN_URL" \
+      > /usr/share/nginx/html/assets/build-info.json && \
     test -s /run/secrets/basic_auth_users && \
     cp /run/secrets/basic_auth_users /usr/share/.htpasswd && \
     chown root:nginx /usr/share/.htpasswd && \
