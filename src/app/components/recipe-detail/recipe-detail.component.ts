@@ -31,6 +31,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   isWakeLockEnabled = false;
   wakeLockSupported = 'wakeLock' in navigator;
   copyStatus: 'idle' | 'copied' | 'failed' | 'added' = 'idle';
+  shareStatus: 'idle' | 'shared' | 'copied' | 'failed' = 'idle';
   isSelectingIngredients = false;
   selectedIngredientIndexes = new Set<number>();
   isFavorite = false;
@@ -164,6 +165,29 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  async shareRecipe(): Promise<void> {
+    const url = window.location.href;
+
+    if ('share' in navigator) {
+      try {
+        await navigator.share({
+          title: this.recipeName,
+          text: `Check out ${this.recipeName}`,
+          url
+        });
+        this.shareStatus = 'shared';
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') {
+          this.shareStatus = 'idle';
+          return;
+        }
+      }
+    }
+
+    this.copyRecipeLink(url);
+  }
+
   private loadRecipeDetails(): void {
     if (!this.recipeLink) {
       this.error = 'Recipe not found.';
@@ -253,6 +277,18 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     if (this.wakeLock) {
       await this.wakeLock.release();
       this.wakeLock = null;
+    }
+  }
+
+  private async copyRecipeLink(url: string): Promise<void> {
+    try {
+      await navigator.clipboard.writeText(url);
+      this.shareStatus = 'copied';
+    } catch (error) {
+      this.shareStatus = this.copyWithFallback(url) ? 'copied' : 'failed';
+      if (this.shareStatus === 'failed') {
+        console.warn('Recipe link could not be copied:', error);
+      }
     }
   }
 
