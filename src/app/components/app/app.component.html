@@ -63,3 +63,12 @@
 <div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
+
+<footer *ngIf="deploymentInfo$ | async as deploymentInfo" class="deployment-info">
+  <span>
+    Deployed {{ deploymentInfo.builtAt | date:'medium':'UTC' }} UTC · App {{ deploymentInfo.appRevision | slice:0:7 }} · Recipes {{ deploymentInfo.overlayRevision | slice:0:7 }}
+  </span>
+  <a *ngIf="deploymentInfo.runUrl" [href]="deploymentInfo.runUrl" target="_blank" rel="noopener noreferrer">
+    Deployment details
+  </a>
+</footer>
