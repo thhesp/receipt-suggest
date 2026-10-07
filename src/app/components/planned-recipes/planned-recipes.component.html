@@ -10,8 +10,8 @@
       </button>
     </div>
     <div class="row">
-      <div *ngFor="let recipe of recipes" class="col-md-6 col-lg-4 mb-4">
-        <app-recipe-card [recipe]="recipe"></app-recipe-card>
+      <div *ngFor="let recipe of recipes" class="col-md-6 col-lg-4 mb-4 planned-recipe">
+        <app-recipe-card [recipe]="recipe" [stretch]="false"></app-recipe-card>
         <button
           class="btn btn-outline-secondary remove-plan-button"
           type="button"

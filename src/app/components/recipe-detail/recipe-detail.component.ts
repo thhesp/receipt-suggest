@@ -104,8 +104,8 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
       this.wakeLock = await navigator.wakeLock.request('screen');
       this.isWakeLockEnabled = true;
       this.wakeLock.addEventListener('release', () => {
+        // Browsers release wake locks when backgrounded; keep the user's setting for reacquisition.
         this.wakeLock = null;
-        this.isWakeLockEnabled = false;
       });
     } catch (error) {
       this.isWakeLockEnabled = false;
