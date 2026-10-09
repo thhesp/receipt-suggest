@@ -112,7 +112,7 @@ only the private key as an encrypted secret:
 | `RECIPE_CHANGE_REPOSITORY` | Target repository in `owner/repository` form |
 | `RECIPE_CHANGE_GITHUB_APP_ID` | Numeric GitHub App ID |
 | `RECIPE_CHANGE_GITHUB_APP_INSTALLATION_ID` | Numeric installation ID for the target repository |
-| `RECIPE_CHANGE_GITHUB_APP_PRIVATE_KEY` | Encrypted GitHub App private-key PEM; literal `\n` is also supported |
+| `RECIPE_CHANGE_GITHUB_APP_PRIVATE_KEY` | Encrypted GitHub App private-key PEM; use the complete downloaded `.pem` value, including its `BEGIN`/`END` lines. Literal `\n` is also supported. |
 | `RECIPE_CHANGE_REPOSITORY_BRANCH` | Optional base branch; defaults to `main` |
 
 Every user authenticated by the production nginx Basic Auth configuration may
