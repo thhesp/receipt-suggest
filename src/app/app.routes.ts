@@ -4,6 +4,7 @@ import { RecipeSuggestComponent } from './components/recipe-suggest/recipe-sugge
 import { RecipeDetailComponent } from './components/recipe-detail/recipe-detail.component';
 import { ShoppingListComponent } from './components/shopping-list/shopping-list.component';
 import { PlannedRecipesComponent } from './components/planned-recipes/planned-recipes.component';
+import { RecipeEditorComponent } from './components/recipe-editor/recipe-editor.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,16 @@ export const routes: Routes = [
     path: 'suggest',
     component: RecipeSuggestComponent,
     data: { title: 'Suggest recipes' }
+  },
+  {
+    path: 'recipe/new',
+    component: RecipeEditorComponent,
+    data: { title: 'Create recipe' }
+  },
+  {
+    path: 'recipe/:id/edit',
+    component: RecipeEditorComponent,
+    data: { title: 'Edit recipe' }
   },
   {
     path: 'recipe/:link',

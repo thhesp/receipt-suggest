@@ -1,0 +1,78 @@
+<section class="recipe-editor container py-4">
+  <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+    <div>
+      <h1>{{ existingRecipeId ? 'Edit recipe' : 'Create recipe' }}</h1>
+      <p class="text-muted mb-0">Submitting creates a pull request in the private recipe repository. Nothing is published until that pull request is merged.</p>
+    </div>
+    <a class="btn btn-outline-secondary" routerLink="/">Cancel</a>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading</span></div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+  <div *ngIf="isCheckingAvailability" class="alert alert-info" role="status">
+    Checking whether recipe changes are available…
+  </div>
+  <div *ngIf="!isCheckingAvailability && !isRecipeChangeReady" class="alert alert-warning" role="alert">
+    <strong>Recipe pull requests are unavailable.</strong> {{ readinessMessage }}
+    Download the complete draft below so your changes are not lost.
+  </div>
+  <div *ngIf="pullRequestUrl" class="alert alert-success" role="status">
+    Pull request created. <a [href]="pullRequestUrl" target="_blank" rel="noopener noreferrer">Review and merge it on GitHub.</a>
+  </div>
+
+  <form *ngIf="!isLoading" (ngSubmit)="submit()" #recipeForm="ngForm">
+    <div class="mb-4">
+      <label class="form-label" for="recipe-json">Recipe metadata</label>
+      <textarea
+        id="recipe-json"
+        class="form-control font-monospace"
+        name="recipeJson"
+        [(ngModel)]="recipeJson"
+        rows="20"
+        required
+        [disabled]="isSubmitting"
+      ></textarea>
+      <div class="form-text">Use the existing recipe JSON structure. IDs may contain lowercase letters, numbers, and hyphens only.</div>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label" for="recipe-description">Description and preparation HTML</label>
+      <textarea
+        id="recipe-description"
+        class="form-control font-monospace"
+        name="description"
+        [(ngModel)]="description"
+        rows="14"
+        [disabled]="isSubmitting"
+      ></textarea>
+      <div class="form-text">Required for local recipes. External recipes use <code>externalUrl</code> and do not save this field.</div>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label" for="recipe-images">New recipe images</label>
+      <input
+        id="recipe-images"
+        class="form-control"
+        type="file"
+        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+        multiple
+        (change)="onFilesSelected($event)"
+        [disabled]="isSubmitting"
+      />
+      <div class="form-text">Upload up to four JPEG or PNG files, 5 MB each. Every uploaded filename must be listed in the recipe JSON <code>images</code> array.</div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn btn-primary" type="submit" [disabled]="recipeForm.invalid || isSubmitting || !isRecipeChangeReady">
+      <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+      {{ isSubmitting ? 'Creating pull request…' : 'Create pull request' }}
+      </button>
+      <button class="btn btn-outline-secondary" type="button" (click)="downloadDraft()" [disabled]="isSubmitting">
+        Download draft
+      </button>
+    </div>
+  </form>
+</section>

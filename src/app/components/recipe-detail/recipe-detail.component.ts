@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
@@ -10,7 +10,7 @@ import { UserRecipeStateService } from '../../services/user-recipe-state.service
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.scss']
 })

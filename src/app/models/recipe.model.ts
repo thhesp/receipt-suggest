@@ -21,11 +21,15 @@ export interface RecipeTimes {
 }
 
 export interface RecipeFile {
+  id: string;
+  name: string;
   ingredients: Ingredient[];
   tags: string[];
+  includeInSuggestions: boolean;
   kcalPerPortion?: string;
   workTime?: string;
   cookingTime?: string;
+  externalUrl?: string;
   images?: string[];
   thumbnail?: string;
 }
