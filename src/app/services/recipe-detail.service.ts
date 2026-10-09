@@ -26,6 +26,14 @@ export class RecipeDetailService {
     );
   }
 
+  loadRecipeFile(recipeLink: string): Observable<RecipeFile> {
+    return this.loadRecipe(recipeLink);
+  }
+
+  loadRecipeHtml(recipeLink: string): Observable<string> {
+    return this.http.get(`${this.BASE_DATA_PATH}/${recipeLink}/recipe.html`, { responseType: 'text' });
+  }
+
   /**
    * Load kcalPerPortion information for a recipe.
    */
