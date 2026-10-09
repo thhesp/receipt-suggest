@@ -1,4 +1,4 @@
-import { createHash, createSign, randomUUID } from 'node:crypto';
+import { createHash, createPrivateKey, createSign, randomUUID } from 'node:crypto';
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
@@ -13,6 +13,8 @@ const githubAppInstallationId = process.env.RECIPE_CHANGE_GITHUB_APP_INSTALLATIO
 const githubAppPrivateKey = process.env.RECIPE_CHANGE_GITHUB_APP_PRIVATE_KEY?.replace(/\\n/g, '\n');
 const githubApiUrl = 'https://api.github.com';
 let githubInstallationToken;
+let githubAppPrivateKeyObject;
+let githubAppPrivateKeyError;
 
 function base64Url(value) {
   return Buffer.from(value).toString('base64url');
@@ -27,6 +29,12 @@ function recipeChangeStatus(error) {
     return {
       code: 'configuration_missing',
       message: 'Recipe changes are not configured.'
+    };
+  }
+  if (error?.recipeChangeCode === 'github_private_key_invalid') {
+    return {
+      code: 'github_private_key_invalid',
+      message: 'The configured GitHub App private key is not a valid PEM key. Replace the encrypted secret with the complete downloaded .pem value, including its BEGIN and END lines.'
     };
   }
   if (error?.recipeChangeCode === 'github_authentication_failed' || error?.statusCode === 401) {
@@ -47,6 +55,25 @@ function recipeChangeStatus(error) {
   };
 }
 
+function getGithubAppPrivateKey() {
+  if (githubAppPrivateKeyError) throw githubAppPrivateKeyError;
+  if (githubAppPrivateKeyObject) return githubAppPrivateKeyObject;
+  try {
+    githubAppPrivateKeyObject = createPrivateKey({
+      key: githubAppPrivateKey,
+      format: 'pem'
+    });
+    return githubAppPrivateKeyObject;
+  } catch (cause) {
+    githubAppPrivateKeyError = new Error(
+      'The configured GitHub App private key is not a valid PEM key.',
+      { cause }
+    );
+    githubAppPrivateKeyError.recipeChangeCode = 'github_private_key_invalid';
+    throw githubAppPrivateKeyError;
+  }
+}
+
 function createGithubAppJwt() {
   try {
     const now = Math.floor(Date.now() / 1000);
@@ -60,8 +87,9 @@ function createGithubAppJwt() {
     const signer = createSign('RSA-SHA256');
     signer.update(signingInput);
     signer.end();
-    return `${signingInput}.${signer.sign(githubAppPrivateKey, 'base64url')}`;
+    return `${signingInput}.${signer.sign(getGithubAppPrivateKey(), 'base64url')}`;
   } catch (cause) {
+    if (cause?.recipeChangeCode) throw cause;
     const error = new Error('Could not sign GitHub App authentication request', { cause });
     error.recipeChangeCode = 'github_authentication_failed';
     throw error;
@@ -363,7 +391,7 @@ async function checkRecipeChangeAccess() {
     await githubRequest(`${repositoryPath}/git/ref/heads/${encodeURIComponent(recipeRepositoryBranch)}`);
     return { ready: true };
   } catch (error) {
-    console.error('Recipe change readiness check failed:', error);
+    console.error('Recipe change readiness check failed:', error.message);
     return { ready: false, ...recipeChangeStatus(error) };
   }
 }
@@ -509,13 +537,14 @@ createServer(async (request, response) => {
     const statusCode = error instanceof SyntaxError || error.message.startsWith('Invalid ') ||
       error.message === 'Request body is too large' || error.message.startsWith('A recipe ') ||
       error.message.startsWith('The recipe ') || error.message === 'Duplicate image upload' ? 400 : 500;
-    console.error('User state request failed:', error);
     if (request.url === '/api/recipe-changes') {
+      console.error('Recipe change request failed:', error.message);
       sendJson(response, statusCode, {
         error: statusCode === 400 ? error.message : recipeChangeStatus(error).message
       });
       return;
     }
+    console.error('User state request failed:', error);
     sendJson(response, statusCode, { error: statusCode === 400 ? error.message : 'Internal server error' });
   }
 }).listen(3000, '127.0.0.1');
