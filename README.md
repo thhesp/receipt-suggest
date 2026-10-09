@@ -118,4 +118,7 @@ only the private key as an encrypted secret:
 Every user authenticated by the production nginx Basic Auth configuration may
 submit a recipe change. The endpoint accepts same-origin JSON requests only,
 validates recipe metadata and image uploads, and creates pull requests rather
-than writing to `main`.
+than writing to `main`. The editor checks the GitHub App configuration before
+submitting a change and shows safe, actionable availability errors; users can
+download a complete draft, including image data, whenever submissions are
+unavailable.

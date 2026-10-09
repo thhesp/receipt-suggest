@@ -34,6 +34,9 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   selectedFiles: File[] = [];
   isLoading = false;
   isSubmitting = false;
+  isCheckingAvailability = true;
+  isRecipeChangeReady = false;
+  readinessMessage = '';
   error: string | null = null;
   pullRequestUrl: string | null = null;
 
@@ -46,6 +49,19 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.recipeChangeService.checkReadiness().pipe(takeUntil(this.destroy$)).subscribe({
+      next: status => {
+        this.isCheckingAvailability = false;
+        this.isRecipeChangeReady = status.ready;
+        this.readinessMessage = status.message ?? '';
+      },
+      error: error => {
+        this.isCheckingAvailability = false;
+        this.readinessMessage = 'Recipe change availability could not be checked. Download your draft before trying again.';
+        console.error('Recipe change readiness check failed:', error);
+      }
+    });
+
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const recipeId = params.get('id');
       if (!recipeId) {
@@ -92,26 +108,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   async submit(): Promise<void> {
+    if (!this.isRecipeChangeReady) return;
     this.error = null;
     this.pullRequestUrl = null;
 
-    let recipe: RecipeFile;
     try {
-      recipe = JSON.parse(this.recipeJson) as RecipeFile;
-    } catch {
-      this.error = 'Recipe metadata must be valid JSON.';
-      return;
-    }
-
-    try {
-      const images = await Promise.all(this.selectedFiles.map(file => this.toImageUpload(file)));
-      const change: RecipeChange = {
-        operation: this.existingRecipeId ? 'update' : 'create',
-        ...(this.existingRecipeId ? { originalRecipeId: this.existingRecipeId } : {}),
-        recipe,
-        description: this.description,
-        images
-      };
+      const change = await this.buildChange();
       this.isSubmitting = true;
       this.recipeChangeService.submit(change).pipe(takeUntil(this.destroy$)).subscribe({
         next: result => {
@@ -127,6 +129,40 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.error = error instanceof Error ? error.message : 'Selected images could not be read.';
     }
+  }
+
+  async downloadDraft(): Promise<void> {
+    this.error = null;
+    try {
+      const change = await this.buildChange();
+      const fileName = `${change.recipe.id || 'recipe'}-draft.json`;
+      const url = URL.createObjectURL(new Blob([JSON.stringify(change, null, 2)], {
+        type: 'application/json'
+      }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      this.error = error instanceof Error ? error.message : 'The draft could not be downloaded.';
+    }
+  }
+
+  private async buildChange(): Promise<RecipeChange> {
+    let recipe: RecipeFile;
+    try {
+      recipe = JSON.parse(this.recipeJson) as RecipeFile;
+    } catch {
+      throw new Error('Recipe metadata must be valid JSON.');
+    }
+    return {
+      operation: this.existingRecipeId ? 'update' : 'create',
+      ...(this.existingRecipeId ? { originalRecipeId: this.existingRecipeId } : {}),
+      recipe,
+      description: this.description,
+      images: await Promise.all(this.selectedFiles.map(file => this.toImageUpload(file)))
+    };
   }
 
   private async toImageUpload(file: File): Promise<RecipeImageUpload> {

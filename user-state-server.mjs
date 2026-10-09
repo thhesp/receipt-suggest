@@ -22,19 +22,50 @@ function recipeChangesConfigured() {
   return Boolean(recipeRepository && githubAppId && githubAppInstallationId && githubAppPrivateKey);
 }
 
+function recipeChangeStatus(error) {
+  if (!recipeChangesConfigured()) {
+    return {
+      code: 'configuration_missing',
+      message: 'Recipe changes are not configured.'
+    };
+  }
+  if (error?.recipeChangeCode === 'github_authentication_failed' || error?.statusCode === 401) {
+    return {
+      code: 'github_authentication_failed',
+      message: 'GitHub App authentication failed. Check the App ID, installation ID, and private key.'
+    };
+  }
+  if ([403, 404].includes(error?.statusCode)) {
+    return {
+      code: 'github_repository_access_failed',
+      message: 'The GitHub App cannot access the configured recipe repository or branch.'
+    };
+  }
+  return {
+    code: 'github_connection_failed',
+    message: 'GitHub could not be reached. Try again later or check the runtime logs.'
+  };
+}
+
 function createGithubAppJwt() {
-  const now = Math.floor(Date.now() / 1000);
-  const header = base64Url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
-  const payload = base64Url(JSON.stringify({
-    iat: now - 60,
-    exp: now + 540,
-    iss: githubAppId
-  }));
-  const signingInput = `${header}.${payload}`;
-  const signer = createSign('RSA-SHA256');
-  signer.update(signingInput);
-  signer.end();
-  return `${signingInput}.${signer.sign(githubAppPrivateKey, 'base64url')}`;
+  try {
+    const now = Math.floor(Date.now() / 1000);
+    const header = base64Url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
+    const payload = base64Url(JSON.stringify({
+      iat: now - 60,
+      exp: now + 540,
+      iss: githubAppId
+    }));
+    const signingInput = `${header}.${payload}`;
+    const signer = createSign('RSA-SHA256');
+    signer.update(signingInput);
+    signer.end();
+    return `${signingInput}.${signer.sign(githubAppPrivateKey, 'base64url')}`;
+  } catch (cause) {
+    const error = new Error('Could not sign GitHub App authentication request', { cause });
+    error.recipeChangeCode = 'github_authentication_failed';
+    throw error;
+  }
 }
 
 async function githubRequest(pathname, options = {}) {
@@ -78,11 +109,14 @@ async function getGithubInstallationToken() {
   );
   const body = await response.json();
   if (!response.ok || typeof body.token !== 'string' || typeof body.expires_at !== 'string') {
-    throw new Error(`Could not create GitHub installation token: ${body.message || response.statusText}`);
+    const error = new Error(`Could not create GitHub installation token: ${body.message || response.statusText}`);
+    error.recipeChangeCode = 'github_authentication_failed';
+    throw error;
   }
   githubInstallationToken = {
     value: body.token,
-    expiresAt: new Date(body.expires_at).getTime()
+    expiresAt: new Date(body.expires_at).getTime(),
+    permissions: body.permissions
   };
   return githubInstallationToken;
 }
@@ -314,6 +348,26 @@ async function loadRepositoryRecipe(recipeId) {
   return JSON.parse(Buffer.from(response.content, 'base64').toString('utf8'));
 }
 
+async function checkRecipeChangeAccess() {
+  if (!recipeChangesConfigured()) return { ready: false, ...recipeChangeStatus() };
+  try {
+    const token = await getGithubInstallationToken();
+    if (token.permissions?.contents !== 'write' || token.permissions?.pull_requests !== 'write') {
+      const error = new Error('GitHub App is missing required repository permissions');
+      error.statusCode = 403;
+      throw error;
+    }
+    const [owner, repository] = recipeRepository.split('/');
+    const repositoryPath = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}`;
+    await githubRequest(repositoryPath);
+    await githubRequest(`${repositoryPath}/git/ref/heads/${encodeURIComponent(recipeRepositoryBranch)}`);
+    return { ready: true };
+  } catch (error) {
+    console.error('Recipe change readiness check failed:', error);
+    return { ready: false, ...recipeChangeStatus(error) };
+  }
+}
+
 async function createRecipePullRequest(change, user) {
   const [owner, repository] = recipeRepository.split('/');
   const repositoryPath = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}`;
@@ -412,6 +466,11 @@ createServer(async (request, response) => {
   }
 
   try {
+    if (request.url === '/api/recipe-changes/status' && request.method === 'GET') {
+      sendJson(response, 200, await checkRecipeChangeAccess());
+      return;
+    }
+
     if (request.url === '/api/recipe-changes') {
       if (!recipeChangesConfigured()) {
         sendJson(response, 503, { error: 'Recipe changes are not configured' });
@@ -451,6 +510,12 @@ createServer(async (request, response) => {
       error.message === 'Request body is too large' || error.message.startsWith('A recipe ') ||
       error.message.startsWith('The recipe ') || error.message === 'Duplicate image upload' ? 400 : 500;
     console.error('User state request failed:', error);
+    if (request.url === '/api/recipe-changes') {
+      sendJson(response, statusCode, {
+        error: statusCode === 400 ? error.message : recipeChangeStatus(error).message
+      });
+      return;
+    }
     sendJson(response, statusCode, { error: statusCode === 400 ? error.message : 'Internal server error' });
   }
 }).listen(3000, '127.0.0.1');

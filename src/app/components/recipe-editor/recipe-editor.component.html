@@ -12,6 +12,13 @@
   </div>
 
   <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+  <div *ngIf="isCheckingAvailability" class="alert alert-info" role="status">
+    Checking whether recipe changes are available…
+  </div>
+  <div *ngIf="!isCheckingAvailability && !isRecipeChangeReady" class="alert alert-warning" role="alert">
+    <strong>Recipe pull requests are unavailable.</strong> {{ readinessMessage }}
+    Download the complete draft below so your changes are not lost.
+  </div>
   <div *ngIf="pullRequestUrl" class="alert alert-success" role="status">
     Pull request created. <a [href]="pullRequestUrl" target="_blank" rel="noopener noreferrer">Review and merge it on GitHub.</a>
   </div>
@@ -58,9 +65,14 @@
       <div class="form-text">Upload up to four JPEG or PNG files, 5 MB each. Every uploaded filename must be listed in the recipe JSON <code>images</code> array.</div>
     </div>
 
-    <button class="btn btn-primary" type="submit" [disabled]="recipeForm.invalid || isSubmitting">
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn btn-primary" type="submit" [disabled]="recipeForm.invalid || isSubmitting || !isRecipeChangeReady">
       <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
       {{ isSubmitting ? 'Creating pull request…' : 'Create pull request' }}
-    </button>
+      </button>
+      <button class="btn btn-outline-secondary" type="button" (click)="downloadDraft()" [disabled]="isSubmitting">
+        Download draft
+      </button>
+    </div>
   </form>
 </section>

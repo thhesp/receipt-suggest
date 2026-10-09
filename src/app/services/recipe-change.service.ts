@@ -22,6 +22,12 @@ export interface RecipeChangeResult {
   number: number;
 }
 
+export interface RecipeChangeReadiness {
+  ready: boolean;
+  code?: string;
+  message?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,5 +36,9 @@ export class RecipeChangeService {
 
   submit(change: RecipeChange): Observable<RecipeChangeResult> {
     return this.http.post<RecipeChangeResult>('/api/recipe-changes', change);
+  }
+
+  checkReadiness(): Observable<RecipeChangeReadiness> {
+    return this.http.get<RecipeChangeReadiness>('/api/recipe-changes/status');
   }
 }
