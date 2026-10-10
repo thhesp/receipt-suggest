@@ -94,6 +94,22 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
   await expect(page.locator('.description-preview .recipe-callout--warning')).toContainText('Warning:');
 });
 
+test('offers H1, H2, and H3 formatting', async ({ page }) => {
+  await mockEditorRequests(page);
+
+  await page.goto(`/recipe/${recipe.id}/edit`);
+
+  for (const heading of ['H1', 'H2', 'H3']) {
+    await expect(page.getByRole('button', { name: heading })).toBeVisible();
+  }
+
+  const descriptionEditor = page.locator('#recipe-description-editor');
+  await descriptionEditor.fill('Main heading');
+  await descriptionEditor.selectText();
+  await page.getByRole('button', { name: 'H1' }).click();
+  await expect(descriptionEditor.locator('h1')).toHaveText('Main heading');
+});
+
 test('stops checking availability when the readiness endpoint fails', async ({ page }) => {
   await mockEditorRequests(page, 503);
 
