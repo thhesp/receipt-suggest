@@ -2,13 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, TimeoutError } from 'rxjs';
+import { takeUntil, timeout } from 'rxjs/operators';
 import { RecipeFile } from '../../models/recipe.model';
 import {
   RecipeChange,
   RecipeChangeService,
   RecipeImageUpload,
+  RecipeChangeReadinessTimeoutError,
   RecipeChangeSubmissionTimeoutError
 } from '../../services/recipe-change.service';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
@@ -21,6 +22,8 @@ import { RecipeDetailService } from '../../services/recipe-detail.service';
   styleUrls: ['./recipe-editor.component.scss']
 })
 export class RecipeEditorComponent implements OnInit, OnDestroy {
+  private readonly recipeLoadTimeoutMs = 15_000;
+
   recipe = this.emptyRecipe();
   description = '';
   tagsInput = '';
@@ -54,7 +57,9 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       },
       error: error => {
         this.isCheckingAvailability = false;
-        this.readinessMessage = 'Recipe change availability could not be checked. Download your draft before trying again.';
+        this.readinessMessage = error instanceof RecipeChangeReadinessTimeoutError
+          ? 'Checking availability timed out. Download your draft and try again later.'
+          : 'Recipe change availability could not be checked. Download your draft before trying again.';
         console.error('Recipe change readiness check failed:', error);
       }
     });
@@ -67,14 +72,20 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
       this.existingRecipeId = recipeId;
       this.isLoading = true;
-      this.recipeDetailService.loadRecipeFile(recipeId).pipe(takeUntil(this.destroy$)).subscribe({
+      this.recipeDetailService.loadRecipeFile(recipeId).pipe(
+        takeUntil(this.destroy$),
+        timeout(this.recipeLoadTimeoutMs)
+      ).subscribe({
         next: recipe => {
           this.setRecipe(recipe);
           if (recipe.externalUrl) {
             this.isLoading = false;
             return;
           }
-          this.recipeDetailService.loadRecipeHtml(recipeId).pipe(takeUntil(this.destroy$)).subscribe({
+          this.recipeDetailService.loadRecipeHtml(recipeId).pipe(
+            takeUntil(this.destroy$),
+            timeout(this.recipeLoadTimeoutMs)
+          ).subscribe({
             next: description => {
               this.description = description;
               this.isLoading = false;
@@ -234,7 +245,9 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   private handleLoadError(error: unknown): void {
-    this.error = 'The recipe could not be loaded for editing.';
+    this.error = error instanceof TimeoutError
+      ? 'Loading the recipe timed out. Refresh the page and try again.'
+      : 'The recipe could not be loaded for editing.';
     this.isLoading = false;
     console.error('Recipe editor load failed:', error);
   }
