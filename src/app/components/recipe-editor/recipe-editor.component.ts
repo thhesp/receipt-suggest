@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -21,7 +29,7 @@ import { RecipeDetailService } from '../../services/recipe-detail.service';
   templateUrl: './recipe-editor.component.html',
   styleUrls: ['./recipe-editor.component.scss']
 })
-export class RecipeEditorComponent implements OnInit, OnDestroy {
+export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestroy {
   private readonly recipeLoadTimeoutMs = 15_000;
 
   recipe = this.emptyRecipe();
@@ -42,6 +50,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   pullRequestUrl: string | null = null;
 
   private readonly destroy$ = new Subject<void>();
+  private shouldSyncDescriptionEditor = true;
   @ViewChild('descriptionEditor') private descriptionEditor?: ElementRef<HTMLElement>;
 
   constructor(
@@ -93,7 +102,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
             timeout(this.recipeLoadTimeoutMs)
           ).subscribe({
             next: description => {
-              this.description = description;
+              this.setDescription(description);
               this.isLoading = false;
               this.changeDetectorRef.markForCheck();
             },
@@ -108,6 +117,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  ngAfterViewChecked(): void {
+    if (!this.shouldSyncDescriptionEditor || !this.descriptionEditor) return;
+    this.descriptionEditor.nativeElement.innerHTML = this.descriptionContent(this.description);
+    this.shouldSyncDescriptionEditor = false;
   }
 
   onFilesSelected(event: Event): void {
@@ -164,6 +179,16 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.syncDescriptionFromEditor();
   }
 
+  addDescriptionCallout(type: 'hint' | 'warning'): void {
+    const label = type === 'hint' ? 'Hint' : 'Warning';
+    document.execCommand(
+      'insertHTML',
+      false,
+      `<aside class="recipe-callout recipe-callout--${type}"><strong>${label}:</strong> </aside><p><br></p>`
+    );
+    this.syncDescriptionFromEditor();
+  }
+
   addDescriptionLink(): void {
     const url = window.prompt('Enter an HTTPS link');
     if (!url) return;
@@ -178,7 +203,11 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   updateDescription(event: Event): void {
-    this.description = (event.target as HTMLElement).innerHTML;
+    this.description = this.normalizeDescription((event.target as HTMLElement).innerHTML);
+  }
+
+  updateDescriptionSource(description: string): void {
+    this.setDescription(description);
   }
 
   pasteDescriptionAsPlainText(event: ClipboardEvent): void {
@@ -270,7 +299,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       operation: this.existingRecipeId ? 'update' : 'create',
       ...(this.existingRecipeId ? { originalRecipeId: this.existingRecipeId } : {}),
       recipe,
-      description: this.description,
+      description: this.normalizeDescription(this.description),
       images: await Promise.all(this.selectedFiles.map(file => this.toImageUpload(file)))
     };
   }
@@ -301,8 +330,30 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   private syncDescriptionFromEditor(): void {
     if (this.descriptionEditor) {
-      this.description = this.descriptionEditor.nativeElement.innerHTML;
+      this.description = this.normalizeDescription(this.descriptionEditor.nativeElement.innerHTML);
     }
+  }
+
+  private setDescription(description: string): void {
+    this.description = this.normalizeDescription(description);
+    this.shouldSyncDescriptionEditor = true;
+  }
+
+  private normalizeDescription(description: string): string {
+    const document = new DOMParser().parseFromString(description, 'text/html');
+    const article = document.body.querySelector(':scope > article');
+    const hasOnlyArticleRoot = article !== null && Array.from(document.body.childNodes).every(node =>
+      node === article || (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim())
+    );
+
+    return hasOnlyArticleRoot
+      ? `<article>${article.innerHTML}</article>`
+      : `<article>${document.body.innerHTML}</article>`;
+  }
+
+  private descriptionContent(description: string): string {
+    const document = new DOMParser().parseFromString(description, 'text/html');
+    return document.body.querySelector(':scope > article')?.innerHTML ?? '';
   }
 
   private emptyRecipe(): RecipeFile {

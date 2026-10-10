@@ -65,11 +65,33 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
   await expect(page.locator('[id^="ingredient-name-"]')).toHaveCount(2);
 
   const descriptionEditor = page.locator('#recipe-description-editor');
+  expect(await descriptionEditor.evaluate(editor => editor.tagName)).toBe('ARTICLE');
+
+  await page.getByRole('button', { name: 'Edit HTML source' }).click();
+  const descriptionSource = page.locator('#recipe-description-source');
+  await expect(descriptionSource).toHaveValue('<article><p>Boil the spaetzle.</p></article>');
+  await descriptionSource.fill('<p>Stir the spaetzle.</p>');
+  await expect(descriptionSource).toHaveValue('<article><p>Stir the spaetzle.</p></article>');
+  await expect(page.locator('.description-preview > article')).toContainText('Stir the spaetzle.');
+
   await descriptionEditor.fill('Mix the ingredients.');
   await descriptionEditor.selectText();
   await page.getByRole('button', { name: 'Bold' }).click();
   await expect(page.locator('.description-preview strong, .description-preview b').first())
     .toHaveText('Mix the ingredients.');
+
+  await descriptionEditor.fill('First item');
+  await descriptionEditor.selectText();
+  await page.getByRole('button', { name: 'Bullets' }).click();
+  await descriptionEditor.press('End');
+  await descriptionEditor.press('Enter');
+  await descriptionEditor.type('Second item');
+  await expect(descriptionEditor.locator('ul li')).toHaveCount(2);
+
+  await page.getByRole('button', { name: 'Hint' }).click();
+  await expect(page.locator('.description-preview .recipe-callout--hint')).toContainText('Hint:');
+  await page.getByRole('button', { name: 'Warning' }).click();
+  await expect(page.locator('.description-preview .recipe-callout--warning')).toContainText('Warning:');
 });
 
 test('stops checking availability when the readiness endpoint fails', async ({ page }) => {
