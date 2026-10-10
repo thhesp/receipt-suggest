@@ -35,9 +35,16 @@
         <div class="form-text">Lowercase letters, numbers, and hyphens only.</div>
       </div>
       <div class="col-md-8">
-        <label class="form-label" for="recipe-tags">Tags</label>
-        <input id="recipe-tags" class="form-control" name="tags" [(ngModel)]="tagsInput" (ngModelChange)="updateTags($event)" [disabled]="isSubmitting" />
-        <div class="form-text">Separate tags with commas.</div>
+        <label class="form-label" for="recipe-tag-input">Tags</label>
+        <div class="tag-editor">
+          <span class="tag-chip" *ngFor="let tag of recipe.tags">
+            {{ tag }}
+            <button type="button" class="tag-remove" (click)="removeTag(tag)" [disabled]="isSubmitting" [attr.aria-label]="'Remove ' + tag + ' tag'">&times;</button>
+          </span>
+          <input id="recipe-tag-input" class="form-control" name="tagInput" [(ngModel)]="tagInput" (keydown.enter)="addTag($event)" (blur)="addTag()" placeholder="Add a tag" [disabled]="isSubmitting" />
+          <button class="btn btn-outline-secondary" type="button" (click)="addTag()" [disabled]="isSubmitting">Add</button>
+        </div>
+        <div class="form-text">Press Enter or select Add. Tags are trimmed, uppercased, and kept unique.</div>
       </div>
       <div class="col-md-4 d-flex align-items-end">
         <div class="form-check form-switch mb-2">
