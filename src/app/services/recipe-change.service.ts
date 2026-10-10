@@ -36,6 +36,13 @@ export class RecipeChangeSubmissionTimeoutError extends Error {
   }
 }
 
+export class RecipeChangeReadinessTimeoutError extends Error {
+  constructor() {
+    super('Checking recipe change availability timed out.');
+    this.name = 'RecipeChangeReadinessTimeoutError';
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,6 +59,11 @@ export class RecipeChangeService {
   }
 
   checkReadiness(): Observable<RecipeChangeReadiness> {
-    return this.http.get<RecipeChangeReadiness>('/api/recipe-changes/status');
+    return this.http.get<RecipeChangeReadiness>('/api/recipe-changes/status').pipe(
+      timeout({
+        each: 15_000,
+        with: () => throwError(() => new RecipeChangeReadinessTimeoutError())
+      })
+    );
   }
 }
