@@ -8,7 +8,8 @@ import { RecipeFile } from '../../models/recipe.model';
 import {
   RecipeChange,
   RecipeChangeService,
-  RecipeImageUpload
+  RecipeImageUpload,
+  RecipeChangeSubmissionTimeoutError
 } from '../../services/recipe-change.service';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
 
@@ -121,7 +122,9 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
           this.isSubmitting = false;
         },
         error: error => {
-          this.error = error.error?.error || 'The pull request could not be created.';
+          this.error = error instanceof RecipeChangeSubmissionTimeoutError
+            ? 'Creating the pull request timed out. Check GitHub before submitting again to avoid creating a duplicate pull request.'
+            : error.error?.error || 'The pull request could not be created.';
           this.isSubmitting = false;
           console.error('Recipe change submission failed:', error);
         }
