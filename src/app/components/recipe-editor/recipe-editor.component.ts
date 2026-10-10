@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -45,7 +45,8 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private recipeDetailService: RecipeDetailService,
-    private recipeChangeService: RecipeChangeService
+    private recipeChangeService: RecipeChangeService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +55,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
         this.isCheckingAvailability = false;
         this.isRecipeChangeReady = status.ready;
         this.readinessMessage = status.message ?? '';
+        this.changeDetectorRef.markForCheck();
       },
       error: error => {
         this.isCheckingAvailability = false;
@@ -61,6 +63,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
           ? 'Checking availability timed out. Download your draft and try again later.'
           : 'Recipe change availability could not be checked. Download your draft before trying again.';
         console.error('Recipe change readiness check failed:', error);
+        this.changeDetectorRef.markForCheck();
       }
     });
 
@@ -80,6 +83,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
           this.setRecipe(recipe);
           if (recipe.externalUrl) {
             this.isLoading = false;
+            this.changeDetectorRef.markForCheck();
             return;
           }
           this.recipeDetailService.loadRecipeHtml(recipeId).pipe(
@@ -89,6 +93,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
             next: description => {
               this.description = description;
               this.isLoading = false;
+              this.changeDetectorRef.markForCheck();
             },
             error: error => this.handleLoadError(error)
           });
@@ -250,6 +255,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       : 'The recipe could not be loaded for editing.';
     this.isLoading = false;
     console.error('Recipe editor load failed:', error);
+    this.changeDetectorRef.markForCheck();
   }
 
   private emptyRecipe(): RecipeFile {

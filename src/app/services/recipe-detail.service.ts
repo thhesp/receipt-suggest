@@ -8,7 +8,7 @@ import { Ingredient, RecipeFile, RecipeTimes } from '../models/recipe.model';
   providedIn: 'root'
 })
 export class RecipeDetailService {
-  private readonly BASE_DATA_PATH = 'assets/data/recipe';
+  private readonly BASE_DATA_PATH = '/assets/data/recipe';
   private recipeCache = new Map<string, Observable<RecipeFile>>();
 
   constructor(private http: HttpClient) {}

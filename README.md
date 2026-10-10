@@ -49,6 +49,27 @@ npm start
 For a production build, run `npm run build:prod`. It validates recipe metadata
 and generates the recipe manifest automatically.
 
+## Browser tests
+
+Run the local browser suite with:
+
+```powershell
+npx playwright install chromium
+npm run e2e -- --project=chromium e2e/recipe-editor.spec.ts
+```
+
+The local tests start the Angular development server and mock API responses, so
+they are safe to run without production credentials. GitHub Actions runs the
+same suite for pull requests.
+
+The scheduled and manually triggered `production-smoke` job tests the deployed
+editor read-only. Configure `RECEIPT_SUGGEST_E2E_BASE_URL`,
+`RECEIPT_SUGGEST_E2E_USERNAME`, and `RECEIPT_SUGGEST_E2E_PASSWORD` as encrypted
+repository secrets for a dedicated Basic Auth account. Never commit or share
+those values. The smoke test only opens an existing editor route; recipe
+creation and submission must be tested against a separate staging environment
+with its own GitHub App installation.
+
 ## Docker
 
 ```powershell
