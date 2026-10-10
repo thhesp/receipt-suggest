@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, TimeoutError } from 'rxjs';
+import { takeUntil, timeout } from 'rxjs/operators';
 import { RecipeFile } from '../../models/recipe.model';
 import {
   RecipeChange,
@@ -21,6 +21,8 @@ import { RecipeDetailService } from '../../services/recipe-detail.service';
   styleUrls: ['./recipe-editor.component.scss']
 })
 export class RecipeEditorComponent implements OnInit, OnDestroy {
+  private readonly recipeLoadTimeoutMs = 15_000;
+
   readonly defaultRecipe = {
     id: 'new-recipe',
     name: 'New recipe',
@@ -71,14 +73,20 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
       this.existingRecipeId = recipeId;
       this.isLoading = true;
-      this.recipeDetailService.loadRecipeFile(recipeId).pipe(takeUntil(this.destroy$)).subscribe({
+      this.recipeDetailService.loadRecipeFile(recipeId).pipe(
+        takeUntil(this.destroy$),
+        timeout(this.recipeLoadTimeoutMs)
+      ).subscribe({
         next: recipe => {
           this.recipeJson = JSON.stringify(recipe, null, 2);
           if (recipe.externalUrl) {
             this.isLoading = false;
             return;
           }
-          this.recipeDetailService.loadRecipeHtml(recipeId).pipe(takeUntil(this.destroy$)).subscribe({
+          this.recipeDetailService.loadRecipeHtml(recipeId).pipe(
+            takeUntil(this.destroy$),
+            timeout(this.recipeLoadTimeoutMs)
+          ).subscribe({
             next: description => {
               this.description = description;
               this.isLoading = false;
@@ -184,7 +192,9 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   }
 
   private handleLoadError(error: unknown): void {
-    this.error = 'The recipe could not be loaded for editing.';
+    this.error = error instanceof TimeoutError
+      ? 'Loading the recipe timed out. Refresh the page and try again.'
+      : 'The recipe could not be loaded for editing.';
     this.isLoading = false;
     console.error('Recipe editor load failed:', error);
   }
