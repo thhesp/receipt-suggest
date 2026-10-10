@@ -12,7 +12,8 @@
     "build:prod": "npm run recipe:validate && npm run generate:manifest && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "e2e": "playwright test"
   },
   "private": true,
   "dependencies": {
@@ -32,6 +33,7 @@
     "@angular/build": "^22.1.6",
     "@angular/cli": "^22.0.0",
     "@angular/compiler-cli": "^22.0.0",
+    "@playwright/test": "1.64.0",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.0.0",
     "jasmine-core": "~5.1.0",

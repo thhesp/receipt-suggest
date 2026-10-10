@@ -15,6 +15,8 @@ metadata:
 
 3. Once you finish generating code, run `ng build` to ensure there are no build errors. If there are errors, analyze the error messages and fix them before proceeding. Do not skip this step, as it is critical for ensuring the generated code is correct and functional.
 
+4. Do not consider an Angular feature complete after compilation alone. Add and run focused behavioral tests at the highest practical level (component, integration, or browser) for every affected user flow, including error and loading states. Resolve test failures before reporting completion; when an external dependency prevents full integration testing, document the limitation and add the closest deterministic local coverage.
+
 ## Creating New Projects
 
 If no guidelines are provided by the user, here are some default rules to follow when creating a new Angular project:

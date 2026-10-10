@@ -1,0 +1,49 @@
+name: Browser tests
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'e2e/**'
+      - 'playwright.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * *'
+
+jobs:
+  local-editor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run e2e -- --project=chromium e2e/recipe-editor.spec.ts
+
+  production-smoke:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_TEST_BASE_URL: ${{ secrets.RECEIPT_SUGGEST_E2E_BASE_URL }}
+      RECEIPT_SUGGEST_E2E_USERNAME: ${{ secrets.RECEIPT_SUGGEST_E2E_USERNAME }}
+      RECEIPT_SUGGEST_E2E_PASSWORD: ${{ secrets.RECEIPT_SUGGEST_E2E_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run production smoke test when credentials are configured
+        run: |
+          if [ -z "$RECEIPT_SUGGEST_E2E_USERNAME" ] || [ -z "$RECEIPT_SUGGEST_E2E_PASSWORD" ]; then
+            echo "Production smoke credentials are not configured; skipping."
+            exit 0
+          fi
+          npm run e2e -- --project=chromium e2e/production-editor.spec.ts
