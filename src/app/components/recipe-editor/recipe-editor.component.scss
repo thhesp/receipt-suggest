@@ -40,3 +40,27 @@ textarea {
   color: inherit;
   line-height: 1;
 }
+
+.description-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.description-editor {
+  min-height: 14rem;
+  overflow: auto;
+}
+
+.description-editor:focus {
+  outline: 0;
+  box-shadow: var(--bs-focus-ring-x, 0) var(--bs-focus-ring-y, 0) var(--bs-focus-ring-blur, 0) var(--bs-focus-ring-width, 0.25rem) var(--bs-focus-ring-color, rgba(var(--bs-primary-rgb), 0.25));
+}
+
+.description-preview {
+  min-height: 4rem;
+  padding: 1rem;
+  border: 1px dashed var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+}
