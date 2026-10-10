@@ -164,6 +164,16 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.syncDescriptionFromEditor();
   }
 
+  addDescriptionCallout(type: 'hint' | 'warning'): void {
+    const label = type === 'hint' ? 'Hint' : 'Warning';
+    document.execCommand(
+      'insertHTML',
+      false,
+      `<aside class="recipe-callout recipe-callout--${type}"><strong>${label}:</strong> </aside><p><br></p>`
+    );
+    this.syncDescriptionFromEditor();
+  }
+
   addDescriptionLink(): void {
     const url = window.prompt('Enter an HTTPS link');
     if (!url) return;

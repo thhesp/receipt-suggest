@@ -70,6 +70,11 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
   await page.getByRole('button', { name: 'Bold' }).click();
   await expect(page.locator('.description-preview strong, .description-preview b').first())
     .toHaveText('Mix the ingredients.');
+
+  await page.getByRole('button', { name: 'Hint' }).click();
+  await expect(page.locator('.description-preview .recipe-callout--hint')).toContainText('Hint:');
+  await page.getByRole('button', { name: 'Warning' }).click();
+  await expect(page.locator('.description-preview .recipe-callout--warning')).toContainText('Warning:');
 });
 
 test('stops checking availability when the readiness endpoint fails', async ({ page }) => {

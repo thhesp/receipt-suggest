@@ -36,6 +36,25 @@ app-root {
   min-height: 100vh;
 }
 
+.recipe-callout {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 0.3rem solid;
+  border-radius: var(--bs-border-radius);
+}
+
+.recipe-callout--hint {
+  background-color: var(--bs-info-bg-subtle);
+  border-color: var(--bs-info);
+  color: var(--bs-info-text-emphasis);
+}
+
+.recipe-callout--warning {
+  background-color: var(--bs-warning-bg-subtle);
+  border-color: var(--bs-warning);
+  color: var(--bs-warning-text-emphasis);
+}
+
 /* Navbar customization */
 .navbar {
   box-shadow: 0 2px 12px rgba(38, 50, 56, 0.16);
