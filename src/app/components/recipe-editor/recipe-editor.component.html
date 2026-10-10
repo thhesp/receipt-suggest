@@ -94,7 +94,9 @@
     <div class="mb-4">
       <label class="form-label" for="recipe-description-editor">Description and preparation</label>
       <div class="description-toolbar" role="toolbar" aria-label="Description formatting">
-        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('formatBlock', 'h2')" [disabled]="isSubmitting">Heading</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('formatBlock', 'h1')" [disabled]="isSubmitting">H1</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('formatBlock', 'h2')" [disabled]="isSubmitting">H2</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('formatBlock', 'h3')" [disabled]="isSubmitting">H3</button>
         <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('bold')" [disabled]="isSubmitting"><strong>Bold</strong></button>
         <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('italic')" [disabled]="isSubmitting"><em>Italic</em></button>
         <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('insertUnorderedList')" [disabled]="isSubmitting">Bullets</button>
