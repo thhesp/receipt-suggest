@@ -121,7 +121,7 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
 
   ngAfterViewChecked(): void {
     if (!this.shouldSyncDescriptionEditor || !this.descriptionEditor) return;
-    this.descriptionEditor.nativeElement.innerHTML = this.description;
+    this.descriptionEditor.nativeElement.innerHTML = this.descriptionContent(this.description);
     this.shouldSyncDescriptionEditor = false;
   }
 
@@ -203,7 +203,7 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
   }
 
   updateDescription(event: Event): void {
-    this.description = (event.target as HTMLElement).innerHTML;
+    this.description = this.normalizeDescription((event.target as HTMLElement).innerHTML);
   }
 
   updateDescriptionSource(description: string): void {
@@ -299,7 +299,7 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
       operation: this.existingRecipeId ? 'update' : 'create',
       ...(this.existingRecipeId ? { originalRecipeId: this.existingRecipeId } : {}),
       recipe,
-      description: this.description,
+      description: this.normalizeDescription(this.description),
       images: await Promise.all(this.selectedFiles.map(file => this.toImageUpload(file)))
     };
   }
@@ -330,13 +330,30 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
 
   private syncDescriptionFromEditor(): void {
     if (this.descriptionEditor) {
-      this.description = this.descriptionEditor.nativeElement.innerHTML;
+      this.description = this.normalizeDescription(this.descriptionEditor.nativeElement.innerHTML);
     }
   }
 
   private setDescription(description: string): void {
-    this.description = description;
+    this.description = this.normalizeDescription(description);
     this.shouldSyncDescriptionEditor = true;
+  }
+
+  private normalizeDescription(description: string): string {
+    const document = new DOMParser().parseFromString(description, 'text/html');
+    const article = document.body.querySelector(':scope > article');
+    const hasOnlyArticleRoot = article !== null && Array.from(document.body.childNodes).every(node =>
+      node === article || (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim())
+    );
+
+    return hasOnlyArticleRoot
+      ? `<article>${article.innerHTML}</article>`
+      : `<article>${document.body.innerHTML}</article>`;
+  }
+
+  private descriptionContent(description: string): string {
+    const document = new DOMParser().parseFromString(description, 'text/html');
+    return document.body.querySelector(':scope > article')?.innerHTML ?? '';
   }
 
   private emptyRecipe(): RecipeFile {
