@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 import { RecipeFile } from '../models/recipe.model';
 
 export interface RecipeImageUpload {
@@ -28,6 +29,13 @@ export interface RecipeChangeReadiness {
   message?: string;
 }
 
+export class RecipeChangeSubmissionTimeoutError extends Error {
+  constructor() {
+    super('Creating the pull request timed out.');
+    this.name = 'RecipeChangeSubmissionTimeoutError';
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,7 +43,12 @@ export class RecipeChangeService {
   constructor(private http: HttpClient) {}
 
   submit(change: RecipeChange): Observable<RecipeChangeResult> {
-    return this.http.post<RecipeChangeResult>('/api/recipe-changes', change);
+    return this.http.post<RecipeChangeResult>('/api/recipe-changes', change).pipe(
+      timeout({
+        each: 120_000,
+        with: () => throwError(() => new RecipeChangeSubmissionTimeoutError())
+      })
+    );
   }
 
   checkReadiness(): Observable<RecipeChangeReadiness> {

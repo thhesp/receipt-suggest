@@ -12,6 +12,7 @@ const githubAppId = process.env.RECIPE_CHANGE_GITHUB_APP_ID;
 const githubAppInstallationId = process.env.RECIPE_CHANGE_GITHUB_APP_INSTALLATION_ID;
 const githubAppPrivateKey = process.env.RECIPE_CHANGE_GITHUB_APP_PRIVATE_KEY?.replace(/\\n/g, '\n');
 const githubApiUrl = 'https://api.github.com';
+const githubRequestTimeoutMs = 20_000;
 let githubInstallationToken;
 let githubAppPrivateKeyObject;
 let githubAppPrivateKeyError;
@@ -98,7 +99,7 @@ function createGithubAppJwt() {
 
 async function githubRequest(pathname, options = {}) {
   const token = await getGithubInstallationToken();
-  const response = await fetch(`${githubApiUrl}${pathname}`, {
+  const response = await fetchGithub(`${githubApiUrl}${pathname}`, {
     ...options,
     headers: {
       Accept: 'application/vnd.github+json',
@@ -123,7 +124,7 @@ async function getGithubInstallationToken() {
   if (githubInstallationToken && githubInstallationToken.expiresAt > Date.now() + 60_000) {
     return githubInstallationToken;
   }
-  const response = await fetch(
+  const response = await fetchGithub(
     `${githubApiUrl}/app/installations/${encodeURIComponent(githubAppInstallationId)}/access_tokens`,
     {
       method: 'POST',
@@ -147,6 +148,22 @@ async function getGithubInstallationToken() {
     permissions: body.permissions
   };
   return githubInstallationToken;
+}
+
+async function fetchGithub(url, options) {
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: AbortSignal.timeout(githubRequestTimeoutMs)
+    });
+  } catch (cause) {
+    if (cause?.name === 'TimeoutError') {
+      const error = new Error('GitHub request timed out', { cause });
+      error.recipeChangeCode = 'github_connection_failed';
+      throw error;
+    }
+    throw cause;
+  }
 }
 
 function emptyState() {
