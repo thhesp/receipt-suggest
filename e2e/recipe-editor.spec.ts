@@ -63,6 +63,13 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
 
   await page.getByRole('button', { name: 'Add ingredient' }).click();
   await expect(page.locator('[id^="ingredient-name-"]')).toHaveCount(2);
+
+  const descriptionEditor = page.locator('#recipe-description-editor');
+  await descriptionEditor.fill('Mix the ingredients.');
+  await descriptionEditor.selectText();
+  await page.getByRole('button', { name: 'Bold' }).click();
+  await expect(page.locator('.description-preview strong, .description-preview b').first())
+    .toHaveText('Mix the ingredients.');
 });
 
 test('stops checking availability when the readiness endpoint fails', async ({ page }) => {

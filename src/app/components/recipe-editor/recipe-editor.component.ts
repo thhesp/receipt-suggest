@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -30,6 +30,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   imagesInput = '';
   advancedRecipeJson = '';
   showAdvancedJson = false;
+  showDescriptionSource = false;
   existingRecipeId: string | null = null;
   selectedFiles: File[] = [];
   isLoading = false;
@@ -41,6 +42,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
   pullRequestUrl: string | null = null;
 
   private readonly destroy$ = new Subject<void>();
+  @ViewChild('descriptionEditor') private descriptionEditor?: ElementRef<HTMLElement>;
 
   constructor(
     private route: ActivatedRoute,
@@ -157,6 +159,34 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.recipe.ingredients.splice(index, 1);
   }
 
+  formatDescription(command: string, value?: string): void {
+    document.execCommand(command, false, value);
+    this.syncDescriptionFromEditor();
+  }
+
+  addDescriptionLink(): void {
+    const url = window.prompt('Enter an HTTPS link');
+    if (!url) return;
+
+    try {
+      const parsedUrl = new URL(url);
+      if (parsedUrl.protocol !== 'https:') throw new Error('Only HTTPS links are supported.');
+      this.formatDescription('createLink', parsedUrl.href);
+    } catch {
+      this.error = 'Enter a valid HTTPS link.';
+    }
+  }
+
+  updateDescription(event: Event): void {
+    this.description = (event.target as HTMLElement).innerHTML;
+  }
+
+  pasteDescriptionAsPlainText(event: ClipboardEvent): void {
+    event.preventDefault();
+    document.execCommand('insertText', false, event.clipboardData?.getData('text/plain') ?? '');
+    this.syncDescriptionFromEditor();
+  }
+
   toggleAdvancedJson(): void {
     this.showAdvancedJson = !this.showAdvancedJson;
     if (this.showAdvancedJson) {
@@ -267,6 +297,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.isLoading = false;
     console.error('Recipe editor load failed:', error);
     this.changeDetectorRef.markForCheck();
+  }
+
+  private syncDescriptionFromEditor(): void {
+    if (this.descriptionEditor) {
+      this.description = this.descriptionEditor.nativeElement.innerHTML;
+    }
   }
 
   private emptyRecipe(): RecipeFile {

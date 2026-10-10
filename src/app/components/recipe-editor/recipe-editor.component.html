@@ -92,16 +92,41 @@
     </section>
 
     <div class="mb-4">
-      <label class="form-label" for="recipe-description">Description and preparation HTML</label>
+      <label class="form-label" for="recipe-description-editor">Description and preparation</label>
+      <div class="description-toolbar" role="toolbar" aria-label="Description formatting">
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('formatBlock', 'h2')" [disabled]="isSubmitting">Heading</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('bold')" [disabled]="isSubmitting"><strong>Bold</strong></button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('italic')" [disabled]="isSubmitting"><em>Italic</em></button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('insertUnorderedList')" [disabled]="isSubmitting">Bullets</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="formatDescription('insertOrderedList')" [disabled]="isSubmitting">Numbered list</button>
+        <button class="btn btn-outline-secondary btn-sm" type="button" (mousedown)="$event.preventDefault()" (click)="addDescriptionLink()" [disabled]="isSubmitting">Link</button>
+      </div>
+      <div
+        #descriptionEditor
+        id="recipe-description-editor"
+        class="form-control description-editor"
+        [attr.contenteditable]="isSubmitting ? 'false' : 'true'"
+        role="textbox"
+        aria-multiline="true"
+        [attr.aria-disabled]="isSubmitting"
+        [innerHTML]="description"
+        (input)="updateDescription($event)"
+        (paste)="pasteDescriptionAsPlainText($event)"
+      ></div>
+      <div class="description-preview mt-3" [innerHTML]="description"></div>
+      <button class="btn btn-link btn-sm px-0 mt-2" type="button" (click)="showDescriptionSource = !showDescriptionSource" [disabled]="isSubmitting">
+        {{ showDescriptionSource ? 'Hide HTML source' : 'Edit HTML source' }}
+      </button>
       <textarea
-        id="recipe-description"
-        class="form-control font-monospace"
+        *ngIf="showDescriptionSource"
+        id="recipe-description-source"
+        class="form-control font-monospace mt-2"
         name="description"
         [(ngModel)]="description"
-        rows="14"
+        rows="12"
         [disabled]="isSubmitting"
       ></textarea>
-      <div class="form-text">Required for local recipes. External recipes use <code>externalUrl</code> and do not save this field.</div>
+      <div class="form-text">Use the toolbar for standard formatting. External recipes do not save this field.</div>
     </div>
 
     <div class="mb-4">
