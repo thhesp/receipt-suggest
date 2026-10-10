@@ -37,6 +37,11 @@ async function mockEditorRequests(page: Page, readinessStatus = 200): Promise<vo
     body: '<p>Boil the spaetzle.</p>'
     });
   });
+  await page.route('**/api/recipe-changes', route => route.fulfill({
+    status: 201,
+    contentType: 'application/json',
+    json: { number: 123, url: 'https://example.test/pull/123' }
+  }));
 }
 
 test('loads an existing recipe into structured editor fields', async ({ page }) => {
@@ -46,10 +51,15 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
 
   await expect(page.locator('#recipe-name')).toHaveValue(recipe.name);
   await expect(page.locator('#recipe-id')).toHaveValue(recipe.id);
-  await expect(page.locator('#recipe-tags')).toHaveValue('PASTA, VEGETARIAN');
   await expect(page.locator('#ingredient-amount-0')).toHaveValue('250 g');
   await expect(page.locator('#ingredient-name-0')).toHaveValue('Spaetzle');
   await expect(page.getByText('Checking whether recipe changes are available…')).toBeHidden();
+
+  await page.locator('#recipe-tag-input').fill(' dessert ');
+  await page.locator('#recipe-tag-input').press('Enter');
+  await page.locator('#recipe-tag-input').fill('DESSERT');
+  await page.locator('#recipe-tag-input').press('Enter');
+  await expect(page.getByRole('button', { name: 'Remove DESSERT tag' })).toHaveCount(1);
 
   await page.getByRole('button', { name: 'Add ingredient' }).click();
   await expect(page.locator('[id^="ingredient-name-"]')).toHaveCount(2);
@@ -63,4 +73,14 @@ test('stops checking availability when the readiness endpoint fails', async ({ p
   await expect(page.getByText('Checking whether recipe changes are available…')).toBeHidden();
   await expect(page.getByText('Recipe pull requests are unavailable.')).toBeVisible();
   await expect(page.locator('#recipe-name')).toHaveValue(recipe.name);
+});
+
+test('shows the created pull request after submission completes', async ({ page }) => {
+  await mockEditorRequests(page);
+
+  await page.goto(`/recipe/${recipe.id}/edit`);
+  await page.getByRole('button', { name: 'Create pull request' }).click();
+
+  await expect(page.getByText('Pull request created.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Create pull request' })).toBeVisible();
 });

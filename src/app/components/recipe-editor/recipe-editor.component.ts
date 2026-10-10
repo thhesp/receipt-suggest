@@ -26,7 +26,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   recipe = this.emptyRecipe();
   description = '';
-  tagsInput = '';
+  tagInput = '';
   imagesInput = '';
   advancedRecipeJson = '';
   showAdvancedJson = false;
@@ -129,10 +129,17 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     this.error = null;
   }
 
-  updateTags(tags: string): void {
-    this.recipe.tags = tags.split(',')
-      .map(tag => tag.trim().toUpperCase())
-      .filter(Boolean);
+  addTag(event?: Event): void {
+    event?.preventDefault();
+    const tag = this.tagInput.trim().toUpperCase();
+    if (tag && !this.recipe.tags.includes(tag)) {
+      this.recipe.tags.push(tag);
+    }
+    this.tagInput = '';
+  }
+
+  removeTag(tag: string): void {
+    this.recipe.tags = this.recipe.tags.filter(currentTag => currentTag !== tag);
   }
 
   updateImages(images: string): void {
@@ -178,10 +185,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     try {
       const change = await this.buildChange();
       this.isSubmitting = true;
+      this.changeDetectorRef.markForCheck();
       this.recipeChangeService.submit(change).pipe(takeUntil(this.destroy$)).subscribe({
         next: result => {
           this.pullRequestUrl = result.url;
           this.isSubmitting = false;
+          this.changeDetectorRef.markForCheck();
         },
         error: error => {
           this.error = error instanceof RecipeChangeSubmissionTimeoutError
@@ -189,10 +198,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
             : error.error?.error || 'The pull request could not be created.';
           this.isSubmitting = false;
           console.error('Recipe change submission failed:', error);
+          this.changeDetectorRef.markForCheck();
         }
       });
     } catch (error) {
       this.error = error instanceof Error ? error.message : 'Selected images could not be read.';
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -274,13 +285,12 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
       ...this.emptyRecipe(),
       ...recipe,
       ingredients: recipe.ingredients?.map(ingredient => ({ ...ingredient })) ?? [],
-      tags: [...(recipe.tags ?? [])],
+      tags: this.normalizeTags(recipe.tags ?? []),
       images: [...(recipe.images ?? [])],
       ...(recipe.kcalPerPortion !== undefined ? { kcalPerPortion: String(recipe.kcalPerPortion) } : {}),
       ...(recipe.workTime !== undefined ? { workTime: String(recipe.workTime) } : {}),
       ...(recipe.cookingTime !== undefined ? { cookingTime: String(recipe.cookingTime) } : {})
     };
-    this.tagsInput = this.recipe.tags.join(', ');
     this.imagesInput = (this.recipe.images ?? []).join(', ');
   }
 
@@ -290,7 +300,7 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
     return {
       id: recipe.id.trim(),
       name: recipe.name.trim(),
-      tags: recipe.tags.map(tag => tag.trim()).filter(Boolean),
+      tags: this.normalizeTags(recipe.tags),
       includeInSuggestions: recipe.includeInSuggestions,
       ingredients: recipe.ingredients.map(ingredient => ({
         amount: ingredient.amount.trim(),
@@ -307,6 +317,10 @@ export class RecipeEditorComponent implements OnInit, OnDestroy {
 
   private parseImageNames(images: string): string[] {
     return [...new Set(images.split(',').map(image => image.trim()).filter(Boolean))];
+  }
+
+  private normalizeTags(tags: string[]): string[] {
+    return [...new Set(tags.map(tag => tag.trim().toUpperCase()).filter(Boolean))];
   }
 
   private isRecipeFile(recipe: unknown): recipe is RecipeFile {
