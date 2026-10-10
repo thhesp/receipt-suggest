@@ -1,15 +1,16 @@
 import {
-  AfterViewChecked,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   OnDestroy,
-  OnInit,
-  ViewChild
+  OnInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Editor, NgxEditorComponent, NgxEditorMenuComponent, Toolbar } from 'ngx-editor';
+import { marks, nodes } from 'ngx-editor/schema';
+import { Schema } from 'prosemirror-model';
+import { TextSelection } from 'prosemirror-state';
 import { Subject, TimeoutError } from 'rxjs';
 import { takeUntil, timeout } from 'rxjs/operators';
 import { RecipeFile } from '../../models/recipe.model';
@@ -22,18 +23,48 @@ import {
 } from '../../services/recipe-change.service';
 import { RecipeDetailService } from '../../services/recipe-detail.service';
 
+const recipeDescriptionSchema = new Schema({
+  nodes: {
+    ...nodes,
+    recipe_callout: {
+      group: 'block',
+      content: 'inline*',
+      attrs: {
+        type: { default: 'hint' }
+      },
+      parseDOM: [
+        {
+          tag: 'aside.recipe-callout--hint',
+          getAttrs: () => ({ type: 'hint' })
+        },
+        {
+          tag: 'aside.recipe-callout--warning',
+          getAttrs: () => ({ type: 'warning' })
+        }
+      ],
+      toDOM: node => [
+        'aside',
+        { class: `recipe-callout recipe-callout--${node.attrs['type']}` },
+        0
+      ]
+    }
+  },
+  marks
+});
+
 @Component({
   selector: 'app-recipe-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, NgxEditorComponent, NgxEditorMenuComponent],
   templateUrl: './recipe-editor.component.html',
   styleUrls: ['./recipe-editor.component.scss']
 })
-export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestroy {
+export class RecipeEditorComponent implements OnInit, OnDestroy {
   private readonly recipeLoadTimeoutMs = 15_000;
 
   recipe = this.emptyRecipe();
   description = '';
+  descriptionEditorHtml = '';
   tagInput = '';
   imagesInput = '';
   advancedRecipeJson = '';
@@ -50,8 +81,17 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
   pullRequestUrl: string | null = null;
 
   private readonly destroy$ = new Subject<void>();
-  private shouldSyncDescriptionEditor = true;
-  @ViewChild('descriptionEditor') private descriptionEditor?: ElementRef<HTMLElement>;
+  readonly descriptionEditor = new Editor({
+    linkValidationPattern: '^https://.+',
+    schema: recipeDescriptionSchema
+  });
+  readonly descriptionToolbar: Toolbar = [
+    [{ heading: ['paragraph', 'h1', 'h2', 'h3'] }],
+    ['bold', 'italic'],
+    ['bullet_list', 'ordered_list'],
+    ['link'],
+    ['undo', 'redo']
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -115,14 +155,9 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
+    this.descriptionEditor.destroy();
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  ngAfterViewChecked(): void {
-    if (!this.shouldSyncDescriptionEditor || !this.descriptionEditor) return;
-    this.descriptionEditor.nativeElement.innerHTML = this.descriptionContent(this.description);
-    this.shouldSyncDescriptionEditor = false;
   }
 
   onFilesSelected(event: Event): void {
@@ -174,46 +209,31 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
     this.recipe.ingredients.splice(index, 1);
   }
 
-  formatDescription(command: string, value?: string): void {
-    document.execCommand(command, false, value);
-    this.syncDescriptionFromEditor();
-  }
-
   addDescriptionCallout(type: 'hint' | 'warning'): void {
     const label = type === 'hint' ? 'Hint' : 'Warning';
-    document.execCommand(
-      'insertHTML',
-      false,
-      `<aside class="recipe-callout recipe-callout--${type}"><strong>${label}:</strong> </aside><p><br></p>`
-    );
-    this.syncDescriptionFromEditor();
+    const view = this.descriptionEditor.view;
+    const insertAt = view.state.selection.$from.after(1);
+    const strong = view.state.schema.marks['strong']?.create();
+    const labelText = view.state.schema.text(`${label}: `, strong ? [strong] : []);
+    const callout = view.state.schema.nodes['recipe_callout'].create({ type }, labelText);
+    const transaction = view.state.tr.insert(insertAt, callout);
+    transaction.setSelection(TextSelection.create(transaction.doc, insertAt + 1 + labelText.nodeSize));
+
+    view.dispatch(transaction);
+    view.focus();
   }
 
-  addDescriptionLink(): void {
-    const url = window.prompt('Enter an HTTPS link');
-    if (!url) return;
-
-    try {
-      const parsedUrl = new URL(url);
-      if (parsedUrl.protocol !== 'https:') throw new Error('Only HTTPS links are supported.');
-      this.formatDescription('createLink', parsedUrl.href);
-    } catch {
-      this.error = 'Enter a valid HTTPS link.';
-    }
+  updateDescription(description: string): void {
+    this.descriptionEditorHtml = description;
+    this.description = this.normalizeDescription(description);
   }
 
-  updateDescription(event: Event): void {
-    this.description = this.normalizeDescription((event.target as HTMLElement).innerHTML);
+  updateDescriptionSource(event: Event): void {
+    this.setDescription((event.target as HTMLTextAreaElement).value);
   }
 
-  updateDescriptionSource(description: string): void {
-    this.setDescription(description);
-  }
-
-  pasteDescriptionAsPlainText(event: ClipboardEvent): void {
-    event.preventDefault();
-    document.execCommand('insertText', false, event.clipboardData?.getData('text/plain') ?? '');
-    this.syncDescriptionFromEditor();
+  normalizeDescriptionSource(event: Event): void {
+    (event.target as HTMLTextAreaElement).value = this.description;
   }
 
   toggleAdvancedJson(): void {
@@ -328,15 +348,9 @@ export class RecipeEditorComponent implements AfterViewChecked, OnInit, OnDestro
     this.changeDetectorRef.markForCheck();
   }
 
-  private syncDescriptionFromEditor(): void {
-    if (this.descriptionEditor) {
-      this.description = this.normalizeDescription(this.descriptionEditor.nativeElement.innerHTML);
-    }
-  }
-
   private setDescription(description: string): void {
     this.description = this.normalizeDescription(description);
-    this.shouldSyncDescriptionEditor = true;
+    this.descriptionEditorHtml = this.descriptionContent(this.description);
   }
 
   private normalizeDescription(description: string): string {

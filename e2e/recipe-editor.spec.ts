@@ -64,13 +64,14 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
   await page.getByRole('button', { name: 'Add ingredient' }).click();
   await expect(page.locator('[id^="ingredient-name-"]')).toHaveCount(2);
 
-  const descriptionEditor = page.locator('#recipe-description-editor');
-  expect(await descriptionEditor.evaluate(editor => editor.tagName)).toBe('ARTICLE');
+  const descriptionEditor = page.locator('#recipe-description-editor .ProseMirror');
+  await expect(descriptionEditor).toBeVisible();
 
   await page.getByRole('button', { name: 'Edit HTML source' }).click();
   const descriptionSource = page.locator('#recipe-description-source');
   await expect(descriptionSource).toHaveValue('<article><p>Boil the spaetzle.</p></article>');
   await descriptionSource.fill('<p>Stir the spaetzle.</p>');
+  await descriptionSource.blur();
   await expect(descriptionSource).toHaveValue('<article><p>Stir the spaetzle.</p></article>');
   await expect(page.locator('.description-preview > article')).toContainText('Stir the spaetzle.');
 
@@ -82,7 +83,7 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
 
   await descriptionEditor.fill('First item');
   await descriptionEditor.selectText();
-  await page.getByRole('button', { name: 'Bullets' }).click();
+  await page.getByRole('button', { name: 'Bullet List' }).click();
   await descriptionEditor.press('End');
   await descriptionEditor.press('Enter');
   await descriptionEditor.type('Second item');
@@ -102,6 +103,19 @@ test('stops checking availability when the readiness endpoint fails', async ({ p
   await expect(page.getByText('Checking whether recipe changes are available…')).toBeHidden();
   await expect(page.getByText('Recipe pull requests are unavailable.')).toBeVisible();
   await expect(page.locator('#recipe-name')).toHaveValue(recipe.name);
+});
+
+test('limits heading choices to paragraph and H1 through H3', async ({ page }) => {
+  await mockEditorRequests(page);
+
+  await page.goto(`/recipe/${recipe.id}/edit`);
+  await page.getByRole('button', { name: 'Paragraph' }).click();
+
+  await expect(page.getByRole('option', { name: 'Paragraph' })).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Header 1' })).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Header 2' })).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Header 3' })).toBeVisible();
+  await expect(page.getByRole('option', { name: 'Header 4' })).toHaveCount(0);
 });
 
 test('shows the created pull request after submission completes', async ({ page }) => {
