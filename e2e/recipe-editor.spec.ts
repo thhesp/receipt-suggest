@@ -71,6 +71,14 @@ test('loads an existing recipe into structured editor fields', async ({ page }) 
   await expect(page.locator('.description-preview strong, .description-preview b').first())
     .toHaveText('Mix the ingredients.');
 
+  await descriptionEditor.fill('First item');
+  await descriptionEditor.selectText();
+  await page.getByRole('button', { name: 'Bullets' }).click();
+  await descriptionEditor.press('End');
+  await descriptionEditor.press('Enter');
+  await descriptionEditor.type('Second item');
+  await expect(descriptionEditor.locator('ul li')).toHaveCount(2);
+
   await page.getByRole('button', { name: 'Hint' }).click();
   await expect(page.locator('.description-preview .recipe-callout--hint')).toContainText('Hint:');
   await page.getByRole('button', { name: 'Warning' }).click();
