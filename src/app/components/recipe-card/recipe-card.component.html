@@ -36,15 +36,16 @@
         <span *ngIf="!isFavorite" aria-hidden="true">&#9825;</span>
       </button>
       <!-- Internal link -->
-      <button
+      <a
         *ngIf="!recipe.externalUrl"
-        type="button"
         class="btn btn-sm btn-outline-secondary w-100"
         [routerLink]="['/recipe', recipe.id]"
         [queryParams]="{ name: recipe.name }"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         View Recipe
-      </button>
+      </a>
 
       <!-- External link -->
       <a
