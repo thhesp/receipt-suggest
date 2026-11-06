@@ -25,13 +25,17 @@ FROM builder AS compressed-assets
 RUN apk add --no-cache imagemagick imagemagick-jpeg
 COPY config/docker_imagemagic_policy.xml /etc/ImageMagick-6/policy.xml
 RUN find /app/dist/receipt-suggest/browser/assets/data -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) \
-    -exec mogrify -strip -resize '1024x>' -quality 50 {} +
+    -exec mogrify -strip -resize '1024x>' -quality 50 {} + && \
+    find /app/dist/receipt-suggest/browser/assets/data -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) \
+    -exec chmod a+r {} +
 
 FROM private-builder AS private-compressed-assets
 RUN apk add --no-cache imagemagick imagemagick-jpeg
 COPY config/docker_imagemagic_policy.xml /etc/ImageMagick-6/policy.xml
 RUN find /app/dist/receipt-suggest/browser/assets/data -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) \
-    -exec mogrify -strip -resize '1024x>' -quality 50 {} +
+    -exec mogrify -strip -resize '1024x>' -quality 50 {} + && \
+    find /app/dist/receipt-suggest/browser/assets/data -type f \( -name '*.jpg' -o -name '*.jpeg' -o -name '*.png' \) \
+    -exec chmod a+r {} +
 
 FROM nginx-base AS image-compressed
 COPY --from=compressed-assets /app/dist/receipt-suggest/browser /usr/share/nginx/html
