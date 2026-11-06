@@ -2,6 +2,7 @@ import { createHash, createPrivateKey, createSign, randomUUID } from 'node:crypt
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
+import { sanitizeRecipeDescription } from './scripts/recipe-description.mjs';
 
 const stateDirectory = process.env.USER_STATE_DIRECTORY || '/var/lib/receipt-suggest-user-state';
 const maximumBodySize = 100_000;
@@ -320,6 +321,7 @@ function validateRecipeChange(value) {
       throw new Error('Invalid externalUrl');
     }
   }
+  const description = recipe.externalUrl ? '' : sanitizeRecipeDescription(value.description);
 
   const imageNames = recipe.images ?? [];
   if (!Array.isArray(imageNames) || imageNames.some(image => typeof image !== 'string' ||
@@ -369,7 +371,7 @@ function validateRecipeChange(value) {
       ...(recipe.thumbnail ? { thumbnail: recipe.thumbnail } : {}),
       ingredients: recipe.ingredients.map(ingredient => ({ name: ingredient.name, amount: ingredient.amount }))
     },
-    description: value.description,
+    description,
     images
   };
 }
